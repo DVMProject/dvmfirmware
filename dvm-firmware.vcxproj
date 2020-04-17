@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C5F80730-F44F-4478-BDAE-6634EFC2CA88}</ProjectGuid>
+    <RootNamespace>dvm_firmware</RootNamespace>
+    <ProjectName>firmware</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>
+    </PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>
+    </PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\dvm-firmware;C:\Program Files (x86)\Arduino\libraries;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\libraries;C:\Users\gatekeep\Documents\Arduino\libraries;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\cores\arduino;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\cores\arduino\avr;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\cores\arduino\USB;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\variants\arduino_due_x;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\CMSIS\Include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\arm-none-eabi\include\c++\4.8.3;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\arm-none-eabi\include\c++\4.8.3\arm-none-eabi\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\arm-none-eabi\include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\lib\gcc\arm-none-eabi\4.8.3\include;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam\include;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\CMSIS\Include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\CMSIS\Include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\CMSIS\Include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam\include;C:\Program Files (x86)\Arduino\hardware\tools\g++_arm_none_eabi\arm-none-eabi\include;C:\Program Files (x86)\Arduino\hardware\tools\g++_arm_none_eabi\arm_none_eabi\include\;C:\Program Files (x86)\Arduino\hardware\tools\g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include;C:\Program Files (x86)\Arduino\hardware\tools\g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\sam3xa\include\pio;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam\include;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\CMSIS\CMSIS\Include\;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\sam3xa\include;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\libsam;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL;C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system\CMSIS\Device\ATMEL\sam3xa\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>$(ProjectDir)__vm\.dvm-firmware.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>printf=iprintf;F_CPU=84000000L;ARDUINO=10805;ARDUINO_SAM_DUE;ARDUINO_ARCH_SAM;__SAM3X8E__;USB_VID=0x2341;USB_PID=0x003e;USBCON;__cplusplus=201103L;_VMICRO_INTELLISENSE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="VisualMicro" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CalRSSI.h" />
+    <ClInclude Include="CWIdTX.h" />
+    <ClInclude Include="Debug.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="dmr\CalDMR.h" />
+    <ClInclude Include="dmr\DMRDefines.h" />
+    <ClInclude Include="dmr\DMRDMORX.h" />
+    <ClInclude Include="dmr\DMRDMOTX.h" />
+    <ClInclude Include="dmr\DMRIdleRX.h" />
+    <ClInclude Include="dmr\DMRRX.h" />
+    <ClInclude Include="dmr\DMRSlotRX.h" />
+    <ClInclude Include="dmr\DMRSlotType.h" />
+    <ClInclude Include="dmr\DMRTX.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="IO.h" />
+    <ClInclude Include="p25\CalP25.h" />
+    <ClInclude Include="p25\P25Defines.h" />
+    <ClInclude Include="p25\P25RX.h" />
+    <ClInclude Include="p25\P25TX.h" />
+    <ClInclude Include="RingBuffer.h" />
+    <ClInclude Include="RSSIBuffer.h" />
+    <ClInclude Include="SampleBuffer.h" />
+    <ClInclude Include="SerialPort.h" />
+    <ClInclude Include="SerialBuffer.h" />
+    <ClInclude Include="Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CalRSSI.cpp" />
+    <ClCompile Include="CWIdTX.cpp" />
+    <ClCompile Include="dmr\CalDMR.cpp" />
+    <ClCompile Include="dmr\DMRDMORX.cpp" />
+    <ClCompile Include="dmr\DMRDMOTX.cpp" />
+    <ClCompile Include="dmr\DMRIdleRX.cpp" />
+    <ClCompile Include="dmr\DMRRX.cpp" />
+    <ClCompile Include="dmr\DMRSlotRX.cpp" />
+    <ClCompile Include="dmr\DMRSlotType.cpp" />
+    <ClCompile Include="dmr\DMRTX.cpp" />
+    <ClCompile Include="FirmwareMain.cpp" />
+    <ClCompile Include="IO.cpp" />
+    <ClCompile Include="IODue.cpp" />
+    <ClCompile Include="IOSTM.cpp" />
+    <ClCompile Include="p25\CalP25.cpp" />
+    <ClCompile Include="p25\P25RX.cpp" />
+    <ClCompile Include="p25\P25TX.cpp" />
+    <ClCompile Include="RSSIBuffer.cpp" />
+    <ClCompile Include="SampleBuffer.cpp" />
+    <ClCompile Include="SerialDue.cpp" />
+    <ClCompile Include="SerialPort.cpp" />
+    <ClCompile Include="SerialBuffer.cpp" />
+    <ClCompile Include="SerialSTM.cpp" />
+    <ClCompile Include="Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="Makefile.STM32F4" />
+    <None Include="Makefile.STM32F4_POG" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.upload.maximum_size="524288" arduino.upload.speed="" visualmicro.package.name="arduino" arduino.board.property_bag="name=Arduino Due (Programming Port)&#xD;&#xA;vid.0=0x2341&#xD;&#xA;pid.0=0x003d&#xD;&#xA;vid.1=0x2A03&#xD;&#xA;pid.1=0x003d&#xD;&#xA;upload.tool=bossac&#xD;&#xA;upload.protocol=sam-ba&#xD;&#xA;upload.maximum_size=524288&#xD;&#xA;upload.use_1200bps_touch=true&#xD;&#xA;upload.wait_for_upload_port=false&#xD;&#xA;upload.native_usb=false&#xD;&#xA;build.mcu=cortex-m3&#xD;&#xA;build.f_cpu=84000000L&#xD;&#xA;build.usb_manufacturer=&quot;Arduino LLC&quot;&#xD;&#xA;build.usb_product=&quot;Arduino Due&quot;&#xD;&#xA;build.board=SAM_DUE&#xD;&#xA;build.core=arduino&#xD;&#xA;build.extra_flags=-D__SAM3X8E__ -mthumb {build.usb_flags}&#xD;&#xA;build.ldscript=linker_scripts/gcc/flash.ld&#xD;&#xA;build.variant=arduino_due_x&#xD;&#xA;build.variant_system_lib=libsam_sam3x8e_gcc_rel.a&#xD;&#xA;build.vid=0x2341&#xD;&#xA;build.pid=0x003e&#xD;&#xA;runtime.ide.path=C:\Program Files (x86)\Arduino&#xD;&#xA;runtime.os=windows&#xD;&#xA;build.system.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\system&#xD;&#xA;runtime.ide.version=10805&#xD;&#xA;target_package=arduino&#xD;&#xA;target_platform=sam&#xD;&#xA;runtime.hardware.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam&#xD;&#xA;originalid=arduino_due_x_dbg&#xD;&#xA;intellisense.tools.path={runtime.ide.path}/hardware/tools/g++_arm_none_eabi&#xD;&#xA;intellisense.include.paths={runtime.tools.arm-none-eabi-gcc.path}/arm-none-eabi\include\c++\4.8.3;{runtime.tools.arm-none-eabi-gcc.path}/arm-none-eabi/include/c++/4.8.3/arm-none-eabi/;{runtime.tools.arm-none-eabi-gcc.path}/arm-none-eabi/include/;{runtime.tools.arm-none-eabi-gcc.path}\lib\gcc\arm-none-eabi\4.8.3\include;{build.core.coresparentfolder.vmresolved}\system\CMSIS\Device\ATMEL\;{build.core.coresparentfolder.vmresolved}\system\libsam;{build.core.coresparentfolder.vmresolved}\system\libsam\include;{build.core.coresparentfolder.vmresolved}\system\CMSIS\CMSIS\Include\;{build.core.coresparentfolder.vmresolved}\system\CMSIS\CMSIS\Include\;{vm.boardsource.path}\system\CMSIS\CMSIS\Include\;{vm.boardsource.path}\system\CMSIS\Device\ATMEL\;{vm.boardsource.path}\system\libsam;{vm.boardsource.path}\system\libsam\include;{intellisense.tools.path}\arm-none-eabi\include;{intellisense.tools.path}\arm_none_eabi\include\;{intellisense.tools.path}\lib\gcc\arm-none-eabi\4.4.1\include;{intellisense.tools.path}\lib\gcc\arm-none-eabi\4.4.1\include\;{build.core.coresparentfolder.vmresolved}/system/CMSIS/Device/ATMEL/sam3xa/include/pio;{build.core.coresparentfolder.vmresolved}/system/libsam/include;{build.core.coresparentfolder.vmresolved}/CMSIS/CMSIS/Include/;{build.core.coresparentfolder.vmresolved}/system/CMSIS/Device/ATMEL/sam3xa/include;{build.core.coresparentfolder.vmresolved}\system/libsam;{build.core.coresparentfolder.vmresolved}\system/CMSIS/Device/ATMEL;{build.core.coresparentfolder.vmresolved}\system/CMSIS/Device/ATMEL/sam3xa/include;&#xD;&#xA;tools.atprogram.cmd.path=%AVRSTUDIO_EXE_PATH%\atbackend\atprogram&#xD;&#xA;tools.atprogram.cmd.setwinpath=true&#xD;&#xA;tools.atprogram.program.params.verbose=-v&#xD;&#xA;tools.atprogram.program.params.quiet=-q&#xD;&#xA;tools.atprogram.program.pattern=&quot;{cmd.path}&quot; -d {build.mcu} {program.verbose} {program.extra_params} program -c -f &quot;{build.path}\{build.project_name}.hex&quot;&#xD;&#xA;tools.atprogram.program.xpattern=&quot;{cmd.path}&quot; {AVRSTUDIO_BACKEND_CONNECTION} -d {build.mcu} {program.verbose} {program.extra_params} program -c -f &quot;{build.path}\{build.project_name}.hex&quot;&#xD;&#xA;version=1.6.11&#xD;&#xA;compiler.warning_flags=-w&#xD;&#xA;compiler.warning_flags.none=-w&#xD;&#xA;compiler.warning_flags.default=&#xD;&#xA;compiler.warning_flags.more=-Wall&#xD;&#xA;compiler.warning_flags.all=-Wall -Wextra&#xD;&#xA;compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/&#xD;&#xA;compiler.c.cmd=arm-none-eabi-gcc&#xD;&#xA;compiler.c.flags=-c -g -Os {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -Dprintf=iprintf -MMD&#xD;&#xA;compiler.c.elf.cmd=arm-none-eabi-gcc&#xD;&#xA;compiler.c.elf.flags=-Os -Wl,--gc-sections&#xD;&#xA;compiler.S.cmd=arm-none-eabi-gcc&#xD;&#xA;compiler.S.flags=-c -g -x assembler-with-cpp -MMD&#xD;&#xA;compiler.cpp.cmd=arm-none-eabi-g++&#xD;&#xA;compiler.cpp.flags=-c -g -Os {compiler.warning_flags} -std=gnu++11 -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -Dprintf=iprintf -MMD&#xD;&#xA;compiler.ar.cmd=arm-none-eabi-ar&#xD;&#xA;compiler.ar.flags=rcs&#xD;&#xA;compiler.objcopy.cmd=arm-none-eabi-objcopy&#xD;&#xA;compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0&#xD;&#xA;compiler.elf2hex.flags=-O binary&#xD;&#xA;compiler.elf2hex.cmd=arm-none-eabi-objcopy&#xD;&#xA;compiler.ldflags=&#xD;&#xA;compiler.size.cmd=arm-none-eabi-size&#xD;&#xA;compiler.define=-DARDUINO=&#xD;&#xA;compiler.combine.flags=-u _sbrk -u link -u _close -u _fstat -u _isatty -u _lseek -u _read -u _write -u _exit -u kill -u _getpid&#xD;&#xA;compiler.c.extra_flags=&#xD;&#xA;compiler.c.elf.extra_flags=&#xD;&#xA;compiler.cpp.extra_flags=&#xD;&#xA;compiler.S.extra_flags=&#xD;&#xA;compiler.ar.extra_flags=&#xD;&#xA;compiler.elf2hex.extra_flags=&#xD;&#xA;compiler.libsam.c.flags=&quot;-I{build.system.path}/libsam&quot; &quot;-I{build.system.path}/CMSIS/CMSIS/Include/&quot; &quot;-I{build.system.path}/CMSIS/Device/ATMEL/&quot;&#xD;&#xA;build.usb_flags=-DUSB_VID={build.vid} -DUSB_PID={build.pid} -DUSBCON '-DUSB_MANUFACTURER={build.usb_manufacturer}' '-DUSB_PRODUCT={build.usb_product}'&#xD;&#xA;recipe.c.o.pattern=&quot;{compiler.path}{compiler.c.cmd}&quot; {compiler.c.flags} -mcpu={build.mcu} -mthumb -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.c.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} {includes} &quot;{source_file}&quot; -o &quot;{object_file}&quot;&#xD;&#xA;recipe.cpp.o.pattern=&quot;{compiler.path}{compiler.cpp.cmd}&quot; {compiler.cpp.flags} -mcpu={build.mcu} -mthumb -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.cpp.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} {includes} &quot;{source_file}&quot; -o &quot;{object_file}&quot;&#xD;&#xA;recipe.S.o.pattern=&quot;{compiler.path}{compiler.S.cmd}&quot; {compiler.S.flags} -mcpu={build.mcu} -mthumb -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch} {compiler.S.extra_flags} {build.extra_flags} {compiler.libsam.c.flags} {includes} &quot;{source_file}&quot; -o &quot;{object_file}&quot;&#xD;&#xA;archive_file_path={build.path}/{archive_file}&#xD;&#xA;recipe.ar.pattern=&quot;{compiler.path}{compiler.ar.cmd}&quot; {compiler.ar.flags} {compiler.ar.extra_flags} &quot;{archive_file_path}&quot; &quot;{object_file}&quot;&#xD;&#xA;recipe.c.combine.pattern=&quot;{compiler.path}{compiler.c.elf.cmd}&quot; -mcpu={build.mcu} -mthumb {compiler.c.elf.flags} &quot;-T{build.variant.path}/{build.ldscript}&quot; &quot;-Wl,-Map,{build.path}/{build.project_name}.map&quot; {compiler.c.elf.extra_flags} -o &quot;{build.path}/{build.project_name}.elf&quot; &quot;-L{build.path}&quot; -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--start-group {compiler.combine.flags} {object_files} &quot;{build.variant.path}/{build.variant_system_lib}&quot; &quot;{build.path}/{archive_file}&quot; -Wl,--end-group -lm -gcc&#xD;&#xA;recipe.objcopy.bin.pattern=&quot;{compiler.path}{compiler.elf2hex.cmd}&quot; {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} &quot;{build.path}/{build.project_name}.elf&quot; &quot;{build.path}/{build.project_name}.bin&quot;&#xD;&#xA;recipe.output.tmp_file={build.project_name}.bin&#xD;&#xA;recipe.output.save_file={build.project_name}.{build.variant}.bin&#xD;&#xA;recipe.size.pattern=&quot;{compiler.path}{compiler.size.cmd}&quot; -A &quot;{build.path}/{build.project_name}.elf&quot;&#xD;&#xA;recipe.size.regex=\.text\s+([0-9]+).*&#xD;&#xA;tools.bossac.path={runtime.tools.bossac.path}&#xD;&#xA;tools.bossac.cmd=bossac.exe&#xD;&#xA;tools.bossac.cmd.windows=bossac.exe&#xD;&#xA;tools.bossac.upload.params.verbose=-i -d&#xD;&#xA;tools.bossac.upload.params.quiet=&#xD;&#xA;tools.bossac.upload.params.verify=-v&#xD;&#xA;tools.bossac.upload.pattern=&quot;{path}/{cmd}&quot; {upload.verbose} --port={serial.port.file} -U {upload.native_usb} -e -w {upload.verify} -b &quot;{build.path}/{build.project_name}.bin&quot; -R&#xD;&#xA;tools.bossac_remote.upload.pattern=/usr/bin/run-bossac {upload.verbose} --port=ttyATH0 -U {upload.native_usb} -e -w -v -b /tmp/sketch.bin -R&#xD;&#xA;vm.platform.root.path=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\pbd1usl1.2ll\Micro Platforms\arduino16x&#xD;&#xA;runtime.tools.arm-none-eabi-gcc.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1&#xD;&#xA;runtime.tools.arm-none-eabi-gcc-4.8.3-2014q1.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1&#xD;&#xA;runtime.tools.bossac.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino&#xD;&#xA;runtime.tools.bossac-1.6.1-arduino.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino&#xD;&#xA;runtime.tools.arduinoOTA.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.arduinoOTA-1.1.1.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.avrdude.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.avrdude-6.3.0-arduino9.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.avr-gcc.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.avr-gcc-4.9.2-atmel3.5.4-arduino2.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.tools.tools-avr.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;runtime.vm.boardinfo.id=arduino_due_x_dbg&#xD;&#xA;runtime.vm.boardinfo.name=arduino_due_x_dbg&#xD;&#xA;runtime.vm.boardinfo.desc=Arduino Due (Programming Port)&#xD;&#xA;runtime.vm.boardinfo.src_location=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11&#xD;&#xA;ide.hint=Use installed IDE. Provides built-in hardware, reference/help and libraries.&#xD;&#xA;ide.location.key=Arduino16x&#xD;&#xA;ide.location.ide.winreg=Arduino 1.6.x Application&#xD;&#xA;ide.location.sketchbook.winreg=Arduino 1.6.x Sketchbook&#xD;&#xA;ide.location.sketchbook.preferences=sketchbook.path&#xD;&#xA;ide.default.revision_name=1.9.0&#xD;&#xA;ide.default.version=10800&#xD;&#xA;ide.default.package=arduino&#xD;&#xA;ide.default.platform=avr&#xD;&#xA;ide.multiplatform=true&#xD;&#xA;ide.includes=Arduino.h&#xD;&#xA;ide.exe_name=arduino&#xD;&#xA;ide.platformswithoutpackage=false&#xD;&#xA;ide.includes.fallback=wprogram.h&#xD;&#xA;ide.extension=ino&#xD;&#xA;ide.extension.fallback=pde&#xD;&#xA;ide.versionGTEQ=160&#xD;&#xA;ide.exe=arduino.exe&#xD;&#xA;ide.builder.exe=arduinobuilder.exe&#xD;&#xA;ide.builder.name=Arduino Builder&#xD;&#xA;ide.hosts=atmel&#xD;&#xA;ide.url=http://arduino.cc/en/Main/Software&#xD;&#xA;ide.help.reference.path=reference&#xD;&#xA;ide.help.reference.path2=reference\www.arduino.cc\en\Reference&#xD;&#xA;ide.help.reference.serial=reference\www.arduino.cc\en\Serial&#xD;&#xA;ide.location.preferences.portable={runtime.ide.path}\portable&#xD;&#xA;ide.location.preferences.arduinoData={runtime.sketchbook.path}\ArduinoData&#xD;&#xA;ide.location.preferences=%VM_APPDATA_LOCAL%\arduino15\preferences.txt&#xD;&#xA;ide.location.preferences_fallback=%VM_APPDATA_ROAMING%\arduino15\preferences.txt&#xD;&#xA;ide.location.contributions=%VM_APPDATA_LOCAL%\arduino15&#xD;&#xA;ide.location.contributions_fallback=%VM_APPDATA_ROAMING%\arduino15&#xD;&#xA;ide.contributions.boards.allow=true&#xD;&#xA;ide.contributions.boards.ignore_unless_rewrite_found=true&#xD;&#xA;ide.contributions.libraries.allow=true&#xD;&#xA;ide.contributions.boards.support.urls.wiki=https://github.com/arduino/Arduino/wiki/Unofficial-list-of-3rd-party-boards-support-urls&#xD;&#xA;ide.create_platforms_from_boardsTXT.teensy=build.core&#xD;&#xA;vm.debug=true&#xD;&#xA;software=ARDUINO&#xD;&#xA;ssh.user.name=root&#xD;&#xA;ssh.user.default.password=arduino&#xD;&#xA;ssh.host.wwwfiles.path=/www/sd&#xD;&#xA;build.working_directory={runtime.ide.path}\java\bin&#xD;&#xA;ide.appid=arduino16x&#xD;&#xA;location.sketchbook=C:\Users\gatekeep\Documents\Arduino&#xD;&#xA;build.core.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11\cores\arduino&#xD;&#xA;vm.core.include=Arduino.h&#xD;&#xA;vm.boardsource.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11&#xD;&#xA;runtime.platform.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\hardware\sam\1.6.11&#xD;&#xA;vm.platformname.name=sam&#xD;&#xA;build.arch=SAM&#xD;&#xA;builder.noino=false&#xD;&#xA;build.architecture=4.8.3-2014q1&#xD;&#xA;vmresolved.compiler.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\bin\&#xD;&#xA;vmresolved.tools.path=C:\Users\gatekeep\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1&#xD;&#xA;build.path=C:\Users\gatekeep\AppData\Local\Temp\4\VMBuilds\dvm-firmware\arduino_due_x_dbg\Debug&#xD;&#xA;build.project_name=dvm-firmware.ino&#xD;&#xA;build.project_path=Z:\src\DVM\dvm-firmware&#xD;&#xA;ProjectDir=Z:\src\DVM\dvm-firmware\&#xD;&#xA;" visualmicro.application.name="arduino16x" arduino.build.mcu="cortex-m3" arduino.upload.protocol="sam-ba" arduino.build.f_cpu="84000000L" arduino.board.desc="Arduino Due (Programming Port)" arduino.board.name="arduino_due_x_dbg" visualmicro.platform.name="sam" arduino.build.core="arduino" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

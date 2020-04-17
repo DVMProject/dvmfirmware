@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\p25">
+      <UniqueIdentifier>{f0dde6b9-e475-43e2-81ce-c20c16ef0cbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\dmr">
+      <UniqueIdentifier>{d263db43-baa7-4f6e-9e55-2e809551bc15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dmr">
+      <UniqueIdentifier>{da86e100-d0ec-4df5-91c1-b110e0cc2c0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\p25">
+      <UniqueIdentifier>{39f8bd5f-e7be-4399-a3eb-60ca685adfcb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CalRSSI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CWIdTX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="p25\CalP25.h">
+      <Filter>Header Files\p25</Filter>
+    </ClInclude>
+    <ClInclude Include="p25\P25Defines.h">
+      <Filter>Header Files\p25</Filter>
+    </ClInclude>
+    <ClInclude Include="p25\P25RX.h">
+      <Filter>Header Files\p25</Filter>
+    </ClInclude>
+    <ClInclude Include="p25\P25TX.h">
+      <Filter>Header Files\p25</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\CalDMR.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRDefines.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRDMORX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRDMOTX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRIdleRX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRRX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRSlotRX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRSlotType.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="dmr\DMRTX.h">
+      <Filter>Header Files\dmr</Filter>
+    </ClInclude>
+    <ClInclude Include="RingBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RSSIBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CalRSSI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CWIdTX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IOSTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialSTM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FirmwareMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialDue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="p25\CalP25.cpp">
+      <Filter>Source Files\p25</Filter>
+    </ClCompile>
+    <ClCompile Include="p25\P25RX.cpp">
+      <Filter>Source Files\p25</Filter>
+    </ClCompile>
+    <ClCompile Include="p25\P25TX.cpp">
+      <Filter>Source Files\p25</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\CalDMR.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRDMORX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRDMOTX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRIdleRX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRRX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRSlotRX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRSlotType.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="dmr\DMRTX.cpp">
+      <Filter>Source Files\dmr</Filter>
+    </ClCompile>
+    <ClCompile Include="RSSIBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IODue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="Makefile.STM32F4" />
+    <None Include="Makefile.STM32F4_POG" />
+  </ItemGroup>
+</Project>

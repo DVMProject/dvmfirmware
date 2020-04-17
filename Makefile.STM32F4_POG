@@ -1,0 +1,104 @@
+# STM32 library paths
+F4_LIB_PATH=/opt/tools/STM32F4XX_Lib
+
+# MCU external clock frequency (Hz)
+OSC=8000000
+
+# Directory Structure
+BINDIR=.
+OBJDIR_F4=obj_f4-pog
+
+# Output files
+BINELF_F4=dvm-firmware_f4-pog.elf
+BINBIN_F4=dvm-firmware_f4-pog.bin
+
+# Header directories
+INC_F4=. $(F4_LIB_PATH)/CMSIS/Include/ $(F4_LIB_PATH)/Device/ $(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/include/
+INCLUDES_F4=$(INC_F4:%=-I%)
+
+# CMSIS libraries
+INCLUDES_LIBS_F4=$(F4_LIB_PATH)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+
+# STM32F4 Standard Peripheral Libraries source path
+STD_LIB_F4=$(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/source
+
+# STM32F4 system source path
+SYS_DIR_F4=$(F4_LIB_PATH)/Device
+STARTUP_DIR_F4=$(F4_LIB_PATH)/Device/startup
+
+# GNU ARM Embedded Toolchain
+CC=arm-none-eabi-gcc
+CXX=arm-none-eabi-g++
+LD=arm-none-eabi-ld
+AR=arm-none-eabi-ar
+AS=arm-none-eabi-as
+CP=arm-none-eabi-objcopy
+OD=arm-none-eabi-objdump
+NM=arm-none-eabi-nm
+SIZE=arm-none-eabi-size
+A2L=arm-none-eabi-addr2line
+
+# Build object lists
+CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp)
+CSRC_STD_F4=$(wildcard $(STD_LIB_F4)/*.c)
+SYS_F4=$(wildcard $(SYS_DIR_F4)/*.c)
+STARTUP_F4=$(wildcard $(STARTUP_DIR_F4)/*.c)
+OBJ_F4=$(CXXSRC:./%.cpp=$(OBJDIR_F4)/%.o) $(CSRC_STD_F4:$(STD_LIB_F4)/%.c=$(OBJDIR_F4)/%.o) $(SYS_F4:$(SYS_DIR_F4)/%.c=$(OBJDIR_F4)/%.o) $(STARTUP_F4:$(STARTUP_DIR_F4)/%.c=$(OBJDIR_F4)/%.o)
+
+# MCU flags
+MCFLAGS_F4=-mcpu=cortex-m4 -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork
+
+# Compile flags
+DEFS_PI=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_POG -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE
+
+# Build compiler flags
+CFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
+CXXFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
+
+# Linker flags
+LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
+
+# Common flags
+CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
+CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -DCUSTOM_NEW -DNO_EXCEPTIONS
+LDFLAGS=-Os --specs=nano.specs
+
+# Build Rules
+.PHONY: all f4 clean
+
+all: f4
+
+f4: CFLAGS+=$(CFLAGS_F4) $(DEFS_PI)
+f4: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_PI)
+f4: LDFLAGS+=$(LDFLAGS_F4)
+f4: $(BINDIR)
+f4: $(OBJDIR_F4)
+f4: $(BINDIR)/$(BINBIN_F4)
+
+$(BINDIR):
+	mkdir $@
+$(OBJDIR_F4):
+	mkdir $@
+	mkdir $@/dmr
+	mkdir $@/p25
+
+$(BINDIR)/$(BINBIN_F4): $(BINDIR)/$(BINELF_F4)
+	$(CP) -O binary $< $@
+$(BINDIR)/$(BINELF_F4): $(OBJ_F4)
+	$(CXX) $(OBJ_F4) $(LDFLAGS) -o $@
+	$(SIZE) $(BINDIR)/$(BINELF_F4)
+
+$(OBJDIR_F4)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+$(OBJDIR_F4)/%.o: $(STD_LIB_F4)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F4)/%.o: $(SYS_DIR_F4)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F4)/%.o: $(STARTUP_DIR_F4)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+
+clean-objs:
+	test ! -d $(OBJDIR_F4) || rm -rf $(OBJDIR_F4)
+clean:
+	test ! -d $(OBJDIR_F4) || rm -rf $(OBJDIR_F4)
+	rm -f $(BINDIR)/*.bin $(BINDIR)/*.elf

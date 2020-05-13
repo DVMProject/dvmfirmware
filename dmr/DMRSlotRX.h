@@ -66,7 +66,7 @@ namespace dmr
         /// <summary></summary>
         void setColorCode(uint8_t colorCode);
         /// <summary></summary>
-        void setDelay(uint8_t delay);
+        void setRxDelay(uint8_t delay);
 
     private:
         bool m_slot;

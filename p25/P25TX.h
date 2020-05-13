@@ -40,7 +40,9 @@ namespace p25
     //  Constants
     // ---------------------------------------------------------------------------
 
-    #define P25_FIXED_DELAY 300     // Desired Delay MS * 1.2 = Delay Count
+    #define P25_FIXED_DELAY 300     // 300 = 62.49ms
+                                    // Delay Value * 0.2083 = Preamble Length (ms)
+    #define P25_FIXED_TAIL 600      // 600 = 500ms
 
     enum P25TXSTATE {
         P25TXSTATE_NORMAL,
@@ -67,7 +69,7 @@ namespace p25
         void clear();
 
         /// <summary></summary>
-        void setTXDelay(uint8_t delay);
+        void setPreambleCount(uint8_t preambleCnt);
         /// <summary></summary>
         void setCal(bool start);
 
@@ -89,7 +91,8 @@ namespace p25
         uint16_t m_poLen;
         uint16_t m_poPtr;
 
-        uint16_t m_txDelay;
+        uint16_t m_preambleCnt;
+        uint16_t m_tailCnt;
 
         /// <summary></summary>
         void createData();
@@ -98,6 +101,8 @@ namespace p25
 
         /// <summary></summary>
         void writeByte(uint8_t c);
+        /// <summary></summary>
+        void writeSilence();
     };
 } // namespace p25
 

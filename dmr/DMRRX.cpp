@@ -99,8 +99,8 @@ void DMRRX::setColorCode(uint8_t colorCode)
 ///
 /// </summary>
 /// <param name="delay"></param>
-void DMRRX::setDelay(uint8_t delay)
+void DMRRX::setRxDelay(uint8_t delay)
 {
-    m_slot1RX.setDelay(delay);
-    m_slot2RX.setDelay(delay);
+    m_slot1RX.setRxDelay(delay);
+    m_slot2RX.setRxDelay(delay);
 }

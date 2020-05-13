@@ -819,9 +819,9 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     bool dmrEnable = (data[1U] & 0x02U) == 0x02U;
     bool p25Enable = (data[1U] & 0x08U) == 0x08U;
 
-    uint8_t txDelay = data[2U];
-    if (txDelay > 50U)
-        return RSN_INVALID_TXDELAY;
+    uint8_t fdmaPreamble = data[2U];
+    if (fdmaPreamble > 255U)
+        return RSN_INVALID_FDMA_PREAMBLE;
 
     DVM_STATE modemState = DVM_STATE(data[3U]);
 
@@ -835,7 +835,9 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     if (colorCode > 15U)
         return RSN_INVALID_DMR_CC;
 
-    uint8_t dmrDelay = data[7U];
+    uint8_t dmrRxDelay = data[7U];
+    if (dmrRxDelay > 255U)
+        return RSN_INVALID_DMR_RX_DELAY;
 
     uint8_t cwIdTXLevel = data[5U];
     uint8_t dmrTXLevel = data[10U];
@@ -853,12 +855,12 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     m_p25Enable = p25Enable;
     m_duplex = !simplex;
 
-    p25TX.setTXDelay(txDelay);
-    dmrDMOTX.setTXDelay(txDelay);
+    p25TX.setPreambleCount(fdmaPreamble);
+    dmrDMOTX.setPreambleCount(fdmaPreamble);
 
     dmrTX.setColorCode(colorCode);
     dmrRX.setColorCode(colorCode);
-    dmrRX.setDelay(dmrDelay);
+    dmrRX.setRxDelay(dmrRxDelay);
     dmrDMORX.setColorCode(colorCode);
     dmrIdleRX.setColorCode(colorCode);
 

@@ -42,7 +42,8 @@ namespace dmr
     //  Constants
     // ---------------------------------------------------------------------------
 
-    #define DMRDMO_FIXED_DELAY 300  // Desired Delay MS * 1.2 = Delay Count
+    #define DMRDMO_FIXED_DELAY 300  // 300 = 62.49ms
+                                    // Delay Value * 0.2083 = Preamble Length (ms)
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
@@ -61,7 +62,7 @@ namespace dmr
         uint8_t writeData(const uint8_t* data, uint8_t length);
 
         /// <summary></summary>
-        void setTXDelay(uint8_t delay);
+        void setPreambleCount(uint8_t preambleCnt);
 
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
         uint8_t getSpace() const;
@@ -77,10 +78,12 @@ namespace dmr
         uint16_t m_poLen;
         uint16_t m_poPtr;
 
-        uint32_t m_txDelay;
+        uint32_t m_preambleCnt;
 
         /// <summary></summary>
         void writeByte(uint8_t c);
+        /// <summary></summary>
+        void writeSilence();
     };
 } // namespace dmr
 

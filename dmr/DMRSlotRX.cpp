@@ -279,7 +279,7 @@ void DMRSlotRX::setColorCode(uint8_t colorCode)
 ///
 /// </summary>
 /// <param name="delay"></param>
-void DMRSlotRX::setDelay(uint8_t delay)
+void DMRSlotRX::setRxDelay(uint8_t delay)
 {
     m_delay = delay;
 }

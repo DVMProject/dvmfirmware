@@ -80,7 +80,8 @@ P25TX::P25TX() :
     m_poBuffer(),
     m_poLen(0U),
     m_poPtr(0U),
-    m_txDelay(240U)       // 200ms
+    m_preambleCnt(P25_FIXED_DELAY),
+    m_tailCnt(0U)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
     ::memset(m_lpState, 0x00U, 60U * sizeof(q15_t));
@@ -100,6 +101,28 @@ P25TX::P25TX() :
 /// </summary>
 void P25TX::process()
 {
+    if (m_buffer.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
+        // transmit silence until the hang timer has expired
+        uint16_t space = io.getSpace();
+
+        while (space > (4U * P25_RADIO_SYMBOL_LENGTH)) {
+            writeByte(P25_START_SYNC);
+
+            space -= 4U * P25_RADIO_SYMBOL_LENGTH;
+            m_tailCnt--;
+
+            if (m_tailCnt == 0U)
+                return;
+            if (m_buffer.getData() > 0U) {
+                m_tailCnt = 0U;
+                return;
+            }
+        }
+
+        if (m_buffer.getData() == 0U && m_poLen == 0U)
+            return;
+    }
+
     if (m_poLen == 0U) {
         if (m_state == P25TXSTATE_CAL) {
             createCal();
@@ -120,6 +143,7 @@ void P25TX::process()
             writeByte(c);
 
             space -= 4U * P25_RADIO_SYMBOL_LENGTH;
+            m_tailCnt = P25_FIXED_TAIL;
 
             if (m_poPtr >= m_poLen) {
                 m_poPtr = 0U;
@@ -166,16 +190,14 @@ void P25TX::clear()
 ///
 /// </summary>
 /// <param name="delay"></param>
-void P25TX::setTXDelay(uint8_t delay)
+void P25TX::setPreambleCount(uint8_t preambleCnt)
 {
-    m_txDelay = P25_FIXED_DELAY + uint16_t(delay) * 12U;          // 100ms + tx delay
+    uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
+    m_preambleCnt = P25_FIXED_DELAY + preambles;
 
-    uint16_t delayOffs = m_txDelay % 2;
-    m_txDelay += delayOffs;
-
-    // clamp delay to 1s maximum
-    if (m_txDelay > 1200U)
-        m_txDelay = 1200U;
+    // clamp preamble count to 250ms maximum
+    if (m_preambleCnt > 1200U)
+        m_preambleCnt = 1200U;
 }
 
 /// <summary>
@@ -205,7 +227,7 @@ uint8_t P25TX::getSpace() const
 void P25TX::createData()
 {
     if (!m_tx) {
-        for (uint16_t i = 0U; i < m_txDelay; i++)
+        for (uint16_t i = 0U; i < m_preambleCnt; i++)
             m_poBuffer[m_poLen++] = P25_START_SYNC;
     }
     else {
@@ -293,5 +315,18 @@ void P25TX::writeByte(uint8_t c)
 
     ::arm_fir_fast_q15(&m_lpFilter, intBuffer, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
 
+    io.write(STATE_P25, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
+}
+
+void P25TX::writeSilence()
+{
+    q15_t inBuffer[4U] = { 0x00U, 0x00U, 0x00U, 0x00U };
+    q15_t intBuffer[P25_RADIO_SYMBOL_LENGTH * 4U];
+    q15_t outBuffer[P25_RADIO_SYMBOL_LENGTH * 4U];
+    
+    ::arm_fir_interpolate_q15(&m_modFilter, inBuffer, intBuffer, 4U);
+    
+    ::arm_fir_fast_q15(&m_lpFilter, intBuffer, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
+    
     io.write(STATE_P25, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
 }

@@ -67,7 +67,7 @@ DMRDMOTX::DMRDMOTX() :
     m_poBuffer(),
     m_poLen(0U),
     m_poPtr(0U),
-    m_txDelay(240U)       // 200ms
+    m_preambleCnt(DMRDMO_FIXED_DELAY)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
@@ -84,10 +84,10 @@ void DMRDMOTX::process()
 {
     if (m_poLen == 0U && m_fifo.getData() > 0U) {
         if (!m_tx) {
-            for (uint16_t i = 0U; i < m_txDelay; i++)
+            for (uint16_t i = 0U; i < m_preambleCnt; i++)
                 m_poBuffer[i] = DMR_SYNC;
 
-            m_poLen = m_txDelay;
+            m_poLen = m_preambleCnt;
         }
         else {
             for (unsigned int i = 0U; i < 72U; i++)
@@ -145,14 +145,15 @@ uint8_t DMRDMOTX::writeData(const uint8_t* data, uint8_t length)
 /// <summary>
 ///
 /// </summary>
-/// <param name="delay"></param>
-void DMRDMOTX::setTXDelay(uint8_t delay)
+/// <param name="preambleCnt"></param>
+void DMRDMOTX::setPreambleCount(uint8_t preambleCnt)
 {
-    m_txDelay = DMRDMO_FIXED_DELAY + uint16_t(delay) * 12U;        // 500ms + tx delay
+    uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
+    m_preambleCnt = DMRDMO_FIXED_DELAY + preambles;
 
-    // clamp delay to 1s maximum
-    if (m_txDelay > 1200U)
-        m_txDelay = 1200U;
+    // clamp preamble count to 250ms maximum
+    if (m_preambleCnt > 1200U)
+        m_preambleCnt = 1200U;
 }
 
 /// <summary>
@@ -194,6 +195,16 @@ void DMRDMOTX::writeByte(uint8_t c)
             break;
         }
     }
+
+    ::arm_fir_interpolate_q15(&m_modFilter, inBuffer, outBuffer, 4U);
+
+    io.write(STATE_DMR, outBuffer, DMR_RADIO_SYMBOL_LENGTH * 4U);
+}
+
+void DMRDMOTX::writeSilence()
+{
+    q15_t inBuffer[4U] = { 0x00U, 0x00U, 0x00U, 0x00U };
+    q15_t outBuffer[DMR_RADIO_SYMBOL_LENGTH * 4U];
 
     ::arm_fir_interpolate_q15(&m_modFilter, inBuffer, outBuffer, 4U);
 

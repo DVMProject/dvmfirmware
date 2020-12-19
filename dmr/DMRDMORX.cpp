@@ -382,9 +382,9 @@ void DMRDMORX::correlateSync(bool first)
                     if (m_endPtr >= DMO_BUFFER_LENGTH_SAMPLES)
                         m_endPtr -= DMO_BUFFER_LENGTH_SAMPLES;
 #ifdef RX_VERBOSE_DEBUG
-                    DEBUG5("DMRDMORX: sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
-                    DEBUG3("DMRDMORX: sync (b4 - b6)", sync[4U], sync[5U], sync[6U]);
-                    DEBUG5("DMRDMORX: dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
+                    DEBUG5("DMRDMORX: correlateSync(): sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
+                    DEBUG3("DMRDMORX: correlateSync(): sync (b4 - b6)", sync[4U], sync[5U], sync[6U]);
+                    DEBUG5("DMRDMORX: correlateSync(): dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
 #endif
                 }
             }
@@ -420,9 +420,9 @@ void DMRDMORX::correlateSync(bool first)
                     if (m_endPtr >= DMO_BUFFER_LENGTH_SAMPLES)
                         m_endPtr -= DMO_BUFFER_LENGTH_SAMPLES;
 #ifdef RX_VERBOSE_DEBUG
-                    DEBUG5("DMRDMORX: sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
-                    DEBUG3("DMRDMORX: sync (b4 - b6)", sync[4U], sync[5U], sync[6U]);
-                    DEBUG5("DMRDMORX: dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
+                    DEBUG5("DMRDMORX: correlateSync(): sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
+                    DEBUG3("DMRDMORX: correlateSync(): sync (b4 - b6)", sync[4U], sync[5U], sync[6U]);
+                    DEBUG5("DMRDMORX: correlateSync(): dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
 #endif
                 }
             }

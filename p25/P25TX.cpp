@@ -70,8 +70,7 @@ const q15_t P25_LEVELD = -1260;
 /// Initializes a new instance of the P25TX class.
 /// </summary>
 P25TX::P25TX() :
-    //m_buffer(1500U),
-    m_buffer(3000U),
+    m_buffer(P25_TX_BUFFER_LEN),
     m_state(P25TXSTATE_NORMAL),
     m_modFilter(),
     m_lpFilter(),

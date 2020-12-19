@@ -209,6 +209,11 @@ void P25RX::processNone(q15_t sample)
         if (m_maxSyncPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
             m_maxSyncPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
 
+#ifdef RX_VERBOSE_DEBUG
+        DEBUG4("P25RX: processNone(): dataPtr/startPtr/lduEndPtr", m_dataPtr, m_burstStartPtr, m_lduEndPtr);
+        DEBUG3("P25RX: processNone(): maxSyncPtr/minSyncPtr", m_maxSyncPtr, m_minSyncPtr);
+#endif
+
         m_state = P25RXS_BURST;
         m_countdown = 0U;
     }
@@ -242,14 +247,18 @@ void P25RX::processBurst(q15_t sample)
             reset();
         }
         else {
+#ifdef RX_VERBOSE_DEBUG
+            DEBUG4("P25RX: processBurst(): dataPtr/startPtr/lduEndPtr", m_dataPtr, m_burstStartPtr, m_lduEndPtr);
+            DEBUG3("P25RX: processBurst(): maxSyncPtr/minSyncPtr", m_maxSyncPtr, m_minSyncPtr);
+#endif
             uint16_t nidStartPtr = m_burstStartPtr + P25_SYNC_LENGTH_SAMPLES;
             if (nidStartPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
                 nidStartPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
 
-            uint8_t nid[2U];
-            samplesToBits(nidStartPtr, P25_NID_LENGTH_BYTES, nid, 0U, m_centreVal, m_thresholdVal);
-#if RX_VERBOSE_DEBUG
-            DEBUG3("P25RX: nid (b0 - b1)", nid[0U], nid[1U]);
+            uint8_t nid[P25_NID_LENGTH_BYTES];
+            samplesToBits(nidStartPtr, P25_NID_LENGTH_SYMBOLS, nid, 0U, m_centreVal, m_thresholdVal);
+#ifdef RX_VERBOSE_DEBUG
+            DEBUG3("P25RX: processBurst(): nid (b0 - b1)", nid[0U], nid[1U]);
 #endif
             m_nac = (nid[0U] << 4) | ((nid[1U] & 0xF0U) >> 4);
             m_duid = nid[1U] & 0x0FU;
@@ -263,12 +272,13 @@ void P25RX::processBurst(q15_t sample)
                         DEBUG4("P25RX: sync found in HDU pos/centre/threshold", m_burstSyncPtr, m_centreVal, m_thresholdVal);
 
                         uint8_t frame[P25_HDU_FRAME_LENGTH_BYTES + 1U];
-                        samplesToBits(m_burstStartPtr, P25_HDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
+                        samplesToBits(m_burstStartPtr, P25_HDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
                         frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
                         serial.writeP25Data(frame, P25_HDU_FRAME_LENGTH_BYTES + 1U);
+                        reset();
                     }
-                    break;
+                    return;
                 case P25_DUID_TDU:
                     {
                         calculateLevels(m_burstStartPtr, P25_TDU_FRAME_LENGTH_SYMBOLS);
@@ -276,12 +286,15 @@ void P25RX::processBurst(q15_t sample)
                         DEBUG4("P25RX: sync found in TDU pos/centre/threshold", m_burstSyncPtr, m_centreVal, m_thresholdVal);
 
                         uint8_t frame[P25_TDU_FRAME_LENGTH_BYTES + 1U];
-                        samplesToBits(m_burstStartPtr, P25_TDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
+                        samplesToBits(m_burstStartPtr, P25_TDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
                         frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
                         serial.writeP25Data(frame, P25_TDU_FRAME_LENGTH_BYTES + 1U);
                         reset();
                     }
+                    return;
+                case P25_DUID_LDU1:
+                    // handled as a state change
                     break;
                 case P25_DUID_TSDU:
                     {
@@ -290,12 +303,18 @@ void P25RX::processBurst(q15_t sample)
                         DEBUG4("P25RX: sync found in TSDU pos/centre/threshold", m_burstSyncPtr, m_centreVal, m_thresholdVal);
 
                         uint8_t frame[P25_TSDU_FRAME_LENGTH_BYTES + 1U];
-                        samplesToBits(m_burstStartPtr, P25_TSDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
+                        samplesToBits(m_burstStartPtr, P25_TSDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
                         frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
                         serial.writeP25Data(frame, P25_TSDU_FRAME_LENGTH_BYTES + 1U);
                         reset();
                     }
+                    return;
+                case P25_DUID_LDU2:
+                    // handled as a state change
+                    break;
+                case P25_DUID_PDU:
+                    // handled as a state change
                     break;
                 case P25_DUID_TDULC:
                     {
@@ -304,13 +323,19 @@ void P25RX::processBurst(q15_t sample)
                         DEBUG4("P25RX: sync found in TDULC pos/centre/threshold", m_burstSyncPtr, m_centreVal, m_thresholdVal);
 
                         uint8_t frame[P25_TDULC_FRAME_LENGTH_BYTES + 1U];
-                        samplesToBits(m_burstStartPtr, P25_TDULC_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
+                        samplesToBits(m_burstStartPtr, P25_TDULC_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
                         frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
                         serial.writeP25Data(frame, P25_TDULC_FRAME_LENGTH_BYTES + 1U);
                         reset();
                     }
-                    break;
+                    return;
+                default:
+                    {
+                        DEBUG3("P25RX: illegal DUID in NID", m_nac, m_duid);
+                        reset();
+                    }
+                    return;
             }
         }
 
@@ -327,6 +352,8 @@ void P25RX::processBurst(q15_t sample)
             m_lostCount = MAX_SYNC_FRAMES;
             m_state = P25RXS_LDU;
             m_maxCorr = 0;
+
+            processLdu(sample);
         }
 
         if (m_duid == P25_DUID_PDU) {
@@ -342,6 +369,8 @@ void P25RX::processBurst(q15_t sample)
             m_lostCount = MAX_SYNC_FRAMES;
             m_state = P25RXS_PDU;
             m_maxCorr = 0;
+
+            processPdu(sample);
         }
     }
 }
@@ -571,10 +600,10 @@ bool P25RX::correlateSync()
                     if (m_maxSyncPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
                         m_maxSyncPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
 #ifdef RX_VERBOSE_DEBUG
-                    DEBUG5("P25RX: sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
-                    DEBUG3("P25RX: sync (b4 - b5)", sync[4U], sync[5U]);
-                    DEBUG4("P25RX: dataPtr/startPtr/lduEndPtr", m_dataPtr, startPtr, m_lduEndPtr);
-                    DEBUG3("P25RX: maxSyncPtr/minSyncPtr", m_maxSyncPtr, m_minSyncPtr);
+                    DEBUG5("P25RX: correlateSync(): sync (b0 - b3)", sync[0U], sync[1U], sync[2U], sync[3U]);
+                    DEBUG3("P25RX: correlateSync(): sync (b4 - b5)", sync[4U], sync[5U]);
+                    DEBUG4("P25RX: correlateSync(): dataPtr/startPtr/lduEndPtr", m_dataPtr, startPtr, m_lduEndPtr);
+                    DEBUG3("P25RX: correlateSync(): maxSyncPtr/minSyncPtr", m_maxSyncPtr, m_minSyncPtr);
 #endif
                 }
 

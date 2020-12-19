@@ -71,7 +71,7 @@ namespace p25
     const uint32_t  P25_SYNC_LENGTH_SYMBOLS = P25_SYNC_LENGTH_BYTES * 4U;
     const uint32_t  P25_SYNC_LENGTH_SAMPLES = P25_SYNC_LENGTH_SYMBOLS * P25_RADIO_SYMBOL_LENGTH;
 
-    const uint32_t  P25_NID_LENGTH_BYTES = 8U;
+    const uint32_t  P25_NID_LENGTH_BYTES = 2U;
     const uint32_t  P25_NID_LENGTH_BITS = P25_NID_LENGTH_BYTES * 8U;
     const uint32_t  P25_NID_LENGTH_SYMBOLS = P25_NID_LENGTH_BYTES * 4U;
     const uint32_t  P25_NID_LENGTH_SAMPLES = P25_NID_LENGTH_SYMBOLS * P25_RADIO_SYMBOL_LENGTH;
@@ -100,6 +100,8 @@ namespace p25
 
     const uint32_t  P25_SYNC_SYMBOLS = 0x00FB30A0U;
     const uint32_t  P25_SYNC_SYMBOLS_MASK = 0x00FFFFFFU;
+
+    const uint32_t  P25_TX_BUFFER_LEN = 2000U;
 
     // Data Unit ID(s)
     const uint8_t   P25_DUID_HDU = 0x00U;               // Header Data Unit

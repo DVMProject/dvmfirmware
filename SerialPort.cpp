@@ -839,6 +839,8 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     if (dmrRxDelay > 255U)
         return RSN_INVALID_DMR_RX_DELAY;
 
+    uint16_t nac = (data[8U] << 4) + (data[9U] >> 4);
+
     uint8_t cwIdTXLevel = data[5U];
     uint8_t dmrTXLevel = data[10U];
     uint8_t p25TXLevel = data[12U];
@@ -857,6 +859,8 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
 
     p25TX.setPreambleCount(fdmaPreamble);
     dmrDMOTX.setPreambleCount(fdmaPreamble);
+
+    p25RX.setNAC(nac);
 
     dmrTX.setColorCode(colorCode);
     dmrRX.setColorCode(colorCode);

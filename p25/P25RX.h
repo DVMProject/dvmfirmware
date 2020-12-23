@@ -63,6 +63,9 @@ namespace p25
         /// <summary>Sample P25 values from the air interface.</summary>
         void samples(const q15_t* samples, uint16_t* rssi, uint8_t length);
 
+        /// <summary></summary>
+        void setNAC(uint16_t nac);
+
     private:
         P25RX_STATE m_state;
 
@@ -96,8 +99,9 @@ namespace p25
         uint32_t m_rssiAccum;
         uint16_t m_rssiCount;
 
-        uint16_t m_nac;
         uint8_t m_duid;
+
+        uint16_t m_nac;
 
         /// <summary>Helper to perform initial sample processing.</summary>
         void processNone(q15_t sample);
@@ -111,6 +115,9 @@ namespace p25
 
         /// <summary>Frame synchronization correlator.</summary>
         bool correlateSync();
+
+        /// <summary></summary>
+        bool decodeNid(uint16_t start);
 
         /// <summary></summary>
         void calculateLevels(uint16_t start, uint16_t count);

@@ -79,6 +79,7 @@ enum DVM_COMMANDS {
     CMD_SET_CONFIG = 0x02U,
     CMD_SET_MODE = 0x03U,
 
+    CMD_SET_SYMLVLADJ = 0x04U,
     CMD_SET_RXLEVEL = 0x05U,
 
     CMD_CAL_DATA = 0x08U,
@@ -199,6 +200,8 @@ private:
     uint8_t setMode(const uint8_t* data, uint8_t length);
     /// <summary></summary>
     void setMode(DVM_STATE modemState);
+    /// <summary></summary>
+    uint8_t setSymbolLvlAdj(const uint8_t* data, uint8_t length);
     /// <summary></summary>
     uint8_t setRXLevel(const uint8_t* data, uint8_t length);
 

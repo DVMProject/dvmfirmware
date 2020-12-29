@@ -93,7 +93,9 @@ DMRTX::DMRTX() :
     m_poPtr(0U),
     m_frameCount(0U),
     m_abortCount(),
-    m_abort()
+    m_abort(),
+    m_symLevel3Adj(0U),
+    m_symLevel1Adj(0U)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
@@ -149,6 +151,10 @@ void DMRTX::process()
     }
 
     if (m_poLen > 0U) {
+        if (!m_tx) {
+            io.setTransmit();
+        }
+
         uint16_t space = io.getSpace();
 
         while (space > (4U * DMR_RADIO_SYMBOL_LENGTH)) {
@@ -338,6 +344,29 @@ void DMRTX::setColorCode(uint8_t colorCode)
 }
 
 /// <summary>
+///
+/// </summary>
+/// <param name="level3Adj"></param>
+/// <param name="level1Adj"></param>
+void DMRTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
+{
+    m_symLevel3Adj = level3Adj;
+    m_symLevel1Adj = level1Adj;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel3Adj > 128)
+        m_symLevel3Adj = 0;
+    if (m_symLevel3Adj < -128)
+        m_symLevel3Adj = 0;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel1Adj > 128)
+        m_symLevel1Adj = 0;
+    if (m_symLevel1Adj < -128)
+        m_symLevel1Adj = 0;
+}
+
+/// <summary>
 /// Helper to reset data values to defaults for slot 1 FIFO.
 /// </summary>
 void DMRTX::resetFifo1()
@@ -499,16 +528,16 @@ void DMRTX::writeByte(uint8_t c, uint8_t control)
     for (uint8_t i = 0U; i < 4U; i++, c <<= 2) {
         switch (c & MASK) {
         case 0xC0U:
-            inBuffer[i] = DMR_LEVELA; // +3
+            inBuffer[i] = (DMR_LEVELA + m_symLevel3Adj); // +3
             break;
         case 0x80U:
-            inBuffer[i] = DMR_LEVELB; // +1
+            inBuffer[i] = (DMR_LEVELB + m_symLevel1Adj); // +1
             break;
         case 0x00U:
-            inBuffer[i] = DMR_LEVELC; // -1
+            inBuffer[i] = (DMR_LEVELC + -m_symLevel1Adj); // -1
             break;
         default: // 0x40U
-            inBuffer[i] = DMR_LEVELD; // -3
+            inBuffer[i] = (DMR_LEVELD + -m_symLevel3Adj); // -3
             break;
         }
 
@@ -517,16 +546,16 @@ void DMRTX::writeByte(uint8_t c, uint8_t control)
             m_modemState == STATE_DMR_LEVELC || m_modemState == STATE_DMR_LEVELD) {
             switch (m_modemState) {
             case STATE_DMR_LEVELA:
-                inBuffer[i] = DMR_LEVELA; // +3
+                inBuffer[i] = (DMR_LEVELA + m_symLevel3Adj); // +3
                 break;
             case STATE_DMR_LEVELB:
-                inBuffer[i] = DMR_LEVELB; // +1
+                inBuffer[i] = (DMR_LEVELB + m_symLevel1Adj); // +1
                 break;
             case STATE_DMR_LEVELC:
-                inBuffer[i] = DMR_LEVELC; // -1
+                inBuffer[i] = (DMR_LEVELC + -m_symLevel1Adj); // -1
                 break;
             case STATE_DMR_LEVELD:
-                inBuffer[i] = DMR_LEVELD; // -3
+                inBuffer[i] = (DMR_LEVELD + -m_symLevel3Adj); // -3
                 break;
             default:
                 break;

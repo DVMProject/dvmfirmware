@@ -148,6 +148,14 @@ void SerialPort::process()
                         sendNAK(err);
                     break;
 
+                case CMD_SET_SYMLVLADJ:
+                    err = setSymbolLvlAdj(m_buffer + 3U, m_len - 3U);
+                    if (err == RSN_OK)
+                        sendACK();
+                    else
+                        sendNAK(err);
+                    break;
+
                 case CMD_SET_RXLEVEL:
                     err = setRXLevel(m_buffer + 3U, m_len - 3U);
                     if (err == RSN_OK)
@@ -803,7 +811,7 @@ uint8_t SerialPort::modemStateCheck(DVM_STATE state)
 /// <returns></returns>
 uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
 {
-    if (length < 13U)
+    if (length < 14U)
         return RSN_ILLEGAL_LENGTH;
 
     bool rxInvert = (data[0U] & 0x01U) == 0x01U;
@@ -984,6 +992,49 @@ void SerialPort::setMode(DVM_STATE modemState)
     m_modemState = modemState;
 
     io.setMode();
+}
+
+/// <summary>
+///
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
+/// <returns></returns>
+uint8_t SerialPort::setSymbolLvlAdj(const uint8_t* data, uint8_t length)
+{
+    if (length < 4U)
+        return RSN_ILLEGAL_LENGTH;
+
+    int8_t dmrSymLvl3Adj = int8_t(data[0U]) - 128;
+    if (dmrSymLvl3Adj > 128)
+        return RSN_INVALID_REQUEST;
+    if (dmrSymLvl3Adj < -128)
+        return RSN_INVALID_REQUEST;
+
+    int8_t dmrSymLvl1Adj = int8_t(data[1U]) - 128;
+    if (dmrSymLvl1Adj > 128)
+        return RSN_INVALID_REQUEST;
+    if (dmrSymLvl1Adj < -128)
+        return RSN_INVALID_REQUEST;
+
+    int8_t p25SymLvl3Adj = int8_t(data[2U]) - 128;
+    if (p25SymLvl3Adj > 128)
+        return RSN_INVALID_REQUEST;
+    if (p25SymLvl3Adj < -128)
+        return RSN_INVALID_REQUEST;
+
+    int8_t p25SymLvl1Adj = int8_t(data[3U]) - 128;
+    if (p25SymLvl1Adj > 128)
+        return RSN_INVALID_REQUEST;
+    if (p25SymLvl1Adj < -128)
+        return RSN_INVALID_REQUEST;
+
+    p25TX.setSymbolLvlAdj(p25SymLvl3Adj, p25SymLvl1Adj);
+
+    dmrDMOTX.setSymbolLvlAdj(dmrSymLvl3Adj, dmrSymLvl1Adj);
+    dmrTX.setSymbolLvlAdj(dmrSymLvl3Adj, dmrSymLvl1Adj);
+
+    return RSN_OK;
 }
 
 /// <summary>

@@ -67,7 +67,9 @@ DMRDMOTX::DMRDMOTX() :
     m_poBuffer(),
     m_poLen(0U),
     m_poPtr(0U),
-    m_preambleCnt(DMRDMO_FIXED_DELAY)
+    m_preambleCnt(DMRDMO_FIXED_DELAY),
+    m_symLevel3Adj(0U),
+    m_symLevel1Adj(0U)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
@@ -103,6 +105,10 @@ void DMRDMOTX::process()
     }
 
     if (m_poLen > 0U) {
+        if (!m_tx) {
+            io.setTransmit();
+        }
+
         uint16_t space = io.getSpace();
 
         while (space > (4U * DMR_RADIO_SYMBOL_LENGTH)) {
@@ -157,6 +163,29 @@ void DMRDMOTX::setPreambleCount(uint8_t preambleCnt)
 }
 
 /// <summary>
+///
+/// </summary>
+/// <param name="level3Adj"></param>
+/// <param name="level1Adj"></param>
+void DMRDMOTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
+{
+    m_symLevel3Adj = level3Adj;
+    m_symLevel1Adj = level1Adj;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel3Adj > 128)
+        m_symLevel3Adj = 0;
+    if (m_symLevel3Adj < -128)
+        m_symLevel3Adj = 0;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel1Adj > 128)
+        m_symLevel1Adj = 0;
+    if (m_symLevel1Adj < -128)
+        m_symLevel1Adj = 0;
+}
+
+/// <summary>
 /// Helper to get how much space the ring buffer has for samples.
 /// </summary>
 /// <returns></returns>
@@ -182,16 +211,16 @@ void DMRDMOTX::writeByte(uint8_t c)
     for (uint8_t i = 0U; i < 4U; i++, c <<= 2) {
         switch (c & MASK) {
         case 0xC0U:
-            inBuffer[i] = DMR_LEVELA;
+            inBuffer[i] = (DMR_LEVELA + m_symLevel3Adj); // +3
             break;
         case 0x80U:
-            inBuffer[i] = DMR_LEVELB;
+            inBuffer[i] = (DMR_LEVELB + m_symLevel1Adj); // +1
             break;
         case 0x00U:
-            inBuffer[i] = DMR_LEVELC;
+            inBuffer[i] = (DMR_LEVELC + -m_symLevel1Adj); // -1
             break;
-        default:
-            inBuffer[i] = DMR_LEVELD;
+        default: // 0x40U
+            inBuffer[i] = (DMR_LEVELD + -m_symLevel3Adj); // -3
             break;
         }
     }
@@ -201,6 +230,9 @@ void DMRDMOTX::writeByte(uint8_t c)
     io.write(STATE_DMR, outBuffer, DMR_RADIO_SYMBOL_LENGTH * 4U);
 }
 
+/// <summary>
+///
+/// </summary>
 void DMRDMOTX::writeSilence()
 {
     q15_t inBuffer[4U] = { 0x00U, 0x00U, 0x00U, 0x00U };

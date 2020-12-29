@@ -71,6 +71,8 @@ namespace p25
         /// <summary></summary>
         void setPreambleCount(uint8_t preambleCnt);
         /// <summary></summary>
+        void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
+        /// <summary></summary>
         void setCal(bool start);
 
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
@@ -93,6 +95,9 @@ namespace p25
 
         uint16_t m_preambleCnt;
         uint16_t m_tailCnt;
+
+        int8_t m_symLevel3Adj;
+        int8_t m_symLevel1Adj;
 
         /// <summary></summary>
         void createData();

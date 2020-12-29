@@ -63,6 +63,8 @@ namespace dmr
 
         /// <summary></summary>
         void setPreambleCount(uint8_t preambleCnt);
+        /// <summary></summary>
+        void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
 
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
         uint8_t getSpace() const;
@@ -79,6 +81,9 @@ namespace dmr
         uint16_t m_poPtr;
 
         uint32_t m_preambleCnt;
+
+        int8_t m_symLevel3Adj;
+        int8_t m_symLevel1Adj;
 
         /// <summary></summary>
         void writeByte(uint8_t c);

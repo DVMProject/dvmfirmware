@@ -376,6 +376,22 @@ void IO::setMode()
 }
 
 /// <summary>
+/// Helper to assert or deassert radio PTT.
+/// </summary>
+void IO::setTransmit()
+{
+    // Switch the transmitter on if needed
+    if (!m_tx) {
+        m_tx = true;
+        setPTTInt(m_pttInvert ? false : true);
+    }
+    else {
+        m_tx = false;
+        setPTTInt(m_pttInvert ? true : false);
+    }
+}
+
+/// <summary>
 /// Sets various air interface parameters.
 /// </summary>
 /// <param name="rxInvert">Flag indicating the Rx polarity should be inverted.</param>

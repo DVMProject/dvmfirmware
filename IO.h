@@ -64,6 +64,8 @@ public:
     void setADCDetection(bool detect);
     /// <summary>Helper to set the modem air interface state.</summary>
     void setMode();
+    /// <summary>Helper to assert or deassert radio PTT.</summary>
+    void setTransmit();
 
     /// <summary>Hardware interrupt handler.</summary>
     void interrupt();

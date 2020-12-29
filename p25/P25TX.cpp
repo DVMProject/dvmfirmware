@@ -80,7 +80,9 @@ P25TX::P25TX() :
     m_poLen(0U),
     m_poPtr(0U),
     m_preambleCnt(P25_FIXED_DELAY),
-    m_tailCnt(0U)
+    m_tailCnt(0U),
+    m_symLevel3Adj(0U),
+    m_symLevel1Adj(0U)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
     ::memset(m_lpState, 0x00U, 60U * sizeof(q15_t));
@@ -135,6 +137,10 @@ void P25TX::process()
     }
 
     if (m_poLen > 0U) {
+        if (!m_tx) {
+            io.setTransmit();
+        }
+
         uint16_t space = io.getSpace();
 
         while (space > (4U * P25_RADIO_SYMBOL_LENGTH)) {
@@ -188,7 +194,7 @@ void P25TX::clear()
 /// <summary>
 ///
 /// </summary>
-/// <param name="delay"></param>
+/// <param name="preambleCnt"></param>
 void P25TX::setPreambleCount(uint8_t preambleCnt)
 {
     uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
@@ -197,6 +203,29 @@ void P25TX::setPreambleCount(uint8_t preambleCnt)
     // clamp preamble count to 250ms maximum
     if (m_preambleCnt > 1200U)
         m_preambleCnt = 1200U;
+}
+
+/// <summary>
+///
+/// </summary>
+/// <param name="level3Adj"></param>
+/// <param name="level1Adj"></param>
+void P25TX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
+{
+    m_symLevel3Adj = level3Adj;
+    m_symLevel1Adj = level1Adj;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel3Adj > 128)
+        m_symLevel3Adj = 0;
+    if (m_symLevel3Adj < -128)
+        m_symLevel3Adj = 0;
+
+    // clamp level adjustments no more then +/- 128
+    if (m_symLevel1Adj > 128)
+        m_symLevel1Adj = 0;
+    if (m_symLevel1Adj < -128)
+        m_symLevel1Adj = 0;
 }
 
 /// <summary>
@@ -275,16 +304,16 @@ void P25TX::writeByte(uint8_t c)
     for (uint8_t i = 0U; i < 4U; i++, c <<= 2) {
         switch (c & MASK) {
         case 0xC0U:
-            inBuffer[i] = P25_LEVELA; // +3
+            inBuffer[i] = (P25_LEVELA + m_symLevel3Adj); // +3
             break;
         case 0x80U:
-            inBuffer[i] = P25_LEVELB; // +1
+            inBuffer[i] = (P25_LEVELB + m_symLevel1Adj); // +1
             break;
         case 0x00U:
-            inBuffer[i] = P25_LEVELC; // -1
+            inBuffer[i] = (P25_LEVELC + -m_symLevel1Adj); // -1
             break;
         default: // 0x40U
-            inBuffer[i] = P25_LEVELD; // -3
+            inBuffer[i] = (P25_LEVELD + -m_symLevel3Adj); // -3
             break;
         }
 
@@ -293,16 +322,16 @@ void P25TX::writeByte(uint8_t c)
             m_modemState == STATE_P25_LEVELC || m_modemState == STATE_P25_LEVELD) {
             switch (m_modemState) {
             case STATE_P25_LEVELA:
-                inBuffer[i] = P25_LEVELA; // +3
+                inBuffer[i] = (P25_LEVELA + m_symLevel3Adj); // +3
                 break;
             case STATE_P25_LEVELB:
-                inBuffer[i] = P25_LEVELB; // +1
+                inBuffer[i] = (P25_LEVELB + m_symLevel1Adj); // +1
                 break;
             case STATE_P25_LEVELC:
-                inBuffer[i] = P25_LEVELC; // -1
+                inBuffer[i] = (P25_LEVELC + -m_symLevel1Adj); // -1
                 break;
             case STATE_P25_LEVELD:
-                inBuffer[i] = P25_LEVELD; // -3
+                inBuffer[i] = (P25_LEVELD + -m_symLevel3Adj); // -3
                 break;
             default:
                 break;
@@ -317,6 +346,9 @@ void P25TX::writeByte(uint8_t c)
     io.write(STATE_P25, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
 }
 
+/// <summary>
+///
+/// </summary>
 void P25TX::writeSilence()
 {
     q15_t inBuffer[4U] = { 0x00U, 0x00U, 0x00U, 0x00U };

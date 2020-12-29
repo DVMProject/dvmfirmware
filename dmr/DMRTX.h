@@ -85,6 +85,8 @@ namespace dmr
 
         /// <summary></summary>
         void setColorCode(uint8_t colorCode);
+        /// <summary></summary>
+        void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
 
         /// <summary>Helper to reset data values to defaults for slot 1 FIFO.</summary>
         void resetFifo1();
@@ -118,6 +120,9 @@ namespace dmr
 
         uint32_t m_abortCount[2U];
         bool m_abort[2U];
+
+        int8_t m_symLevel3Adj;
+        int8_t m_symLevel1Adj;
 
         /// <summary></summary>
         void createData(uint8_t slotIndex);

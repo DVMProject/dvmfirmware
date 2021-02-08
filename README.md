@@ -8,7 +8,7 @@ This project is a direct fork of the MMDVM (https://github.com/g4klx/MMDVM) proj
 
 Please see the various Makefile's included in the project for more information. This project includes a few Makefiles to target different hardware. (All following information assumes familiarity with the standard Linux make system.)
 
-* Makefile - This makefile is used for building binaries to flash onto a Arduino Due device.
+* Makefile.SAM3X8_DUE - This makefile is used for building binaries to flash onto a Arduino Due device.
 * Makefile.STM32F4 - This makefile is used for targeting a generic STM32F4 device.
 * Makefile.STM32F4_POG - This makefile is used for targeting the STM32F4 device built by RepeaterBuilder (http://www.repeater-builder.com/products/stm32-dvm.html).
 

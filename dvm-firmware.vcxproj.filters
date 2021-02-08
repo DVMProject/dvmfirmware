@@ -102,6 +102,9 @@
     <ClInclude Include="IO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="STM_UART.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CalRSSI.cpp">
@@ -176,10 +179,14 @@
     <ClCompile Include="IO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="STM_UART.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Makefile" />
     <None Include="Makefile.STM32F4" />
     <None Include="Makefile.STM32F4_POG" />
+    <None Include="Makefile" />
+    <None Include="Makefile.SAM3X8_DUE" />
   </ItemGroup>
 </Project>

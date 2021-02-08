@@ -102,8 +102,6 @@ enum DVM_COMMANDS {
     CMD_ACK = 0x70U,
     CMD_NAK = 0x7FU,
 
-    CMD_SERIAL = 0x80U,
-
     CMD_DEBUG1 = 0xF1U,
     CMD_DEBUG2 = 0xF2U,
     CMD_DEBUG3 = 0xF3U,
@@ -132,6 +130,8 @@ enum CMD_REASON_CODE {
 };
 
 const uint8_t DVM_FRAME_START = 0xFEU;
+
+#define SERIAL_SPEED 115200
 
 // ---------------------------------------------------------------------------
 //  Class Declaration

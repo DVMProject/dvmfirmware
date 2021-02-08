@@ -38,6 +38,13 @@
 // ---------------------------------------------------------------------------
 
 #if defined(STM32F4XX)
+/**
+ * The STM32 factory-programmed UUID memory.
+ * Three values of 32 bits each starting at this address
+ * Use like this: STM32_UUID[0], STM32_UUID[1], STM32_UUID[2]
+ */
+#define STM32_UUID ((uint32_t *)0x1FFF7A10)
+
 #if defined(STM32F4_PI)
 /*
     Pin definitions for STM32F4 Pi Board:
@@ -216,6 +223,24 @@ void IO::interrupt()
     m_rssiBuffer.put(rawRSSI);
 
     m_watchdog++;
+}
+
+/// <summary>
+/// Gets the CPU type the firmware is running on.
+/// </summary>
+/// <returns></returns>
+uint8_t IO::getCPU() const
+{
+    return CPU_TYPE_STM32;
+}
+
+/// <summary>
+/// Gets the unique identifier for the air interface.
+/// </summary>
+/// <returns></returns>
+void IO::getUDID(uint8_t* buffer)
+{
+    ::memcpy(buffer, (void*)STM32_UUID, 12U);
 }
 
 // ---------------------------------------------------------------------------

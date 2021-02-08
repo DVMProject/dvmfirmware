@@ -92,6 +92,12 @@ public:
     /// <summary></summary>
     uint32_t getWatchdog();
 
+    /// <summary>Gets the CPU type the firmware is running on.</summary>
+    uint8_t getCPU() const;
+
+    /// <summary>Gets the unique identifier for the air interface.</summary>
+    void getUDID(uint8_t* buffer);
+
     /// <summary></summary>
     void selfTest();
 

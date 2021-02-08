@@ -64,7 +64,7 @@
 #define concat(a, b, c) a " (build " b " " c ")"
 const char HARDWARE[] = concat(DESCRIPTION, __TIME__, __DATE__);
 
-const uint8_t PROTOCOL_VERSION = 1U;
+const uint8_t PROTOCOL_VERSION = 2U;
 
 // ---------------------------------------------------------------------------
 //  Public Class Members
@@ -87,10 +87,7 @@ SerialPort::SerialPort() :
 /// </summary>
 void SerialPort::start()
 {
-    beginInt(1U, 115200);
-#if defined(SERIAL_REPEATER)
-    beginInt(3U, 9600);
-#endif
+    beginInt(1U, SERIAL_SPEED);
 }
 
 /// <summary>
@@ -294,16 +291,6 @@ void SerialPort::process()
                     }
                     break;
 
-
-#if defined(SERIAL_REPEATER)
-                /** Serial Data Repeater */
-                case CMD_SERIAL:
-                    {
-                        for (uint8_t i = 3U; i < m_len; i++)
-                            m_repeat.put(m_buffer[i]);
-                    }
-                    break;
-#endif
                 default:
                     // Handle this, send a NAK back
                     sendNAK(RSN_NAK);
@@ -320,24 +307,6 @@ void SerialPort::process()
         m_ptr = 0U;
         m_len = 0U;
     }
-#if defined(SERIAL_REPEATER)
-    // Write any outgoing serial data
-    uint16_t space = m_repeat.getData();
-    if (space > 0U) {
-        int avail = availableForWriteInt(3U);
-        if (avail < space)
-            space = avail;
-
-        for (uint16_t i = 0U; i < space; i++) {
-            uint8_t c = m_repeat.get();
-            writeInt(3U, &c, 1U);
-        }
-    }
-
-    // Read any incoming serial data
-    while (availableInt(3U))
-        readInt(3U);
-#endif
 }
 
 /// <summary>
@@ -757,7 +726,7 @@ void SerialPort::getStatus()
 /// </summary>
 void SerialPort::getVersion()
 {
-    uint8_t reply[100U];
+    uint8_t reply[200U];
 
     reply[0U] = DVM_FRAME_START;
     reply[1U] = 0U;
@@ -765,7 +734,13 @@ void SerialPort::getVersion()
 
     reply[3U] = PROTOCOL_VERSION;
 
-    uint8_t count = 4U;
+    reply[4U] = io.getCPU();
+
+    // Reserve 16 bytes for the UDID
+    ::memcpy(reply + 5U, 0x00U, 16U);
+    io.getUDID(reply + 5U);
+
+    uint8_t count = 21U;
     for (uint8_t i = 0U; HARDWARE[i] != 0x00U; i++, count++)
         reply[count] = HARDWARE[i];
 

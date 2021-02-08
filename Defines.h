@@ -126,15 +126,11 @@ typedef unsigned long long  ulong64_t;
 // Pass RSSI information to the host
 // #define SEND_RSSI_DATA
 
-// For the Arduino Due Layout
-// #define ARDUINO_DUE
-
-// For the ZUM Radio STM32F446
-// #define STM32F4XX
-// #define STM32F4_PI
-// #define STM32F4_POG
-
 const uint8_t BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02U, 0x01U };
+
+#define CPU_TYPE_ARDUINO_DUE 0x00U
+#define CPU_TYPE_NXP 0x01U
+#define CPU_TYPE_STM32 0x02U
 
 // ---------------------------------------------------------------------------
 //  Macros

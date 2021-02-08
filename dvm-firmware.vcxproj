@@ -100,6 +100,7 @@
     <ClInclude Include="SampleBuffer.h" />
     <ClInclude Include="SerialPort.h" />
     <ClInclude Include="SerialBuffer.h" />
+    <ClInclude Include="STM_UART.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -126,10 +127,12 @@
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="SerialBuffer.cpp" />
     <ClCompile Include="SerialSTM.cpp" />
+    <ClCompile Include="STM_UART.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Makefile" />
+    <None Include="Makefile.SAM3X8_DUE" />
     <None Include="Makefile.STM32F4" />
     <None Include="Makefile.STM32F4_POG" />
   </ItemGroup>

@@ -36,7 +36,7 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" -mcpu={build.mcu}
   2. Checkout ```https://github.com/juribeparada/STM32F4XX_Lib``` to /opt/tools:
     ```git clone https://github.com/juribeparada/STM32F4XX_Lib```
 
-Use the ```make``` command to build the firmware (by default this will build Arduino Due compatible firmware use make's -F option to specify one of the STM32F4 makefiles to compile for those platforms).
+Use the ```make``` command to build the firmware, choosing the appropriate makefile with the -F switch.
 
 ## License
 

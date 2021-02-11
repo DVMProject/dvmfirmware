@@ -79,7 +79,7 @@ namespace p25
         uint8_t getSpace() const;
 
     private:
-        SerialBuffer m_buffer;
+        SerialBuffer m_fifo;
 
         P25TXSTATE m_state;
 

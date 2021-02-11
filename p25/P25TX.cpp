@@ -70,7 +70,7 @@ const q15_t P25_LEVELD = -1260;
 /// Initializes a new instance of the P25TX class.
 /// </summary>
 P25TX::P25TX() :
-    m_buffer(P25_TX_BUFFER_LEN),
+    m_fifo(P25_TX_BUFFER_LEN),
     m_state(P25TXSTATE_NORMAL),
     m_modFilter(),
     m_lpFilter(),
@@ -102,7 +102,7 @@ P25TX::P25TX() :
 /// </summary>
 void P25TX::process()
 {
-    if (m_buffer.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
+    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
         // transmit silence until the hang timer has expired
         uint16_t space = io.getSpace();
 
@@ -114,13 +114,13 @@ void P25TX::process()
 
             if (m_tailCnt == 0U)
                 return;
-            if (m_buffer.getData() > 0U) {
+            if (m_fifo.getData() > 0U) {
                 m_tailCnt = 0U;
                 return;
             }
         }
 
-        if (m_buffer.getData() == 0U && m_poLen == 0U)
+        if (m_fifo.getData() == 0U && m_poLen == 0U)
             return;
     }
 
@@ -129,11 +129,13 @@ void P25TX::process()
             createCal();
         }
         else {
-            if (m_buffer.getData() == 0U && m_poLen == 0U)
+            if (m_fifo.getData() == 0U)
                 return;
 
             createData();
         }
+
+        DEBUG2("P25TX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {
@@ -145,6 +147,7 @@ void P25TX::process()
 
         while (space > (4U * P25_RADIO_SYMBOL_LENGTH)) {
             uint8_t c = m_poBuffer[m_poPtr++];
+
             writeByte(c);
 
             space -= 4U * P25_RADIO_SYMBOL_LENGTH;
@@ -170,15 +173,16 @@ uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
     if (length < (P25_TDU_FRAME_LENGTH_BYTES + 1U))
         return RSN_ILLEGAL_LENGTH;
 
-    uint16_t space = m_buffer.getSpace();
+    uint16_t space = m_fifo.getSpace();
+    DEBUG3("P25TX: writeData(): dataLength/fifoLength", length, space);
     if (space < length) {
-        m_buffer.reset();
+        m_fifo.reset();
         return RSN_RINGBUFF_FULL;
     }
 
-    m_buffer.put(length - 1U);
+    m_fifo.put(length - 1U);
     for (uint8_t i = 0U; i < (length - 1U); i++)
-        m_buffer.put(data[i + 1U]);
+        m_fifo.put(data[i + 1U]);
 
     return RSN_OK;
 }
@@ -188,7 +192,7 @@ uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
 /// </summary>
 void P25TX::clear()
 {
-    m_buffer.reset();
+    m_fifo.reset();
 }
 
 /// <summary>
@@ -243,7 +247,7 @@ void P25TX::setCal(bool start)
 /// <returns></returns>
 uint8_t P25TX::getSpace() const
 {
-    return m_buffer.getSpace() / P25_LDU_FRAME_LENGTH_BYTES;
+    return m_fifo.getSpace() / P25_LDU_FRAME_LENGTH_BYTES;
 }
 
 // ---------------------------------------------------------------------------
@@ -259,10 +263,10 @@ void P25TX::createData()
             m_poBuffer[m_poLen++] = P25_START_SYNC;
     }
     else {
-        uint8_t length = m_buffer.get();
+        uint8_t length = m_fifo.get();
+        DEBUG3("P25TX: createData(): dataLength/fifoSpace", length, m_fifo.getSpace());
         for (uint8_t i = 0U; i < length; i++) {
-            uint8_t c = m_buffer.get();
-            m_poBuffer[m_poLen++] = c;
+            m_poBuffer[m_poLen++] = m_fifo.get();
         }
     }
 

@@ -175,7 +175,7 @@ void SerialPort::process()
                         sendACK();
                     }
                     else {
-                        DEBUG2("Received invalid calibration data", err);
+                        DEBUG2("SerialPort: process(): received invalid calibration data", err);
                         sendNAK(err);
                     }
                     break;
@@ -186,7 +186,7 @@ void SerialPort::process()
                     if (m_modemState == STATE_IDLE)
                         err = cwIdTX.write(m_buffer + 3U, m_len - 3U);
                     if (err != RSN_OK) {
-                        DEBUG2("Invalid CW Id data", err);
+                        DEBUG2("SerialPort: process(): invalid CW Id data", err);
                         sendNAK(err);
                     }
                     break;
@@ -204,7 +204,7 @@ void SerialPort::process()
                             setMode(STATE_DMR);
                     }
                     else {
-                        DEBUG2("Received invalid DMR data", err);
+                        DEBUG2("SerialPort: process() received invalid DMR data", err);
                         sendNAK(err);
                     }
                     break;
@@ -223,7 +223,7 @@ void SerialPort::process()
                             setMode(STATE_DMR);
                     }
                     else {
-                        DEBUG2("Received invalid DMR data", err);
+                        DEBUG2("SerialPort: process(): received invalid DMR data", err);
                         sendNAK(err);
                     }
                     break;
@@ -245,7 +245,7 @@ void SerialPort::process()
                         }
                     }
                     if (err != RSN_OK) {
-                        DEBUG3("Received invalid DMR start", err, m_len);
+                        DEBUG3("SerialPort: process(): received invalid DMR start", err, m_len);
                         sendNAK(err);
                     }
                     break;
@@ -254,7 +254,7 @@ void SerialPort::process()
                     if (m_dmrEnable)
                         err = dmrTX.writeShortLC(m_buffer + 3U, m_len - 3U);
                     if (err != RSN_OK) {
-                        DEBUG2("Received invalid DMR Short LC", err);
+                        DEBUG2("SerialPort: process(): received invalid DMR Short LC", err);
                         sendNAK(err);
                     }
                     break;
@@ -263,7 +263,7 @@ void SerialPort::process()
                     if (m_dmrEnable)
                         err = dmrTX.writeAbort(m_buffer + 3U, m_len - 3U);
                     if (err != RSN_OK) {
-                        DEBUG2("Received invalid DMR Abort", err);
+                        DEBUG2("SerialPort: process(): received invalid DMR Abort", err);
                         sendNAK(err);
                     }
                     break;
@@ -279,7 +279,7 @@ void SerialPort::process()
                             setMode(STATE_P25);
                     }
                     else {
-                        DEBUG2("Received invalid P25 data", err);
+                        DEBUG2("SerialPort: process(): Received invalid P25 data", err);
                         sendNAK(err);
                     }
                     break;
@@ -891,19 +891,19 @@ void SerialPort::setMode(DVM_STATE modemState)
 {
     switch (modemState) {
     case STATE_DMR:
-        DEBUG1("Mode set to DMR");
+        DEBUG1("SerialPort: setMode(): mode set to DMR");
         p25RX.reset();
         cwIdTX.reset();
         break;
     case STATE_P25:
-        DEBUG1("Mode set to P25");
+        DEBUG1("SerialPort: setMode(): mode set to P25");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
         cwIdTX.reset();
         break;
     case STATE_DMR_CAL:
-        DEBUG1("Mode set to DMR Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to DMR Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -911,7 +911,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_P25_CAL:
-        DEBUG1("Mode set to P25 Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to P25 Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -919,7 +919,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_RSSI_CAL:
-        DEBUG1("Mode set to RSSI Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to RSSI Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -927,7 +927,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_LF_CAL:
-        DEBUG1("Mode set to 80Hz Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to 80Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -935,7 +935,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_DMR_CAL_1K:
-        DEBUG1("Mode set to DMR BS 1031Hz Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to DMR BS 1031Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -943,7 +943,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_DMR_DMO_CAL_1K:
-        DEBUG1("Mode set to DMR MS 1031Hz Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to DMR MS 1031Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -951,7 +951,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     case STATE_P25_CAL_1K:
-        DEBUG1("Mode set to P25 1011Hz Calibrate");
+        DEBUG1("SerialPort: setMode(): mode set to P25 1011Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();
@@ -959,7 +959,7 @@ void SerialPort::setMode(DVM_STATE modemState)
         cwIdTX.reset();
         break;
     default:
-        DEBUG1("Mode set to Idle");
+        DEBUG1("SerialPort: setMode(): mode set to Idle");
         // STATE_IDLE
         break;
     }

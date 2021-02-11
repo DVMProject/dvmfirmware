@@ -172,7 +172,7 @@ void DMRIdleRX::processSample(q15_t sample)
                 errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_DATA_SYNC_BYTES[i]);
 
             if (errs <= MAX_SYNC_BYTES_ERRS) {
-                DEBUG3("DMRIdleRX: data sync found centre/threshold", centre, threshold);
+                DEBUG3("DMRIdleRX: processSample(): data sync found centre/threshold", centre, threshold);
                 m_maxCorr = corr;
                 m_centre = centre;
                 m_threshold = threshold;

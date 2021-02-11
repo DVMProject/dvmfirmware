@@ -185,7 +185,7 @@ uint8_t CWIdTX::write(const uint8_t* data, uint8_t length)
 
     m_poLen += 5U;
 
-    DEBUG2("Message created with length", m_poLen);
+    DEBUG2("CWIdTx: write(): message created with length", m_poLen);
 
     return RSN_OK;
 }

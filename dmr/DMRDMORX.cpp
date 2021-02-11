@@ -189,7 +189,7 @@ bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
 
                 switch (dataType) {
                 case DT_DATA_HEADER:
-                    DEBUG4("DMRDMORX: data header found pos/centre/threshold", m_syncPtr, centre, threshold);
+                    DEBUG4("DMRDMORX: processSample(): data header found pos/centre/threshold", m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     m_state = DMORXS_DATA;
                     m_type = 0x00U;
@@ -198,32 +198,32 @@ bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
                 case DT_RATE_34_DATA:
                 case DT_RATE_1_DATA:
                     if (m_state == DMORXS_DATA) {
-                        DEBUG4("DMRDMORX: data payload found pos/centre/threshold", m_syncPtr, centre, threshold);
+                        DEBUG4("DMRDMORX: processSample(): data payload found pos/centre/threshold", m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                         m_type = dataType;
                     }
                     break;
                 case DT_VOICE_LC_HEADER:
-                    DEBUG4("DMRDMORX: voice header found pos/centre/threshold", m_syncPtr, centre, threshold);
+                    DEBUG4("DMRDMORX: processSample(): voice header found pos/centre/threshold", m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     m_state = DMORXS_VOICE;
                     break;
                 case DT_VOICE_PI_HEADER:
                     if (m_state == DMORXS_VOICE) {
-                        DEBUG4("DMRDMORX: voice pi header found pos/centre/threshold", m_syncPtr, centre, threshold);
+                        DEBUG4("DMRDMORX: processSample(): voice pi header found pos/centre/threshold", m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                     }
                     m_state = DMORXS_VOICE;
                     break;
                 case DT_TERMINATOR_WITH_LC:
                     if (m_state == DMORXS_VOICE) {
-                        DEBUG4("DMRDMORX: voice terminator found pos/centre/threshold", m_syncPtr, centre, threshold);
+                        DEBUG4("DMRDMORX: processSample(): voice terminator found pos/centre/threshold", m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                         reset();
                     }
                     break;
                 default:    // DT_CSBK
-                    DEBUG4("DMRDMORX: csbk found pos/centre/threshold", m_syncPtr, centre, threshold);
+                    DEBUG4("DMRDMORX: processSample(): csbk found pos/centre/threshold", m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     reset();
                     break;
@@ -232,7 +232,7 @@ bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
         }
         else if (m_control == CONTROL_VOICE) {
             // Voice sync
-            DEBUG4("DMRDMORX: voice sync found pos/centre/threshold", m_syncPtr, centre, threshold);
+            DEBUG4("DMRDMORX: processSample(): voice sync found pos/centre/threshold", m_syncPtr, centre, threshold);
             writeRSSIData(frame);
             m_state = DMORXS_VOICE;
             m_syncCount = 0U;

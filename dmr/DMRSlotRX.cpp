@@ -354,6 +354,12 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_DATA_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
+                    DEBUG2("DMRSlotRX: correlateSync(): sync errs", errs);
+
+                    DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                    DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                    DEBUG2("DMRSlotRX: correlateSync(): sync [b6]", sync[6]);
+
                     if (first) {
                         m_threshold[0U] = m_threshold[1U] = m_threshold[2U] = m_threshold[3U] = threshold;
                         m_centre[0U] = m_centre[1U] = m_centre[2U] = m_centre[3U] = centre;
@@ -383,6 +389,12 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_VOICE_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
+                    DEBUG2("DMRSlotRX: correlateSync(): sync errs", errs);
+
+                    DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                    DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                    DEBUG2("DMRSlotRX: correlateSync(): sync [b6]", sync[6]);
+
                     if (first) {
                         m_threshold[0U] = m_threshold[1U] = m_threshold[2U] = m_threshold[3U] = threshold;
                         m_centre[0U] = m_centre[1U] = m_centre[2U] = m_centre[3U] = centre;

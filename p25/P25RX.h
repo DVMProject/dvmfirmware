@@ -42,9 +42,9 @@ namespace p25
 
     enum P25RX_STATE {
         P25RXS_NONE,
-        P25RXS_BURST,
-        P25RXS_LDU,
-        P25RXS_PDU
+        P25RXS_SYNC,
+        P25RXS_VOICE,
+        P25RXS_DATA
     };
 
     // ---------------------------------------------------------------------------
@@ -78,8 +78,9 @@ namespace p25
         uint16_t m_minSyncPtr;
         uint16_t m_maxSyncPtr;
 
-        uint16_t m_burstStartPtr;
-        uint16_t m_burstSyncPtr;
+        uint16_t m_startPtr;
+        uint16_t m_endPtr;
+        uint16_t m_syncPtr;
 
         uint16_t m_lduStartPtr;
         uint16_t m_lduEndPtr;
@@ -91,10 +92,10 @@ namespace p25
         uint16_t m_lostCount;
         uint8_t m_countdown;
 
-        q15_t m_centre[16U];
-        q15_t m_centreVal;
-        q15_t m_threshold[16U];
-        q15_t m_thresholdVal;
+        q15_t m_centres[16U];
+        q15_t m_centre;
+        q15_t m_thresholds[16U];
+        q15_t m_threshold;
 
         uint32_t m_rssiAccum;
         uint16_t m_rssiCount;
@@ -103,15 +104,12 @@ namespace p25
 
         uint16_t m_nac;
 
-        /// <summary>Helper to perform initial sample processing.</summary>
-        void processNone(q15_t sample);
-
-        /// <summary>Helper to process "burst" P25 samples.</summary>
-        void processBurst(q15_t sample);
+        /// <summary>Helper to process P25 samples.</summary>
+        void processSample(q15_t sample);
         /// <summary>Helper to process LDU P25 samples.</summary>
-        void processLdu(q15_t sample);
+        void processVoice(q15_t sample);
         /// <summary>Helper to process PDU P25 samples.</summary>
-        void processPdu(q15_t sample);
+        void processData(q15_t sample);
 
         /// <summary>Frame synchronization correlator.</summary>
         bool correlateSync();

@@ -40,7 +40,11 @@ using namespace p25;
 
 const q15_t SCALING_FACTOR = 18750;      // Q15(0.57)
 
-const uint8_t CORRELATION_COUNTDOWN = 4U;
+#if defined(__SAM3X8E__) && defined(ARDUINO_SAM_DUE)
+const uint8_t CORRELATION_COUNTDOWN = 7U;
+#else
+const uint8_t CORRELATION_COUNTDOWN = 5U;
+#endif
 
 const uint8_t MAX_SYNC_BYTE_START_ERRS = 2U;
 const uint8_t MAX_SYNC_BYTE_RUN_ERRS = 4U;

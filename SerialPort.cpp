@@ -831,6 +831,10 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     int16_t txDCOffset = int16_t(data[13U]) - 128;
     int16_t rxDCOffset = int16_t(data[14U]) - 128;
 
+    uint8_t p25CorrCount = data[11U];
+    if (p25CorrCount > 255U)
+        return RSN_INVALID_P25_CORR_COUNT;
+
     m_modemState = modemState;
 
     m_dcBlockerEnable = dcBlockerEnable;
@@ -844,6 +848,7 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     dmrDMOTX.setPreambleCount(fdmaPreamble);
 
     p25RX.setNAC(nac);
+    p25RX.setCorrCount(p25CorrCount);
 
     dmrTX.setColorCode(colorCode);
     dmrRX.setColorCode(colorCode);

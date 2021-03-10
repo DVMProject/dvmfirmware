@@ -65,10 +65,10 @@ namespace p25
 
         /// <summary></summary>
         void setNAC(uint16_t nac);
+        /// <summary></summary>
+        void setCorrCount(uint8_t count);
 
     private:
-        P25RX_STATE m_state;
-
         uint32_t m_bitBuffer[P25_RADIO_SYMBOL_LENGTH];
         q15_t m_buffer[P25_LDU_FRAME_LENGTH_SAMPLES];
 
@@ -82,27 +82,26 @@ namespace p25
         uint16_t m_endPtr;
         uint16_t m_syncPtr;
 
-        uint16_t m_lduStartPtr;
-        uint16_t m_lduEndPtr;
-        uint16_t m_lduSyncPtr;
-
+        q31_t m_maxCorr;
+        q15_t m_centre[16U];
+        q15_t m_centreVal;
+        q15_t m_threshold[16U];
+        q15_t m_thresholdVal;
         uint8_t m_averagePtr;
 
-        q31_t m_maxCorr;
         uint16_t m_lostCount;
         uint8_t m_countdown;
 
-        q15_t m_centres[16U];
-        q15_t m_centre;
-        q15_t m_thresholds[16U];
-        q15_t m_threshold;
+        uint16_t m_nac;
 
-        uint32_t m_rssiAccum;
-        uint16_t m_rssiCount;
+        uint8_t m_corrCountdown;
+
+        P25RX_STATE m_state;
 
         uint8_t m_duid;
 
-        uint16_t m_nac;
+        uint32_t m_rssiAccum;
+        uint16_t m_rssiCount;
 
         /// <summary>Helper to process P25 samples.</summary>
         void processSample(q15_t sample);

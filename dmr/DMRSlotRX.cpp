@@ -231,6 +231,7 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
             if (m_state != DMRRXS_NONE) {
                 m_syncCount++;
                 if (m_syncCount >= MAX_SYNC_LOST_FRAMES) {
+                    DEBUG1("DMRSlotRX: processSample(): sync timeout, lost lock");
                     serial.writeDMRLost(m_slot);
                     m_state = DMRRXS_NONE;
                     m_endPtr = NOENDPTR;

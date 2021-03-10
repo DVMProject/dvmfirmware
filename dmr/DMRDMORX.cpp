@@ -241,6 +241,7 @@ bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
             if (m_state != DMORXS_NONE) {
                 m_syncCount++;
                 if (m_syncCount >= MAX_SYNC_LOST_FRAMES) {
+                    DEBUG1("DMRDMORX: processSample(): sync timeout, lost lock");
                     serial.writeDMRLost(true);
                     reset();
                 }

@@ -252,7 +252,7 @@ void P25RX::processSample(q15_t sample)
                     uint8_t frame[P25_HDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_HDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
-                    frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
+                    frame[0U] = 0x01U;
                     serial.writeP25Data(frame, P25_HDU_FRAME_LENGTH_BYTES + 1U);
                     reset();
                 }
@@ -266,7 +266,7 @@ void P25RX::processSample(q15_t sample)
                     uint8_t frame[P25_TDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
-                    frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
+                    frame[0U] = 0x01U;
                     serial.writeP25Data(frame, P25_TDU_FRAME_LENGTH_BYTES + 1U);
                     reset();
                 }
@@ -283,7 +283,7 @@ void P25RX::processSample(q15_t sample)
                     uint8_t frame[P25_TSDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TSDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
-                    frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
+                    frame[0U] = 0x01U;
                     serial.writeP25Data(frame, P25_TSDU_FRAME_LENGTH_BYTES + 1U);
                     reset();
                 }
@@ -303,7 +303,7 @@ void P25RX::processSample(q15_t sample)
                     uint8_t frame[P25_TDULC_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TDULC_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
 
-                    frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;
+                    frame[0U] = 0x01U;
                     serial.writeP25Data(frame, P25_TDULC_FRAME_LENGTH_BYTES + 1U);
                     reset();
                 }

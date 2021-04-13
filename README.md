@@ -11,6 +11,7 @@ Please see the various Makefile's included in the project for more information. 
 * Makefile.SAM3X8_DUE - This makefile is used for building binaries to flash onto a Arduino Due device.
 * Makefile.STM32F4 - This makefile is used for targeting a generic STM32F4 device.
 * Makefile.STM32F4_POG - This makefile is used for targeting the STM32F4 device built by RepeaterBuilder (http://www.repeater-builder.com/products/stm32-dvm.html).
+* Makefile.STM32F4_EDA - This makefile is used for targeting the "v3" STM32F4 405 or 446 device built by WA0EDA for the MTR2000 and MASTR 3.
 
 All of these firmwares should be compiled on Linux, any other systems YMMV. 
 

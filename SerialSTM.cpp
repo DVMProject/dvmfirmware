@@ -54,7 +54,7 @@ extern "C" {
     void UART5_IRQHandler();
 }
 
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
 // ---------------------------------------------------------------------------
 //  UART1
 // ---------------------------------------------------------------------------
@@ -198,7 +198,7 @@ void SerialPort::beginInt(uint8_t n, int speed)
 {
     switch (n) {
     case 1U:
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
         InitUSART1(speed);
 #endif
         break;
@@ -219,7 +219,7 @@ int SerialPort::availableInt(uint8_t n)
 {
     switch (n) {
     case 1U:
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
         return m_USART1.available();
 #endif
     case 3U:
@@ -238,7 +238,7 @@ int SerialPort::availableForWriteInt(uint8_t n)
 {
     switch (n) {
     case 1U:
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
         return m_USART1.availableForWrite();
 #endif
     case 3U:
@@ -257,7 +257,7 @@ uint8_t SerialPort::readInt(uint8_t n)
 {
     switch (n) {
     case 1U:
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
         return m_USART1.read();
 #endif
     case 3U:
@@ -278,7 +278,7 @@ void SerialPort::writeInt(uint8_t n, const uint8_t* data, uint16_t length, bool 
 {
     switch (n) {
     case 1U:
-#if defined(STM32F4_PI) || defined(STM32F4_POG)
+#if defined(STM32F4_PI) || defined(STM32F4_POG) || defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
         m_USART1.write(data, length);
         if (flush)
             m_USART1.flush();

@@ -501,7 +501,7 @@ void DMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
 
     bool h0 = at ^ tc ^ ls1;
     bool h1 = tc ^ ls1 ^ ls0;
-    bool h2 = at ^ tc       ^ ls0;
+    bool h2 = at ^ tc ^ ls0;
 
     m_poBuffer[0U] |= at ? 0x80U : 0x00U;
     m_poBuffer[0U] |= tc ? 0x08U : 0x00U;

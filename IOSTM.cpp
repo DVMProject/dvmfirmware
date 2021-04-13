@@ -163,8 +163,68 @@
 #define PIN_TX            GPIO_Pin_4
 #define PIN_TX_CH         DAC_Channel_1
 
+#elif defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
+/*
+    Pin definitions for STM32F4 STM32-DVM-MTR2K & STM32-DVM-MASTR3:
+
+    PTT      PB12   output
+    COSLED   PB4    output
+    LED      PB3    output
+    COS      PB13   input
+
+    DMR      PB5    output
+    P25      PB8    output
+
+    RX       PB0    analog input
+    RSSI     PB1    analog input
+    TX       PA4    analog output
+
+    EXT_CLK  PA15   input
+*/
+
+#define PIN_COS           GPIO_Pin_13
+#define PORT_COS          GPIOB
+#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
+
+#define PIN_PTT           GPIO_Pin_12
+#define PORT_PTT          GPIOB
+#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+
+#define PIN_COSLED        GPIO_Pin_4
+#define PORT_COSLED       GPIOB
+#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+
+#define PIN_LED           GPIO_Pin_3
+#define PORT_LED          GPIOB
+#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+
+#define PIN_P25           GPIO_Pin_8
+#define PORT_P25          GPIOB
+#define RCC_Per_P25       RCC_AHB1Periph_GPIOB
+
+#define PIN_DMR           GPIO_Pin_5
+#define PORT_DMR          GPIOB
+#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+
+#define PIN_EXT_CLK       GPIO_Pin_15
+#define SRC_EXT_CLK       GPIO_PinSource15
+#define PORT_EXT_CLK      GPIOA
+
+#define PIN_RX            GPIO_Pin_0
+#define PIN_RX_CH         ADC_Channel_8
+#define PORT_RX           GPIOB
+#define RCC_Per_RX        RCC_AHB1Periph_GPIOB
+
+#define PIN_RSSI          GPIO_Pin_1
+#define PIN_RSSI_CH       ADC_Channel_9
+#define PORT_RSSI         GPIOB
+#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOB
+
+#define PIN_TX            GPIO_Pin_4
+#define PIN_TX_CH         DAC_Channel_1
+
 #else
-#error "Only STM32F4_PI or STM32F4_POG is supported, others need to be defined!"
+#error "Only STM32F4_PI, STM32F4_POG, STM32F4_EDA_405, or STM32F4_EDA_446 is supported, others need to be defined!"
 #endif
 
 const uint16_t DC_OFFSET = 2048U;

@@ -2,7 +2,7 @@
 F4_LIB_PATH=/opt/tools/STM32F4XX_Lib
 
 # MCU external clock frequency (Hz)
-OSC=12000000
+OSC=8000000
 
 # Directory Structure
 BINDIR=.

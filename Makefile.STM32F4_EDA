@@ -13,18 +13,18 @@ BINELF_EDA=dvm-firmware_eda.elf
 BINBIN_EDA=dvm-firmware_eda.bin
 
 # Header directories
-INC_EDA=. $(F4_LIB_PATH)/CMSIS/Include/ $(F4_LIB_PATH)/Device/ $(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/include/
-INCLUDES_EDA=$(INC_EDA:%=-I%)
+INC_F4=. $(F4_LIB_PATH)/CMSIS/Include/ $(F4_LIB_PATH)/Device/ $(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/include/
+INCLUDES_F4=$(INC_F4:%=-I%)
 
 # CMSIS libraries
-INCLUDES_LIBS_EDA=$(F4_LIB_PATH)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
+INCLUDES_LIBS_F4=$(F4_LIB_PATH)/CMSIS/Lib/GCC/libarm_cortexM4lf_math.a
 
-# STM32EDA Standard Peripheral Libraries source path
-STD_LIB_EDA=$(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/source
+# STM32F4 Standard Peripheral Libraries source path
+STD_LIB_F4=$(F4_LIB_PATH)/STM32F4xx_StdPeriph_Driver/source
 
-# STM32EDA system source path
-SYS_DIR_EDA=$(F4_LIB_PATH)/Device
-STARTUP_DIR_EDA=$(F4_LIB_PATH)/Device/startup
+# STM32F4 system source path
+SYS_DIR_F4=$(F4_LIB_PATH)/Device
+STARTUP_DIR_F4=$(F4_LIB_PATH)/Device/startup
 
 # GNU ARM Embedded Toolchain
 CC=arm-none-eabi-gcc
@@ -40,13 +40,13 @@ A2L=arm-none-eabi-addr2line
 
 # Build object lists
 CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp)
-CSRC_STD_EDA=$(wildcard $(STD_LIB_EDA)/*.c)
-SYS_EDA=$(wildcard $(SYS_DIR_EDA)/*.c)
-STARTUP_EDA=$(wildcard $(STARTUP_DIR_EDA)/*.c)
-OBJ_EDA=$(CXXSRC:./%.cpp=$(OBJDIR_EDA)/%.o) $(CSRC_STD_EDA:$(STD_LIB_EDA)/%.c=$(OBJDIR_EDA)/%.o) $(SYS_EDA:$(SYS_DIR_EDA)/%.c=$(OBJDIR_EDA)/%.o) $(STARTUP_EDA:$(STARTUP_DIR_EDA)/%.c=$(OBJDIR_EDA)/%.o)
+CSRC_STD_F4=$(wildcard $(STD_LIB_F4)/*.c)
+SYS_F4=$(wildcard $(SYS_DIR_F4)/*.c)
+STARTUP_F4=$(wildcard $(STARTUP_DIR_F4)/*.c)
+OBJ_F4=$(CXXSRC:./%.cpp=$(OBJDIR_EDA)/%.o) $(CSRC_STD_F4:$(STD_LIB_F4)/%.c=$(OBJDIR_EDA)/%.o) $(SYS_F4:$(SYS_DIR_F4)/%.c=$(OBJDIR_EDA)/%.o) $(STARTUP_F4:$(STARTUP_DIR_F4)/%.c=$(OBJDIR_EDA)/%.o)
 
 # MCU flags
-MCFLAGS_EDA=-mcpu=cortex-m4 -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork
+MCFLAGS_F4=-mcpu=cortex-m4 -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork
 
 # Compile flags
 # WA0EDA F405 MTR2K, MASTR3 board:
@@ -55,11 +55,11 @@ DEFS_EDA_405=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F40_41xxx -DSTM32F4_EDA_4
 DEFS_EDA_446=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_EDA_446 -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE
 
 # Build compiler flags
-CFLAGS_EDA=-c $(MCFLAGS_EDA) $(INCLUDES_EDA)
-CXXFLAGS_EDA=-c $(MCFLAGS_EDA) $(INCLUDES_EDA)
+CFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
+CXXFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
 
 # Linker flags
-LDFLAGS_EDA =-T stm32f4xx_link.ld $(MCFLAGS_EDA) --specs=nosys.specs $(INCLUDES_LIBS_EDA)
+LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
 
 # Common flags
 CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
@@ -67,20 +67,20 @@ CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -f
 LDFLAGS=-Os --specs=nano.specs
 
 # Build Rules
-.PHONY: all eda405 clean
+.PHONY: all eda405 eda446 clean
 
 all: eda405
 
-eda405: CFLAGS+=$(CFLAGS_EDA) $(DEFS_EDA_405)
-eda405: CXXFLAGS+=$(CXXFLAGS_EDA) $(DEFS_EDA_405)
-eda405: LDFLAGS+=$(LDFLAGS_EDA)
+eda405: CFLAGS+=$(CFLAGS_F4) $(DEFS_EDA_405)
+eda405: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_EDA_405)
+eda405: LDFLAGS+=$(LDFLAGS_F4)
 eda405: $(BINDIR)
 eda405: $(OBJDIR_EDA)
 eda405: $(BINDIR)/$(BINBIN_EDA)
 
-eda446: CFLAGS+=$(CFLAGS_EDA) $(DEFS_EDA_446)
-eda446: CXXFLAGS+=$(CXXFLAGS_EDA) $(DEFS_EDA_446)
-eda446: LDFLAGS+=$(LDFLAGS_EDA)
+eda446: CFLAGS+=$(CFLAGS_F4) $(DEFS_EDA_446)
+eda446: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_EDA_446)
+eda446: LDFLAGS+=$(LDFLAGS_F4)
 eda446: $(BINDIR)
 eda446: $(OBJDIR_EDA)
 eda446: $(BINDIR)/$(BINBIN_EDA)
@@ -94,17 +94,17 @@ $(OBJDIR_EDA):
 
 $(BINDIR)/$(BINBIN_EDA): $(BINDIR)/$(BINELF_EDA)
 	$(CP) -O binary $< $@
-$(BINDIR)/$(BINELF_EDA): $(OBJ_EDA)
-	$(CXX) $(OBJ_EDA) $(LDFLAGS) -o $@
+$(BINDIR)/$(BINELF_EDA): $(OBJ_F4)
+	$(CXX) $(OBJ_F4) $(LDFLAGS) -o $@
 	$(SIZE) $(BINDIR)/$(BINELF_EDA)
 
 $(OBJDIR_EDA)/%.o: ./%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
-$(OBJDIR_EDA)/%.o: $(STD_LIB_EDA)/%.c
+$(OBJDIR_EDA)/%.o: $(STD_LIB_F4)/%.c
 	$(CC) $(CFLAGS) $< -o $@
-$(OBJDIR_EDA)/%.o: $(SYS_DIR_EDA)/%.c
+$(OBJDIR_EDA)/%.o: $(SYS_DIR_F4)/%.c
 	$(CC) $(CFLAGS) $< -o $@
-$(OBJDIR_EDA)/%.o: $(STARTUP_DIR_EDA)/%.c
+$(OBJDIR_EDA)/%.o: $(STARTUP_DIR_F4)/%.c
 	$(CC) $(CFLAGS) $< -o $@
 
 clean-objs:
@@ -112,4 +112,3 @@ clean-objs:
 clean:
 	test ! -d $(OBJDIR_EDA) || rm -rf $(OBJDIR_EDA)
 	rm -f $(BINDIR)/*.bin $(BINDIR)/*.elf
-

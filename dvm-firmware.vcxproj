@@ -134,6 +134,7 @@
     <None Include="Makefile" />
     <None Include="Makefile.SAM3X8_DUE" />
     <None Include="Makefile.STM32F4" />
+    <None Include="Makefile.STM32F4_EDA" />
     <None Include="Makefile.STM32F4_POG" />
   </ItemGroup>
   <PropertyGroup>

@@ -188,5 +188,6 @@
     <None Include="Makefile.STM32F4_POG" />
     <None Include="Makefile" />
     <None Include="Makefile.SAM3X8_DUE" />
+    <None Include="Makefile.STM32F4_EDA" />
   </ItemGroup>
 </Project>

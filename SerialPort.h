@@ -12,7 +12,7 @@
 //
 /*
 *   Copyright (C) 2015,2016,2017 by Jonathan Naylor G4KLX
-*   Copyright (C) 2018 Bryan Biedenkapp N2PLL
+*   Copyright (C) 2018,2021 Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -107,6 +107,7 @@ enum DVM_COMMANDS {
     CMD_DEBUG3 = 0xF3U,
     CMD_DEBUG4 = 0xF4U,
     CMD_DEBUG5 = 0xF5U,
+    CMD_DEBUG_DUMP = 0xFAU,
 };
 
 enum CMD_REASON_CODE {
@@ -176,6 +177,8 @@ public:
     void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3);
     /// <summary></summary>
     void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3, int16_t n4);
+    /// <summary></summary>
+    void writeDump(const uint8_t* data, uint16_t length);
 
 private:
     uint8_t m_buffer[256U];

@@ -12,7 +12,7 @@
 //
 /*
 *   Copyright (C) 2015,2016,2017 by Jonathan Naylor G4KLX
-*   Copyright (C) 2017-2018 Bryan Biedenkapp N2PLL
+*   Copyright (C) 2017-2021 Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -51,7 +51,6 @@
 #include "p25/CalP25.h"
 #include "CalRSSI.h"
 #include "CWIdTX.h"
-#include "Debug.h"
 #include "IO.h"
 
 // ---------------------------------------------------------------------------
@@ -66,6 +65,17 @@ const uint16_t  RX_BLOCK_SIZE = 2U;
 
 const uint16_t  TX_RINGBUFFER_SIZE = 500U;
 const uint16_t  RX_RINGBUFFER_SIZE = 600U;
+
+// ---------------------------------------------------------------------------
+//  Macros
+// ---------------------------------------------------------------------------
+
+#define  DEBUG1(a)          serial.writeDebug((a))
+#define  DEBUG2(a,b)        serial.writeDebug((a),(b))
+#define  DEBUG3(a,b,c)      serial.writeDebug((a),(b),(c))
+#define  DEBUG4(a,b,c,d)    serial.writeDebug((a),(b),(c),(d))
+#define  DEBUG5(a,b,c,d,e)  serial.writeDebug((a),(b),(c),(d),(e))
+#define  DEBUG_DUMP(a,b)    serial.writeDump((a),(b))
 
 // ---------------------------------------------------------------------------
 //  Global Externs

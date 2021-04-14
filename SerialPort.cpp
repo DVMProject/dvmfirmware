@@ -13,7 +13,7 @@
 /*
 *   Copyright (C) 2013,2015,2016,2017 by Jonathan Naylor G4KLX
 *   Copyright (C) 2016 by Colin Durbridge G4EML
-*   Copyright (C) 2017-2018 Bryan Biedenkapp N2PLL
+*   Copyright (C) 2017-2021 Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -612,6 +612,41 @@ void SerialPort::writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3
     reply[1U] = count;
 
     writeInt(1U, reply, count, true);
+}
+
+/// <summary>
+///
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
+void SerialPort::writeDump(const uint8_t* data, uint16_t length)
+{
+    if (!m_debug)
+        return;
+
+    uint8_t reply[512U];
+
+    reply[0U] = DVM_FRAME_START;
+
+    if (length > 252U) {
+        reply[1U] = 0U;
+        reply[2U] = (length + 4U) - 255U;
+        reply[3U] = CMD_DEBUG_DUMP;
+
+        for (uint8_t i = 0U; i < length; i++)
+            reply[i + 4U] = data[i];
+
+        writeInt(1U, reply, length + 4U);
+    }
+    else {
+        reply[1U] = length + 3U;
+        reply[2U] = CMD_DEBUG_DUMP;
+
+        for (uint8_t i = 0U; i < length; i++)
+            reply[i + 3U] = data[i];
+
+        writeInt(1U, reply, length + 3U);
+    }
 }
 
 // ---------------------------------------------------------------------------

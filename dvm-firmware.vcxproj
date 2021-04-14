@@ -78,7 +78,6 @@
   <ItemGroup>
     <ClInclude Include="CalRSSI.h" />
     <ClInclude Include="CWIdTX.h" />
-    <ClInclude Include="Debug.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="dmr\CalDMR.h" />
     <ClInclude Include="dmr\DMRDefines.h" />

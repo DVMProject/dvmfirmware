@@ -73,9 +73,9 @@ namespace dmr
         /// <summary>Write abort data to the local buffer.</summary>
         uint8_t writeAbort(const uint8_t* data, uint8_t length);
 
-        /// <summary></summary>
+        /// <summary>Helper to set the start state for Tx.</summary>
         void setStart(bool start);
-        /// <summary></summary>
+        /// <summary>Helper to set the calibration state for Tx.</summary>
         void setCal(bool start);
 
         /// <summary>Helper to get how much space the slot 1 ring buffer has for samples.</summary>
@@ -83,9 +83,9 @@ namespace dmr
         /// <summary>Helper to get how much space the slot 2 ring buffer has for samples.</summary>
         uint8_t getSpace2() const;
 
-        /// <summary></summary>
+        /// <summary>Sets the DMR color code.</summary>
         void setColorCode(uint8_t colorCode);
-        /// <summary></summary>
+        /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
         void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
 
         /// <summary>Helper to reset data values to defaults for slot 1 FIFO.</summary>

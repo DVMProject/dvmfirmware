@@ -151,9 +151,9 @@ uint8_t DMRDMOTX::writeData(const uint8_t* data, uint8_t length)
 }
 
 /// <summary>
-///
+/// Sets the FDMA preamble count.
 /// </summary>
-/// <param name="preambleCnt"></param>
+/// <param name="preambleCnt">Count of preambles.</param>
 void DMRDMOTX::setPreambleCount(uint8_t preambleCnt)
 {
     uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
@@ -165,10 +165,10 @@ void DMRDMOTX::setPreambleCount(uint8_t preambleCnt)
 }
 
 /// <summary>
-///
+/// Sets the fine adjust 4FSK symbol levels.
 /// </summary>
-/// <param name="level3Adj"></param>
-/// <param name="level1Adj"></param>
+/// <param name="level3Adj">+3/-3 symbol adjust.</param>
+/// <param name="level1Adj">+1/-1 symbol adjust.</param>
 void DMRDMOTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 {
     m_symLevel3Adj = level3Adj;

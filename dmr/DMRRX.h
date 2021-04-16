@@ -51,9 +51,9 @@ namespace dmr
         /// <summary>Sample DMR values from the air interface.</summary>
         void samples(const q15_t* samples, const uint16_t* rssi, const uint8_t* control, uint8_t length);
 
-        /// <summary></summary>
+        /// <summary>Sets the DMR color code.</summary>
         void setColorCode(uint8_t colorCode);
-        /// <summary></summary>
+        /// <summary>Sets the number of samples to delay before processing.</summary>
         void setRxDelay(uint8_t delay);
 
     private:

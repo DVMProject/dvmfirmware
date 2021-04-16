@@ -63,9 +63,9 @@ namespace p25
         /// <summary>Sample P25 values from the air interface.</summary>
         void samples(const q15_t* samples, uint16_t* rssi, uint8_t length);
 
-        /// <summary></summary>
+        /// <summary>Sets the P25 NAC.</summary>
         void setNAC(uint16_t nac);
-        /// <summary></summary>
+        /// <summary>Sets the P25 sync correlation countdown.</summary>
         void setCorrCount(uint8_t count);
 
     private:
@@ -113,7 +113,7 @@ namespace p25
         /// <summary>Frame synchronization correlator.</summary>
         bool correlateSync();
 
-        /// <summary></summary>
+        /// <summary>Helper to decode the P25 NID.</summary>
         bool decodeNid(uint16_t start);
 
         /// <summary></summary>

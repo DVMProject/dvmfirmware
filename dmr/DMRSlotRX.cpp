@@ -87,7 +87,7 @@ DMRSlotRX::DMRSlotRX(bool slot) :
 }
 
 /// <summary>
-///
+/// Helper to set data values for start of Rx.
 /// </summary>
 void DMRSlotRX::start()
 {
@@ -268,18 +268,18 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
 }
 
 /// <summary>
-///
+/// Sets the DMR color code.
 /// </summary>
-/// <param name="colorCode"></param>
+/// <param name="colorCode">Color code.</param>
 void DMRSlotRX::setColorCode(uint8_t colorCode)
 {
     m_colorCode = colorCode;
 }
 
 /// <summary>
-///
+/// Sets the number of samples to delay before processing.
 /// </summary>
-/// <param name="delay"></param>
+/// <param name="delay">Number of samples to delay.</param>
 void DMRSlotRX::setRxDelay(uint8_t delay)
 {
     m_delay = delay;

@@ -86,9 +86,9 @@ void DMRRX::samples(const q15_t* samples, const uint16_t* rssi, const uint8_t* c
 }
 
 /// <summary>
-///
+/// Sets the DMR color code.
 /// </summary>
-/// <param name="colorCode"></param>
+/// <param name="colorCode">Color code.</param>
 void DMRRX::setColorCode(uint8_t colorCode)
 {
     m_slot1RX.setColorCode(colorCode);
@@ -96,9 +96,9 @@ void DMRRX::setColorCode(uint8_t colorCode)
 }
 
 /// <summary>
-///
+/// Sets the number of samples to delay before processing.
 /// </summary>
-/// <param name="delay"></param>
+/// <param name="delay">Number of samples to delay.</param>
 void DMRRX::setRxDelay(uint8_t delay)
 {
     m_slot1RX.setRxDelay(delay);

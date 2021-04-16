@@ -188,7 +188,7 @@ uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
 }
 
 /// <summary>
-///
+/// Clears the local buffer.
 /// </summary>
 void P25TX::clear()
 {
@@ -196,9 +196,9 @@ void P25TX::clear()
 }
 
 /// <summary>
-///
+/// Sets the FDMA preamble count.
 /// </summary>
-/// <param name="preambleCnt"></param>
+/// <param name="preambleCnt">Count of preambles.</param>
 void P25TX::setPreambleCount(uint8_t preambleCnt)
 {
     uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
@@ -210,10 +210,10 @@ void P25TX::setPreambleCount(uint8_t preambleCnt)
 }
 
 /// <summary>
-///
+/// Sets the fine adjust 4FSK symbol levels.
 /// </summary>
-/// <param name="level3Adj"></param>
-/// <param name="level1Adj"></param>
+/// <param name="level3Adj">+3/-3 symbol adjust.</param>
+/// <param name="level1Adj">+1/-1 symbol adjust.</param>
 void P25TX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 {
     m_symLevel3Adj = level3Adj;
@@ -233,7 +233,7 @@ void P25TX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 }
 
 /// <summary>
-///
+/// Helper to set the calibration state for Tx.
 /// </summary>
 /// <param name="start"></param>
 void P25TX::setCal(bool start)

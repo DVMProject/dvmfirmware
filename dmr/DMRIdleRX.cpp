@@ -93,9 +93,9 @@ void DMRIdleRX::samples(const q15_t* samples, uint8_t length)
 }
 
 /// <summary>
-///
+/// Sets the DMR color code.
 /// </summary>
-/// <param name="colorCode"></param>
+/// <param name="colorCode">Color code.</param>
 void DMRIdleRX::setColorCode(uint8_t colorCode)
 {
     m_colorCode = colorCode;

@@ -193,18 +193,18 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
 }
 
 /// <summary>
-///
+/// Sets the P25 NAC.
 /// </summary>
-/// <param name="nac"></param>
+/// <param name="nac">NAC.</param>
 void P25RX::setNAC(uint16_t nac)
 {
     m_nac = nac;
 }
 
 /// <summary>
-///
+/// Sets the P25 sync correlation countdown.
 /// </summary>
-/// <param name="count"></param>
+/// <param name="count">Correlation Countdown Count.</param>
 void P25RX::setCorrCount(uint8_t count)
 {
     m_corrCountdown = count;
@@ -608,7 +608,7 @@ bool P25RX::correlateSync()
 }
 
 /// <summary>
-///
+/// Helper to decode the P25 NID.
 /// </summary>
 /// <param name="start"></param>
 bool P25RX::decodeNid(uint16_t start)

@@ -55,7 +55,7 @@ namespace dmr
         /// <summary>Initializes a new instance of the DMRSlotRX class.</summary>
         DMRSlotRX(bool slot);
 
-        /// <summary></summary>
+        /// <summary>Helper to set data values for start of Rx.</summary>
         void start();
         /// <summary>Helper to reset data values to defaults.</summary>
         void reset();
@@ -63,9 +63,9 @@ namespace dmr
         /// <summary>Perform DMR slot sample processing.</summary>
         bool processSample(q15_t sample, uint16_t rssi);
 
-        /// <summary></summary>
+        /// <summary>Sets the DMR color code.</summary>
         void setColorCode(uint8_t colorCode);
-        /// <summary></summary>
+        /// <summary>Sets the number of samples to delay before processing.</summary>
         void setRxDelay(uint8_t delay);
 
     private:

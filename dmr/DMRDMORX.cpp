@@ -111,9 +111,9 @@ void DMRDMORX::samples(const q15_t* samples, const uint16_t* rssi, uint8_t lengt
 }
 
 /// <summary>
-///
+/// Sets the DMR color code.
 /// </summary>
-/// <param name="colorCode"></param>
+/// <param name="colorCode">Color code.</param>
 void DMRDMORX::setColorCode(uint8_t colorCode)
 {
     m_colorCode = colorCode;

@@ -65,14 +65,14 @@ namespace p25
         /// <summary>Write data to the local buffer.</summary>
         uint8_t writeData(const uint8_t* data, uint8_t length);
 
-        /// <summary></summary>
+        /// <summary>Clears the local buffer.</summary>
         void clear();
 
-        /// <summary></summary>
+        /// <summary>Sets the FDMA preamble count.</summary>
         void setPreambleCount(uint8_t preambleCnt);
-        /// <summary></summary>
+        /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
         void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
-        /// <summary></summary>
+        /// <summary>Helper to set the calibration state for Tx.</summary>
         void setCal(bool start);
 
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>

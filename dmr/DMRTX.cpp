@@ -293,7 +293,7 @@ uint8_t DMRTX::writeAbort(const uint8_t* data, uint8_t length)
 }
 
 /// <summary>
-///
+/// Helper to set the start state for Tx.
 /// </summary>
 /// <param name="start"></param>
 void DMRTX::setStart(bool start)
@@ -309,7 +309,7 @@ void DMRTX::setStart(bool start)
 }
 
 /// <summary>
-///
+/// Helper to set the calibration state for Tx.
 /// </summary>
 /// <param name="start"></param>
 void DMRTX::setCal(bool start)
@@ -336,9 +336,9 @@ uint8_t DMRTX::getSpace2() const
 }
 
 /// <summary>
-///
+/// Sets the DMR color code.
 /// </summary>
-/// <param name="colorCode"></param>
+/// <param name="colorCode">Color code.</param>
 void DMRTX::setColorCode(uint8_t colorCode)
 {
     ::memcpy(m_idle, IDLE_DATA, DMR_FRAME_LENGTH_BYTES);
@@ -348,10 +348,10 @@ void DMRTX::setColorCode(uint8_t colorCode)
 }
 
 /// <summary>
-///
+/// Sets the fine adjust 4FSK symbol levels.
 /// </summary>
-/// <param name="level3Adj"></param>
-/// <param name="level1Adj"></param>
+/// <param name="level3Adj">+3/-3 symbol adjust.</param>
+/// <param name="level1Adj">+1/-1 symbol adjust.</param>
 void DMRTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 {
     m_symLevel3Adj = level3Adj;

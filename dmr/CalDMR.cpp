@@ -114,11 +114,7 @@ void CalDMR::process()
 {
     switch (m_modemState) {
     case STATE_DMR_CAL:
-    case STATE_LF_CAL:
-    case STATE_DMR_LEVELA:
-    case STATE_DMR_LEVELB:
-    case STATE_DMR_LEVELC:
-    case STATE_DMR_LEVELD:
+    case STATE_DMR_LF_CAL:
         if (m_transmit) {
             dmrTX.setCal(true);
             dmrTX.process();

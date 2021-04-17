@@ -102,7 +102,8 @@ P25TX::P25TX() :
 /// </summary>
 void P25TX::process()
 {
-    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
+    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U &&
+        m_state != P25TXSTATE_CAL) {
         // transmit silence until the hang timer has expired
         uint16_t space = io.getSpace();
 
@@ -126,6 +127,7 @@ void P25TX::process()
 
     if (m_poLen == 0U) {
         if (m_state == P25TXSTATE_CAL) {
+            m_tailCnt = 0U;
             createCal();
         }
         else {
@@ -279,14 +281,27 @@ void P25TX::createData()
 void P25TX::createCal()
 {
     // 1.2 kHz sine wave generation
-    if (m_modemState == STATE_P25_CAL ||
-        m_modemState == STATE_P25_LEVELA || m_modemState == STATE_P25_LEVELB ||
-        m_modemState == STATE_P25_LEVELC || m_modemState == STATE_P25_LEVELD) {
+    if (m_modemState == STATE_P25_CAL) {
         for (unsigned int i = 0U; i < P25_LDU_FRAME_LENGTH_BYTES; i++) {
             m_poBuffer[i] = P25_START_SYNC;
         }
 
         m_poLen = P25_LDU_FRAME_LENGTH_BYTES;
+    }
+
+    // 80 Hz square wave generation
+    if (m_modemState == STATE_P25_LF_CAL) {
+        for (unsigned int i = 0U; i < 54U; i++) {
+            m_poBuffer[i] = 0x55U; // +3, +3, ... pattern
+        }
+
+        m_poBuffer[55U] = 0x5FU; // +3, +3, -3, -3 pattern
+
+        for (unsigned int i = 56U; i < 108U; i++) {
+            m_poBuffer[i] = 0xFFU; // -3, -3, ... pattern
+        }
+
+        m_poLen = 108U;
     }
 
     m_poLen = P25_LDU_FRAME_LENGTH_BYTES;
@@ -319,27 +334,6 @@ void P25TX::writeByte(uint8_t c)
         default: // 0x40U
             inBuffer[i] = (P25_LEVELD + -m_symLevel3Adj); // -3
             break;
-        }
-
-        // are we doing a diagnostic transmit of a specific level?
-        if (m_modemState == STATE_P25_LEVELA || m_modemState == STATE_P25_LEVELB ||
-            m_modemState == STATE_P25_LEVELC || m_modemState == STATE_P25_LEVELD) {
-            switch (m_modemState) {
-            case STATE_P25_LEVELA:
-                inBuffer[i] = (P25_LEVELA + m_symLevel3Adj); // +3
-                break;
-            case STATE_P25_LEVELB:
-                inBuffer[i] = (P25_LEVELB + m_symLevel1Adj); // +1
-                break;
-            case STATE_P25_LEVELC:
-                inBuffer[i] = (P25_LEVELC + -m_symLevel1Adj); // -1
-                break;
-            case STATE_P25_LEVELD:
-                inBuffer[i] = (P25_LEVELD + -m_symLevel3Adj); // -3
-                break;
-            default:
-                break;
-            }
         }
     }
 

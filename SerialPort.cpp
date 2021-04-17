@@ -162,14 +162,10 @@ void SerialPort::process()
                     break;
 
                 case CMD_CAL_DATA:
-                    if (m_modemState == STATE_DMR_LEVELA || m_modemState == STATE_DMR_LEVELB ||
-                        m_modemState == STATE_DMR_LEVELC || m_modemState == STATE_DMR_LEVELD ||
-                        m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
-                        m_modemState == STATE_LF_CAL || m_modemState == STATE_DMR_CAL)
+                    if (m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
+                        m_modemState == STATE_DMR_LF_CAL || m_modemState == STATE_DMR_CAL)
                         err = calDMR.write(m_buffer + 3U, m_len - 3U);
-                    if (m_modemState == STATE_P25_LEVELA || m_modemState == STATE_P25_LEVELB ||
-                        m_modemState == STATE_P25_LEVELC || m_modemState == STATE_P25_LEVELD ||
-                        m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_CAL)
+                    if (m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_LF_CAL || m_modemState == STATE_P25_CAL)
                         err = calP25.write(m_buffer + 3U, m_len - 3U);
                     if (err == RSN_OK) {
                         sendACK();
@@ -793,11 +789,9 @@ uint8_t SerialPort::modemStateCheck(DVM_STATE state)
 {
     // invalid mode check
     if (state != STATE_IDLE && state != STATE_DMR && state != STATE_P25 &&
-        state != STATE_DMR_LEVELA && state != STATE_DMR_LEVELB && state != STATE_DMR_LEVELC && state != STATE_DMR_LEVELD &&
-        state != STATE_P25_LEVELA && state != STATE_P25_LEVELB && state != STATE_P25_LEVELC && state != STATE_P25_LEVELD &&
         state != STATE_P25_CAL_1K &&
         state != STATE_DMR_DMO_CAL_1K && state != STATE_DMR_CAL_1K &&
-        state != STATE_LF_CAL &&
+        state != STATE_DMR_LF_CAL && state != STATE_P25_LF_CAL &&
         state != STATE_RSSI_CAL &&
         state != STATE_P25_CAL && state != STATE_DMR_CAL)
         return RSN_INVALID_MODE;
@@ -958,6 +952,14 @@ void SerialPort::setMode(DVM_STATE modemState)
         p25RX.reset();
         cwIdTX.reset();
         break;
+    case STATE_P25_LF_CAL:
+        DEBUG1("SerialPort: setMode(): mode set to P25 80Hz Calibrate");
+        dmrIdleRX.reset();
+        dmrDMORX.reset();
+        dmrRX.reset();
+        p25RX.reset();
+        cwIdTX.reset();
+        break;
     case STATE_RSSI_CAL:
         DEBUG1("SerialPort: setMode(): mode set to RSSI Calibrate");
         dmrIdleRX.reset();
@@ -966,8 +968,8 @@ void SerialPort::setMode(DVM_STATE modemState)
         p25RX.reset();
         cwIdTX.reset();
         break;
-    case STATE_LF_CAL:
-        DEBUG1("SerialPort: setMode(): mode set to 80Hz Calibrate");
+    case STATE_DMR_LF_CAL:
+        DEBUG1("SerialPort: setMode(): mode set to DMR 80Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();

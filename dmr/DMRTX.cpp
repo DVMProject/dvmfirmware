@@ -429,9 +429,7 @@ void DMRTX::createData(uint8_t slotIndex)
 void DMRTX::createCal()
 {
     // 1.2 kHz sine wave generation
-    if (m_modemState == STATE_DMR_CAL ||
-        m_modemState == STATE_DMR_LEVELA || m_modemState == STATE_DMR_LEVELB ||
-        m_modemState == STATE_DMR_LEVELC || m_modemState == STATE_DMR_LEVELD) {
+    if (m_modemState == STATE_DMR_CAL) {
         for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++) {
             m_poBuffer[i] = 0x5FU;
             m_markBuffer[i] = MARK_NONE;
@@ -441,7 +439,7 @@ void DMRTX::createCal()
     }
 
     // 80 Hz square wave generation
-    if (m_modemState == STATE_LF_CAL) {
+    if (m_modemState == STATE_DMR_LF_CAL) {
         for (unsigned int i = 0U; i < 7U; i++) {
             m_poBuffer[i] = 0x55U; // +3, +3, ... pattern
             m_markBuffer[i] = MARK_NONE;
@@ -543,27 +541,6 @@ void DMRTX::writeByte(uint8_t c, uint8_t control)
         default: // 0x40U
             inBuffer[i] = (DMR_LEVELD + -m_symLevel3Adj); // -3
             break;
-        }
-
-        // are we doing a diagnostic transmit of a specific level?
-        if (m_modemState == STATE_DMR_LEVELA || m_modemState == STATE_DMR_LEVELB ||
-            m_modemState == STATE_DMR_LEVELC || m_modemState == STATE_DMR_LEVELD) {
-            switch (m_modemState) {
-            case STATE_DMR_LEVELA:
-                inBuffer[i] = (DMR_LEVELA + m_symLevel3Adj); // +3
-                break;
-            case STATE_DMR_LEVELB:
-                inBuffer[i] = (DMR_LEVELB + m_symLevel1Adj); // +1
-                break;
-            case STATE_DMR_LEVELC:
-                inBuffer[i] = (DMR_LEVELC + -m_symLevel1Adj); // -1
-                break;
-            case STATE_DMR_LEVELD:
-                inBuffer[i] = (DMR_LEVELD + -m_symLevel3Adj); // -3
-                break;
-            default:
-                break;
-            }
         }
     }
 

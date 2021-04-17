@@ -108,15 +108,11 @@ void loop()
     if (m_p25Enable && m_modemState == STATE_P25)
         p25TX.process();
 
-    if (m_modemState == STATE_DMR_LEVELA || m_modemState == STATE_DMR_LEVELB ||
-        m_modemState == STATE_DMR_LEVELC || m_modemState == STATE_DMR_LEVELD ||
-        m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
-        m_modemState == STATE_LF_CAL || m_modemState == STATE_DMR_CAL)
+    if (m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
+        m_modemState == STATE_DMR_LF_CAL || m_modemState == STATE_DMR_CAL)
         calDMR.process();
 
-    if (m_modemState == STATE_P25_LEVELA || m_modemState == STATE_P25_LEVELB ||
-        m_modemState == STATE_P25_LEVELC || m_modemState == STATE_P25_LEVELD ||
-        m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_CAL)
+    if (m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_LF_CAL || m_modemState == STATE_P25_CAL)
         calP25.process();
 
     if (m_modemState == STATE_CW || m_modemState == STATE_IDLE)

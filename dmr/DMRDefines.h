@@ -82,6 +82,8 @@ namespace dmr
     const uint8_t   DMR_BS_VOICE_SYNC_BYTES[] = { 0x07U, 0x55U, 0xFDU, 0x7DU, 0xF7U, 0x5FU, 0x70U };
     const uint8_t   DMR_SYNC_BYTES_MASK[] = { 0x0FU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xF0U };
 
+    const uint8_t   DMR_START_SYNC = 0x5FU;
+
     const uint64_t  DMR_MS_DATA_SYNC_BITS = 0x0000D5D7F77FD757U;
     const uint64_t  DMR_MS_VOICE_SYNC_BITS = 0x00007F7D5DD57DFDU;
     const uint64_t  DMR_BS_DATA_SYNC_BITS = 0x0000DFF57D75DF5DU;

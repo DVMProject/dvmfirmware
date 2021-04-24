@@ -431,7 +431,7 @@ void DMRTX::createCal()
     // 1.2 kHz sine wave generation
     if (m_modemState == STATE_DMR_CAL) {
         for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++) {
-            m_poBuffer[i] = 0x5FU;
+            m_poBuffer[i] = DMR_START_SYNC;
             m_markBuffer[i] = MARK_NONE;
         }
 

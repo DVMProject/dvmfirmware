@@ -173,6 +173,23 @@ int main(void)
 
     delay(1);
 
+#if !defined(NO_SAM3XE_OVERCLOCK)
+    #define SYS_BOARD_PLLAR (CKGR_PLLAR_ONE | CKGR_PLLAR_MULA(18UL) | CKGR_PLLAR_PLLACOUNT(0x3fUL) | CKGR_PLLAR_DIVA(1UL))
+    #define SYS_BOARD_MCKR ( PMC_MCKR_PRES_CLK_2 | PMC_MCKR_CSS_PLLA_CLK)
+
+    // Set FWS according to SYS_BOARD_MCKR configuration 
+    EFC0->EEFC_FMR = EEFC_FMR_FWS(4); //4 waitstate flash access
+    EFC1->EEFC_FMR = EEFC_FMR_FWS(4);
+
+    // Initialize PLLA to 114MHz
+    PMC->CKGR_PLLAR = SYS_BOARD_PLLAR;
+    while (!(PMC->PMC_SR & PMC_SR_LOCKA)) {}
+    PMC->PMC_MCKR = SYS_BOARD_MCKR;
+    while (!(PMC->PMC_SR & PMC_SR_MCKRDY)) {}
+
+    SystemCoreClockUpdate();
+#endif
+
 #if defined(USBCON)
     USBDevice.attach();
 #endif

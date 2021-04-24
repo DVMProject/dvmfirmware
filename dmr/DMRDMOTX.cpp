@@ -52,8 +52,6 @@ const q15_t DMR_LEVELB = 454;
 const q15_t DMR_LEVELC = -454;
 const q15_t DMR_LEVELD = -1362;
 
-const uint8_t DMR_SYNC = 0x5FU;
-
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
@@ -87,13 +85,13 @@ void DMRDMOTX::process()
     if (m_poLen == 0U && m_fifo.getData() > 0U) {
         if (!m_tx) {
             for (uint16_t i = 0U; i < m_preambleCnt; i++)
-                m_poBuffer[i] = DMR_SYNC;
+                m_poBuffer[i] = DMR_START_SYNC;
 
             m_poLen = m_preambleCnt;
         }
         else {
             for (unsigned int i = 0U; i < 72U; i++)
-                m_poBuffer[i] = DMR_SYNC;
+                m_poBuffer[i] = DMR_START_SYNC;
 
             for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++)
                 m_poBuffer[i + 39U] = m_fifo.get();

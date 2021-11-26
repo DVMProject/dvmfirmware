@@ -71,6 +71,7 @@ enum DVM_COMMANDS {
 
     CMD_SET_SYMLVLADJ = 0x04U,
     CMD_SET_RXLEVEL = 0x05U,
+    CMD_SET_RFPARAMS = 0x06U,
 
     CMD_CAL_DATA = 0x08U,
     CMD_RSSI_DATA = 0x09U,
@@ -193,12 +194,14 @@ private:
     uint8_t setConfig(const uint8_t* data, uint8_t length);
     /// <summary>Set modem DSP mode from serial port data.</summary>
     uint8_t setMode(const uint8_t* data, uint8_t length);
-    /// <summary></summary>
+    /// <summary>Sets the modem state.</summary>
     void setMode(DVM_STATE modemState);
-    /// <summary></summary>
+    /// <summary>Sets the fine-tune symbol levels.</summary>
     uint8_t setSymbolLvlAdj(const uint8_t* data, uint8_t length);
-    /// <summary></summary>
+    /// <summary>Sets the software Rx sample level.</summary>
     uint8_t setRXLevel(const uint8_t* data, uint8_t length);
+    /// <summary>Sets the RF parameters.</summary>
+    uint8_t setRFParams(const uint8_t* data, uint8_t length);
 
     // Hardware specific routines
     /// <summary></summary>

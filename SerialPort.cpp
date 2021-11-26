@@ -918,7 +918,7 @@ uint8_t SerialPort::setMode(const uint8_t* data, uint8_t length)
 }
 
 /// <summary>
-///
+/// Sets the modem state.
 /// </summary>
 /// <param name="modemState"></param>
 void SerialPort::setMode(DVM_STATE modemState)
@@ -1012,7 +1012,7 @@ void SerialPort::setMode(DVM_STATE modemState)
 }
 
 /// <summary>
-///
+/// Sets the fine-tune symbol levels.
 /// </summary>
 /// <param name="data"></param>
 /// <param name="length"></param>
@@ -1055,7 +1055,7 @@ uint8_t SerialPort::setSymbolLvlAdj(const uint8_t* data, uint8_t length)
 }
 
 /// <summary>
-///
+/// Sets the software Rx sample level.
 /// </summary>
 /// <param name="data"></param>
 /// <param name="length"></param>
@@ -1068,6 +1068,37 @@ uint8_t SerialPort::setRXLevel(const uint8_t* data, uint8_t length)
     uint8_t rxLevel = data[0U];
 
     io.setRXLevel(rxLevel);
+
+    return RSN_OK;
+}
+
+/// <summary>
+/// Sets the RF parameters.
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
+/// <returns></returns>
+uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
+{
+    if (length < 10U)
+        return RSN_ILLEGAL_LENGTH;
+
+    uint32_t rxFreq, txFreq;
+    uint8_t rfPower;
+
+    rfPower = data[9U];
+
+    rxFreq = data[1U] << 0;
+    rxFreq |= data[2U] << 8;
+    rxFreq |= data[3U] << 16;
+    rxFreq |= data[4U] << 24;
+
+    txFreq = data[5U] << 0;
+    txFreq |= data[6U] << 8;
+    txFreq |= data[7U] << 16;
+    txFreq |= data[8U] << 24;
+
+    io.setRFParams(rxFreq, txFreq, rfPower);
 
     return RSN_OK;
 }

@@ -152,6 +152,25 @@ void IO::getUDID(uint8_t* buffer)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 /// <summary>
+///
+/// </summary>
+/// <param name="rxFreq"></param>
+/// <param name="txFreq"></param>
+void IO::setFrequency(uint32_t rxFreq, uint32_t txFreq)
+{
+    /* stub */
+}
+
+/// <summary>
+///
+/// </summary>
+/// <param name="rfPower"></param>
+void IO::setRFPower(uint8_t rfPower)
+{
+    /* stub */
+}
+
+/// <summary>
 /// Initializes hardware interrupts.
 /// </summary>
 void IO::initInt()

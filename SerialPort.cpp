@@ -161,6 +161,14 @@ void SerialPort::process()
                         sendNAK(err);
                     break;
 
+                case CMD_SET_RFPARAMS:
+                    err = setRFParams(m_buffer + 3U, m_len - 3U);
+                    if (err == RSN_OK)
+                        sendACK();
+                    else
+                        sendNAK(err);
+                    break;
+
                 case CMD_CAL_DATA:
                     if (m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
                         m_modemState == STATE_DMR_LF_CAL || m_modemState == STATE_DMR_CAL)
@@ -1086,8 +1094,6 @@ uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
     uint32_t rxFreq, txFreq;
     uint8_t rfPower;
 
-    rfPower = data[9U];
-
     rxFreq = data[1U] << 0;
     rxFreq |= data[2U] << 8;
     rxFreq |= data[3U] << 16;
@@ -1097,6 +1103,8 @@ uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
     txFreq |= data[6U] << 8;
     txFreq |= data[7U] << 16;
     txFreq |= data[8U] << 24;
+
+    rfPower = data[9U];
 
     io.setRFParams(rxFreq, txFreq, rfPower);
 

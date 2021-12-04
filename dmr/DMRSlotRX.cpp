@@ -143,7 +143,6 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
             correlateSync(true);
     }
     else {
-
         uint16_t min = m_syncPtr - 1U;
         uint16_t max = m_syncPtr + 1U;
         if (m_dataPtr >= min && m_dataPtr <= max)

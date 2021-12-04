@@ -440,18 +440,6 @@ void IO::setRXLevel(uint8_t rxLevel)
 }
 
 /// <summary>
-/// Sets the RF parameters.
-/// </summary>
-/// <param name="rxFreq"></param>
-/// <param name="txFreq"></param>
-/// <param name="rfPower"></param>
-void IO::setRFParams(uint32_t rxFreq, uint32_t txFreq, uint8_t rfPower)
-{
-    setRFPower(rfPower);
-    setFrequency(rxFreq, txFreq);
-}
-
-/// <summary>
 /// Helper to get the state of the ADC and DAC overflow flags.
 /// </summary>
 /// <param name="adcOverflow"></param>

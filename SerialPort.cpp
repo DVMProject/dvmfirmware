@@ -814,7 +814,6 @@ uint8_t SerialPort::modemStateCheck(DVM_STATE state)
     return RSN_OK;
 }
 
-
 /// <summary>
 /// Set modem DSP configuration from serial port data.
 /// </summary>
@@ -1088,25 +1087,10 @@ uint8_t SerialPort::setRXLevel(const uint8_t* data, uint8_t length)
 /// <returns></returns>
 uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
 {
-    if (length < 10U)
+    if (length < 14U)
         return RSN_ILLEGAL_LENGTH;
 
-    uint32_t rxFreq, txFreq;
-    uint8_t rfPower;
-
-    rxFreq = data[1U] << 0;
-    rxFreq |= data[2U] << 8;
-    rxFreq |= data[3U] << 16;
-    rxFreq |= data[4U] << 24;
-
-    txFreq = data[5U] << 0;
-    txFreq |= data[6U] << 8;
-    txFreq |= data[7U] << 16;
-    txFreq |= data[8U] << 24;
-
-    rfPower = data[9U];
-
-    io.setRFParams(rxFreq, txFreq, rfPower);
+    // unused on dedicated modem -- see firmware_hs for implementation
 
     return RSN_OK;
 }

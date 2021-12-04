@@ -75,8 +75,6 @@ public:
                        uint8_t p25TXLevel, uint16_t txDCOffset, uint16_t rxDCOffset);
     /// <summary>Sets the software Rx sample level.</summary>
     void setRXLevel(uint8_t rxLevel);
-    /// <summary>Sets the RF parameters.</summary>
-    void setRFParams(uint32_t rxFreq, uint32_t txFreq, uint8_t rfPower);
 
     /// <summary>Helper to get the state of the ADC and DAC overflow flags.</summary>
     void getOverflow(bool& adcOverflow, bool& dacOverflow);
@@ -143,11 +141,6 @@ private:
     q31_t m_dcState[4];
 
     // Hardware specific routines
-    /// <summary></summary>
-    void setFrequency(uint32_t rxFreq, uint32_t txFreq);
-    /// <summary></summary>
-    void setRFPower(uint8_t rfPower);
-
     /// <summary>Initializes hardware interrupts.</summary>
     void initInt();
     /// <summary>Starts hardware interrupts.</summary>

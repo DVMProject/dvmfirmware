@@ -496,7 +496,7 @@ void P25RX::processData(q15_t sample)
 
                 DEBUG4("P25RX: processPdu(): sync found in PDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
-                uint8_t frame[P25_LDU_FRAME_LENGTH_BYTES + 3U];
+                uint8_t frame[P25_LDU_FRAME_LENGTH_BYTES + 1U];
                 samplesToBits(m_startPtr, P25_LDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
 
                 frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U;

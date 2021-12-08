@@ -584,8 +584,8 @@ bool P25RX::correlateSync()
             if (errs <= maxErrs) {
                 DEBUG2("P25RX: correlateSync(): correlateSync errs", errs);
 
-                // DEBUG4("P25RX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
-                // DEBUG4("P25RX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                DEBUG4("P25RX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                DEBUG4("P25RX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
 
                 m_maxCorr = corr;
                 m_lostCount = MAX_SYNC_FRAMES;

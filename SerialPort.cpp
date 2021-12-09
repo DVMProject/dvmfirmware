@@ -1087,10 +1087,6 @@ uint8_t SerialPort::setRXLevel(const uint8_t* data, uint8_t length)
 /// <returns></returns>
 uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
 {
-    if (length < 14U)
-        return RSN_ILLEGAL_LENGTH;
-
     // unused on dedicated modem -- see firmware_hs for implementation
-
     return RSN_OK;
 }

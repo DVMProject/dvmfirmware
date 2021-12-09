@@ -98,7 +98,7 @@ void DMRDMOTX::process()
         }
         else {
             for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++)
-                m_fifo.get(m_poBuffer[i]);
+                m_poBuffer[i] = m_fifo.get();
 
             for (unsigned int i = 0U; i < 39U; i++)
                 m_poBuffer[i + DMR_FRAME_LENGTH_BYTES] = PR_FILL[i];

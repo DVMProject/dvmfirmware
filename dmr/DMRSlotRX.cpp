@@ -354,7 +354,7 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_DATA_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
-                    DEBUG2("DMRSlotRX: correlateSync(): sync errs", errs);
+                    DEBUG3("DMRSlotRX: correlateSync(): sync slot/errs",  m_slot ? 2U : 1U, errs);
 
                     DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
                     DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
@@ -389,7 +389,7 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_VOICE_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
-                    DEBUG2("DMRSlotRX: correlateSync(): sync errs", errs);
+                    DEBUG3("DMRSlotRX: correlateSync(): sync slot/errs",  m_slot ? 2U : 1U, errs);
 
                     DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
                     DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);

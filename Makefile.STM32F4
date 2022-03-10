@@ -1,5 +1,5 @@
 # STM32 library paths
-F4_LIB_PATH=/opt/tools/STM32F4XX_Lib
+F4_LIB_PATH=./STM32F4XX_Platform
 
 # MCU external clock frequency (Hz)
 OSC=12000000

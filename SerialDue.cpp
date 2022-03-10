@@ -37,6 +37,27 @@
 /// <summary>
 ///
 /// </summary>
+void SerialPort::flashRead()
+{
+    DEBUG1("SerialPort: flashRead(): unsupported on Arduino Due");
+    // unused on Arduino Due based dedicated modems
+}
+
+/// <summary>
+///
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
+uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
+{
+    DEBUG1("SerialPort: flashRead(): unsupported on Arduino Due");
+    // unused on Arduino Due based dedicated modems
+    return RSN_NO_INTERNAL_FLASH;
+}
+
+/// <summary>
+///
+/// </summary>
 /// <param name="n"></param>
 /// <param name="speed"></param>
 void SerialPort::beginInt(uint8_t n, int speed)

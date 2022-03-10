@@ -184,6 +184,21 @@ void SerialPort::process()
                     }
                     break;
 
+                case CMD_FLSH_READ:
+                    flashRead();
+                    break;
+
+                case CMD_FLSH_WRITE:
+                    err = flashWrite(m_buffer + 3U, m_len - 3U);
+                    if (err == RSN_OK) {
+                        sendACK();
+                    }
+                    else {
+                        DEBUG2("SerialPort: process(): received invalid data to write to flash", err);
+                        sendNAK(err);
+                    }
+                    break;
+
                 /** CW */
                 case CMD_SEND_CWID:
                     err = RSN_RINGBUFF_FULL;

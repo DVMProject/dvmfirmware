@@ -41,6 +41,7 @@
 void SerialPort::flashRead()
 {
     DEBUG1("SerialPort: flashRead(): unsupported on Arduino Due");
+    sendNAK(RSN_NO_INTERNAL_FLASH);
     // unused on Arduino Due based dedicated modems
 }
 

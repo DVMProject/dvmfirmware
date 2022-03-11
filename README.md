@@ -29,7 +29,7 @@ To:
 recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" -mcpu={build.mcu} -mthumb {compiler.c.elf.flags} "-T{build.variant.path}/{build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" {compiler.c.elf.extra_flags} -o "{build.path}/{build.project_name}.elf" "-L{build.path}" -Wl,--cref -Wl,--check-sections -Wl,--gc-sections -Wl,--entry=Reset_Handler -Wl,--unresolved-symbols=report-all -Wl,--warn-common -Wl,--warn-section-align -Wl,--start-group {compiler.combine.flags} {object_files} "{build.variant.path}/{build.variant_system_lib}" "{build.system.path}/CMSIS/CMSIS/Lib/GCC/libarm_cortexM3l_math.a" "{build.path}/{archive_file}" -Wl,--end-group -lm -gcc
 ```
 * For STM32F4 using Ubuntu OS install the standard ARM embedded toolchain (typically arm-gcc-none-eabi).
-  - Make sure to clone this repository with the ```--recursive``` option, otherwise the STM32 platform files will be missing!
+  - Make sure to clone this repository with the ```--recurse-submodules``` option, otherwise the STM32 platform files will be missing! ```git clone --recurse-submodules https://github.com/DVMProject/dvmfirmware.git```
 
 Use the ```make``` command to build the firmware, choosing the appropriate makefile with the -F switch.
 

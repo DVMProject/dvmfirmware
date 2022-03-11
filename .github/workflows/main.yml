@@ -1,0 +1,79 @@
+name: dvmfirmware-build
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v5.1
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Install Dependencies
+        run: sudo apt-get install -y gcc-arm-none-eabi
+        
+      - name: Sync Git Submodules
+        run: git submodule init && git submodule update
+        
+      - name: Build STM32F4 Firmware
+        run: make -f Makefile.STM32F4
+      - name: Build STM32F4_POG Firmware
+        run: make -f Makefile.STM32F4_POG
+      - name: Build STM32F4_EDA Firmware
+        run: make -f Makefile.STM32F4_EDA
+        
+      - name: Firmware Hash
+        run: |
+          echo "BRANCH: ${{steps.branch-name.outputs.current_branch}}" >> release.txt
+          echo "COMMIT: ${{github.sha}}" >> release.txt
+          echo >> release.txt
+          echo '```' >> release.txt
+          cat << EOF >> release.txt
+          dvm-firmware_f4.bin
+          size  : $(wc -c     dvm-firmware_f4.bin)
+          md5   : $(md5sum    dvm-firmware_f4.bin)
+          sha1  : $(sha1sum   dvm-firmware_f4.bin)
+          sha256: $(sha256sum dvm-firmware_f4.bin)
+
+          dvm-firmware_f4-pog.bin
+          size  : $(wc -c     dvm-firmware_f4-pog.bin)
+          md5   : $(md5sum    dvm-firmware_f4-pog.bin)
+          sha1  : $(sha1sum   dvm-firmware_f4-pog.bin)
+          sha256: $(sha256sum dvm-firmware_f4-pog.bin)
+
+          dvm-firmware_eda.bin
+          size  : $(wc -c     dvm-firmware_eda.bin)
+          md5   : $(md5sum    dvm-firmware_eda.bin)
+          sha1  : $(sha1sum   dvm-firmware_eda.bin)
+          sha256: $(sha256sum dvm-firmware_eda.bin)
+          EOF
+          echo '```' >> release.txt
+          
+      - name: Release Artifacts
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{steps.date.outputs.date}}
+          body_path: release.txt
+          files: |
+            dvm-firmware_f4.bin
+            dvm-firmware_f4-pog.bin
+            dvm-firmware_eda.bin

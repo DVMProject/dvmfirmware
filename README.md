@@ -4,6 +4,8 @@ The DVM firmware provides the embedded microcontroller implementation of a mixed
 
 This project is a direct fork of the MMDVM (https://github.com/g4klx/MMDVM) project.
 
+Please feel free to reach out to us for help, comments or otherwise, on our Discord: https://discord.gg/3pBe8xgrEz
+
 ## Building
 
 Please see the various Makefile's included in the project for more information. This project includes a few Makefiles to target different hardware. (All following information assumes familiarity with the standard Linux make system.)

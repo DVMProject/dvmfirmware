@@ -35,6 +35,10 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" -mcpu={build.mcu}
 
 Use the ```make``` command to build the firmware, choosing the appropriate makefile with the -F switch.
 
+## Firmware installation
+
+The some devices can be used on top on a RPi attached via the GPIO port or standalone and others are connected via USB. Both variants require different handling of compiling and uploading the firmware, examples on flashing devices are mostly not included here because the methods to flash vary from device to device.
+
 ## License
 
 This project is licensed under the GPLv2 License - see the [LICENSE.md](LICENSE.md) file for details. Use of this project is intended, strictly for amateur and educational use ONLY. Any other use is at the risk of user and all commercial purposes are strictly forbidden.

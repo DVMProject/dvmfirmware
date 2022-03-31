@@ -310,11 +310,6 @@ void SerialPort::process()
                     }
                     break;
 
-                /** DFSI */
-                case CMD_DFSI_DATA:
-                    sendNAK(RSN_INVALID_REQUEST);
-                    break;
-
                 default:
                     // Handle this, send a NAK back
                     sendNAK(RSN_NAK);

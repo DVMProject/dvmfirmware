@@ -37,7 +37,7 @@ Use the ```make``` command to build the firmware, choosing the appropriate makef
 
 ## Firmware installation
 
-The some devices can be used on top on a RPi attached via the GPIO port or standalone and others are connected via USB. Both variants require different handling of compiling and uploading the firmware, examples on flashing devices are mostly not included here because the methods to flash vary from device to device.
+Some devices can be used on top on a RPi attached via the GPIO port or standalone and others are connected via USB. Both variants require different handling of compiling and uploading the firmware, examples on flashing devices are mostly not included here because the methods to flash vary from device to device.
 
 ## License
 

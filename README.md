@@ -33,7 +33,7 @@ recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" -mcpu={build.mcu}
 * For STM32F4 using Ubuntu OS install the standard ARM embedded toolchain (typically arm-gcc-none-eabi).
   - Make sure to clone this repository with the ```--recurse-submodules``` option, otherwise the STM32 platform files will be missing! ```git clone --recurse-submodules https://github.com/DVMProject/dvmfirmware.git```
 
-Use the ```make``` command to build the firmware, choosing the appropriate makefile with the -F switch.
+Use the ```make``` command to build the firmware, choosing the appropriate makefile with the -f switch.
 
 ## Firmware installation
 

@@ -44,13 +44,9 @@ static q15_t RRC_0_2_FILTER[] = {
     -553, -847, -731, -340, 104, 401, 0 };
 const uint16_t RRC_0_2_FILTER_LEN = 42U;
 
-// Generated using gaussfir(0.5, 4, 5) in MATLAB
-static q15_t GAUSSIAN_0_5_FILTER[] = { 8, 104, 760, 3158, 7421, 9866, 7421, 3158, 760, 104, 8, 0 };
-const uint16_t GAUSSIAN_0_5_FILTER_LEN = 12U;
-
 // One symbol boxcar filter
-static q15_t BOXCAR_FILTER[] = { 12000, 12000, 12000, 12000, 12000, 0 };
-const uint16_t BOXCAR_FILTER_LEN = 6U;
+static q15_t BOXCAR_5_FILTER[] = { 12000, 12000, 12000, 12000, 12000, 0 };
+const uint16_t BOXCAR_5_FILTER_LEN = 6U;
 
 // Generated using [b, a] = butter(1, 0.001) in MATLAB
 static q31_t DC_FILTER[] = { 3367972, 0, 3367972, 0, 2140747704, 0 }; // {b0, 0, b1, b2, -a1, -a2}
@@ -69,12 +65,12 @@ IO::IO() :
     m_rxBuffer(RX_RINGBUFFER_SIZE),
     m_txBuffer(TX_RINGBUFFER_SIZE),
     m_rssiBuffer(RX_RINGBUFFER_SIZE),
-    m_rrcFilter(),
-    m_gaussianFilter(),
-    m_boxcarFilter(),
-    m_rrcState(),
-    m_gaussianState(),
-    m_boxcarState(),
+    m_rrc_0_2_Filter(),
+    m_boxcar_5_Filter(),
+    m_dcFilter(),
+    m_rrc_0_2_State(),
+    m_boxcar_5_State(),
+    m_dcState(),
     m_pttInvert(false),
     m_rxLevel(128 * 128),
     m_rxInvert(false),
@@ -89,26 +85,20 @@ IO::IO() :
     m_adcOverflow(0U),
     m_dacOverflow(0U),
     m_watchdog(0U),
-    m_dcFilter(),
-    m_dcState(),
     m_lockout(false)
 {
-    ::memset(m_rrcState, 0x00U, 70U * sizeof(q15_t));
-    ::memset(m_gaussianState, 0x00U, 40U * sizeof(q15_t));
-    ::memset(m_boxcarState, 0x00U, 30U * sizeof(q15_t));
+    ::memset(m_rrc_0_2_State, 0x00U, 70U * sizeof(q15_t));
+    ::memset(m_boxcar_5_State, 0x00U, 30U * sizeof(q15_t));
+
     ::memset(m_dcState, 0x00U, 4U * sizeof(q31_t));
 
-    m_rrcFilter.numTaps = RRC_0_2_FILTER_LEN;
-    m_rrcFilter.pState = m_rrcState;
-    m_rrcFilter.pCoeffs = RRC_0_2_FILTER;
+    m_rrc_0_2_Filter.numTaps = RRC_0_2_FILTER_LEN;
+    m_rrc_0_2_Filter.pState = m_rrc_0_2_State;
+    m_rrc_0_2_Filter.pCoeffs = RRC_0_2_FILTER;
 
-    m_gaussianFilter.numTaps = GAUSSIAN_0_5_FILTER_LEN;
-    m_gaussianFilter.pState = m_gaussianState;
-    m_gaussianFilter.pCoeffs = GAUSSIAN_0_5_FILTER;
-
-    m_boxcarFilter.numTaps = BOXCAR_FILTER_LEN;
-    m_boxcarFilter.pState = m_boxcarState;
-    m_boxcarFilter.pCoeffs = BOXCAR_FILTER;
+    m_boxcar_5_Filter.numTaps = BOXCAR_5_FILTER_LEN;
+    m_boxcar_5_Filter.pState = m_boxcar_5_State;
+    m_boxcar_5_Filter.pCoeffs = BOXCAR_5_FILTER;
 
     m_dcFilter.numStages = DC_FILTER_STAGES;
     m_dcFilter.pState = m_dcState;
@@ -226,10 +216,10 @@ void IO::process()
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
                 if (m_dcBlockerEnable) {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcar_5_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
 
                 p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
@@ -238,7 +228,7 @@ void IO::process()
             /** Digital Mobile Radio */
             if (m_dmrEnable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-                ::arm_fir_fast_q15(&m_rrcFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                ::arm_fir_fast_q15(&m_rrc_0_2_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
 
                 if (m_dmrEnable) {
                     if (m_duplex)
@@ -252,7 +242,7 @@ void IO::process()
             /** Digital Mobile Radio */
             if (m_dmrEnable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-                ::arm_fir_fast_q15(&m_rrcFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                ::arm_fir_fast_q15(&m_rrc_0_2_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
 
                 if (m_duplex) {
                     // If the transmitter isn't on, use the DMR idle RX to detect the wakeup CSBKs
@@ -271,10 +261,10 @@ void IO::process()
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
                 if (m_dcBlockerEnable) {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcar_5_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
 
                 p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);

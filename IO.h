@@ -108,12 +108,15 @@ private:
     SampleBuffer m_txBuffer;
     RSSIBuffer m_rssiBuffer;
 
-    arm_fir_instance_q15 m_rrcFilter;
-    arm_fir_instance_q15 m_gaussianFilter;
-    arm_fir_instance_q15 m_boxcarFilter;
-    q15_t m_rrcState[70U];           // NoTaps + BlockSize - 1, 42 + 20 - 1 plus some spare
-    q15_t m_gaussianState[40U];      // NoTaps + BlockSize - 1, 12 + 20 - 1 plus some spare
-    q15_t m_boxcarState[30U];        // NoTaps + BlockSize - 1, 6 + 20 - 1 plus some spare
+    arm_fir_instance_q15 m_rrc_0_2_Filter;
+    arm_fir_instance_q15 m_boxcar_5_Filter;
+
+    arm_biquad_casd_df1_inst_q31 m_dcFilter;
+
+    q15_t m_rrc_0_2_State[70U];      // NoTaps + BlockSize - 1, 42 + 20 - 1 plus some spare
+    q15_t m_boxcar_5_State[30U];     // NoTaps + BlockSize - 1, 6 + 20 - 1 plus some spare
+
+    q31_t m_dcState[4];
 
     bool m_pttInvert;
     q15_t m_rxLevel;
@@ -136,9 +139,6 @@ private:
     volatile uint32_t m_watchdog;
 
     bool m_lockout;
-
-    arm_biquad_casd_df1_inst_q31 m_dcFilter;
-    q31_t m_dcState[4];
 
     // Hardware specific routines
     /// <summary>Initializes hardware interrupts.</summary>

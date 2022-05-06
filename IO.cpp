@@ -179,8 +179,8 @@ void IO::process()
     }
 
     if (m_rxBuffer.getData() >= RX_BLOCK_SIZE) {
-        q15_t    samples[RX_BLOCK_SIZE];
-        uint8_t  control[RX_BLOCK_SIZE];
+        q15_t samples[RX_BLOCK_SIZE];
+        uint8_t control[RX_BLOCK_SIZE];
         uint16_t rssi[RX_BLOCK_SIZE];
 
         for (uint16_t i = 0U; i < RX_BLOCK_SIZE; i++) {
@@ -224,60 +224,60 @@ void IO::process()
         if (m_modemState == STATE_IDLE) {
             /** Project 25 */
             if (m_p25Enable) {
-                q15_t P25Vals[RX_BLOCK_SIZE];
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
                 if (m_dcBlockerEnable) {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, P25Vals, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, P25Vals, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
 
-                p25RX.samples(P25Vals, rssi, RX_BLOCK_SIZE);
+                p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
             }
 
             /** Digital Mobile Radio */
             if (m_dmrEnable) {
-                q15_t C4FSKVals[RX_BLOCK_SIZE];
-                ::arm_fir_fast_q15(&m_rrcFilter, samples, C4FSKVals, RX_BLOCK_SIZE);
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
+                ::arm_fir_fast_q15(&m_rrcFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
 
                 if (m_dmrEnable) {
                     if (m_duplex)
-                        dmrIdleRX.samples(C4FSKVals, RX_BLOCK_SIZE);
+                        dmrIdleRX.samples(c4fmSamples, RX_BLOCK_SIZE);
                     else
-                        dmrDMORX.samples(C4FSKVals, rssi, RX_BLOCK_SIZE);
+                        dmrDMORX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
                 }
             }
         }
         else if (m_modemState == STATE_DMR) {        // DMR State
             /** Digital Mobile Radio */
             if (m_dmrEnable) {
-                q15_t C4FSKVals[RX_BLOCK_SIZE];
-                ::arm_fir_fast_q15(&m_rrcFilter, samples, C4FSKVals, RX_BLOCK_SIZE);
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
+                ::arm_fir_fast_q15(&m_rrcFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
 
                 if (m_duplex) {
                     // If the transmitter isn't on, use the DMR idle RX to detect the wakeup CSBKs
                     if (m_tx)
-                        dmrRX.samples(C4FSKVals, rssi, control, RX_BLOCK_SIZE);
+                        dmrRX.samples(c4fmSamples, rssi, control, RX_BLOCK_SIZE);
                     else
-                        dmrIdleRX.samples(C4FSKVals, RX_BLOCK_SIZE);
+                        dmrIdleRX.samples(c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
-                    dmrDMORX.samples(C4FSKVals, rssi, RX_BLOCK_SIZE);
+                    dmrDMORX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
                 }
             }
         }
         else if (m_modemState == STATE_P25) {        // P25 State
             /** Project 25 */
             if (m_p25Enable) {
-                q15_t P25Vals[RX_BLOCK_SIZE];
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
                 if (m_dcBlockerEnable) {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, P25Vals, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcarFilter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
-                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, P25Vals, RX_BLOCK_SIZE);
+                    ::arm_fir_fast_q15(&m_boxcarFilter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
 
-                p25RX.samples(P25Vals, rssi, RX_BLOCK_SIZE);
+                p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
             }
         }
         else if (m_modemState == STATE_RSSI_CAL) {

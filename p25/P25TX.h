@@ -11,7 +11,7 @@
 // Licensed under the GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 //
 /*
-*   Copyright (C) 2016,2017 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016,2017,2020 by Jonathan Naylor G4KLX
 *   Copyright (C) 2020 by Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
@@ -40,9 +40,8 @@ namespace p25
     //  Constants
     // ---------------------------------------------------------------------------
 
-    #define P25_FIXED_DELAY 300     // 300 = 62.49ms
-                                    // Delay Value * 0.2083 = Preamble Length (ms)
-    #define P25_FIXED_TAIL 600      // 600 = 500ms
+    #define P25_FIXED_DELAY 90      // 90 = 20ms
+    #define P25_FIXED_TX_HANG 750   // 750 = 625ms
 
     enum P25TXSTATE {
         P25TXSTATE_NORMAL,
@@ -70,6 +69,8 @@ namespace p25
 
         /// <summary>Sets the FDMA preamble count.</summary>
         void setPreambleCount(uint8_t preambleCnt);
+        /// <summary>Sets the transmit hang time.</summary>
+        void setTxHang(uint8_t txHang);
         /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
         void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
         /// <summary>Helper to set the calibration state for Tx.</summary>
@@ -94,6 +95,7 @@ namespace p25
         uint16_t m_poPtr;
 
         uint16_t m_preambleCnt;
+        uint16_t m_txHang;
         uint16_t m_tailCnt;
 
         int8_t m_symLevel3Adj;

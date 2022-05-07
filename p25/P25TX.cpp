@@ -80,6 +80,7 @@ P25TX::P25TX() :
     m_poLen(0U),
     m_poPtr(0U),
     m_preambleCnt(P25_FIXED_DELAY),
+    m_txHang(P25_FIXED_TX_HANG),
     m_tailCnt(0U),
     m_symLevel3Adj(0U),
     m_symLevel1Adj(0U)
@@ -108,7 +109,7 @@ void P25TX::process()
         uint16_t space = io.getSpace();
 
         while (space > (4U * P25_RADIO_SYMBOL_LENGTH)) {
-            writeByte(P25_START_SYNC);
+            writeSilence();
 
             space -= 4U * P25_RADIO_SYMBOL_LENGTH;
             m_tailCnt--;
@@ -153,7 +154,7 @@ void P25TX::process()
             writeByte(c);
 
             space -= 4U * P25_RADIO_SYMBOL_LENGTH;
-            m_tailCnt = P25_FIXED_TAIL;
+            m_tailCnt = m_txHang;
 
             if (m_poPtr >= m_poLen) {
                 m_poPtr = 0U;
@@ -203,12 +204,27 @@ void P25TX::clear()
 /// <param name="preambleCnt">Count of preambles.</param>
 void P25TX::setPreambleCount(uint8_t preambleCnt)
 {
-    uint32_t preambles = (uint32_t)((float)preambleCnt / 0.2083F);
-    m_preambleCnt = P25_FIXED_DELAY + preambles;
+    m_preambleCnt = P25_FIXED_DELAY + preambleCnt;
 
     // clamp preamble count to 250ms maximum
     if (m_preambleCnt > 1200U)
         m_preambleCnt = 1200U;
+}
+
+/// <summary>
+/// Sets the Tx hang time.
+/// </summary>
+/// <param name="txHang">Transmit hang time in seconds.</param>
+void P25TX::setTxHang(uint8_t txHang)
+{
+    if (txHang > 0U)
+        m_txHang = txHang * 1200U;
+    else
+        m_txHang = P25_FIXED_TX_HANG;
+
+    // clamp tx hang count to 13s maximum
+    if (txHang > 13U)
+        m_txHang = 13U * 1200U;
 }
 
 /// <summary>

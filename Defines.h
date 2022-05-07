@@ -108,10 +108,10 @@ typedef unsigned long long  ulong64_t;
 #define ENABLE_P25
 
 // Normal Boxcar Filter for P25
-#define P25_RX_NORMAL_BOXCAR
+//#define P25_RX_NORMAL_BOXCAR
 
 // Narrow Boxcar Filter for P25
-//#define P25_RX_NARROW_BOXCAR
+#define P25_RX_NARROW_BOXCAR
 
 // Allow for the use of high quality external clock oscillators
 // The number is the frequency of the oscillator in Hertz.

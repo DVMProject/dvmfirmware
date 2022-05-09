@@ -94,6 +94,7 @@ const uint8_t SHORTLC_1K[] = { 0x33U, 0x3AU, 0xA0U, 0x30U, 0x00U, 0x55U, 0xA6U, 
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the CalDMR class.
 /// </summary>

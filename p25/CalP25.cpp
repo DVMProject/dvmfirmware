@@ -69,6 +69,7 @@ unsigned char LDU2_1K[] = { 0x00,
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the CalP25 class.
 /// </summary>

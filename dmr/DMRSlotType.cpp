@@ -228,6 +228,7 @@ const uint32_t DECODING_TABLE_1987[] = {
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the DMRSlotType class.
 /// </summary>
@@ -286,6 +287,7 @@ void DMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) co
 // ---------------------------------------------------------------------------
 //  Private Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 ///
 /// </summary>

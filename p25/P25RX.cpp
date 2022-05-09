@@ -54,6 +54,7 @@ const uint8_t NOAVEPTR = 99U;
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the P25RX class.
 /// </summary>
@@ -213,6 +214,7 @@ void P25RX::setCorrCount(uint8_t count)
 // ---------------------------------------------------------------------------
 //  Private Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Helper to process P25 samples.
 /// </summary>

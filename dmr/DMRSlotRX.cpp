@@ -57,6 +57,7 @@ const uint8_t CONTROL_DATA = 0x40U;
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the DMRSlotRX class.
 /// </summary>
@@ -287,6 +288,7 @@ void DMRSlotRX::setRxDelay(uint8_t delay)
 // ---------------------------------------------------------------------------
 //  Private Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Frame synchronization correlator.
 /// </summary>

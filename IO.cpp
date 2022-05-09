@@ -62,6 +62,7 @@ const uint16_t DC_OFFSET = 2048U;
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
 /// <summary>
 /// Initializes a new instance of the IO class.
 /// </summary>

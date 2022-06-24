@@ -423,13 +423,15 @@ void P25RX::processVoice(q15_t sample)
 #if defined(SEND_RSSI_DATA)
                 if (m_rssiCount > 0U) {
                     uint16_t rssi = m_rssiAccum / m_rssiCount;
-                    frame[217U] = (rssi >> 8) & 0xFFU;
-                    frame[218U] = (rssi >> 0) & 0xFFU;
+                    uint8_t rssiFrame[2];
+                    rssiFrame[0U] = (rssi >> 8) & 0xFFU;
+                    rssiFrame[1U] = (rssi >> 0) & 0xFFU;
 
-                    serial.writeP25Data(false, frame, P25_LDU_FRAME_LENGTH_BYTES + 3U);
+                    serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
+                    serial.writeRSSIData(rssiFrame, 2);
                 }
                 else {
-                    serial.writeP25Data(false, frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
+                    serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
                 }
 #else
                 serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);

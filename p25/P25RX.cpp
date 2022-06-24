@@ -287,6 +287,15 @@ void P25RX::processSample(q15_t sample)
 
                     frame[0U] = 0x01U; // has sync
                     serial.writeP25Data(frame, P25_TSDU_FRAME_LENGTH_BYTES + 1U);
+#if defined(SEND_RSSI_DATA)
+                if (m_rssiCount > 0U) {
+                    uint16_t rssi = m_rssiAccum / m_rssiCount;
+                    uint8_t rssiFrame[2];
+                    rssiFrame[0U] = (rssi >> 8) & 0xFFU;
+                    rssiFrame[1U] = (rssi >> 0) & 0xFFU;
+                    serial.writeRSSIData(rssiFrame, 2);
+                }
+#endif
                     reset();
                 }
                 return;
@@ -426,16 +435,10 @@ void P25RX::processVoice(q15_t sample)
                     uint8_t rssiFrame[2];
                     rssiFrame[0U] = (rssi >> 8) & 0xFFU;
                     rssiFrame[1U] = (rssi >> 0) & 0xFFU;
-
-                    serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
                     serial.writeRSSIData(rssiFrame, 2);
                 }
-                else {
-                    serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
-                }
-#else
-                serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
 #endif
+                serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
                 m_rssiAccum = 0U;
                 m_rssiCount = 0U;
 
@@ -506,6 +509,15 @@ void P25RX::processData(q15_t sample)
                 frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U; // set sync flag
                 serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
 
+#if defined(SEND_RSSI_DATA)
+                if (m_rssiCount > 0U) {
+                    uint16_t rssi = m_rssiAccum / m_rssiCount;
+                    uint8_t rssiFrame[2];
+                    rssiFrame[0U] = (rssi >> 8) & 0xFFU;
+                    rssiFrame[1U] = (rssi >> 0) & 0xFFU;
+                    serial.writeRSSIData(rssiFrame, 2);
+                }
+#endif
                 m_rssiAccum = 0U;
                 m_rssiCount = 0U;
 

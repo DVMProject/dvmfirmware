@@ -126,7 +126,7 @@ void NXDNTX::process()
             return;
 
         createData();
-        DEBUG2("P25TX: process(): poLen", m_poLen);
+        DEBUG2("NXDNTX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {

@@ -81,8 +81,7 @@ namespace nxdn
 
         uint16_t m_preambleCnt;
         uint32_t m_txHang;
-
-        uint32_t m_txCount;
+        uint32_t m_tailCnt;
 
         int8_t m_symLevel3Adj;
         int8_t m_symLevel1Adj;

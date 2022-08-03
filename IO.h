@@ -72,7 +72,7 @@ public:
 
     /// <summary>Sets various air interface parameters.</summary>
     void setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxLevel, uint8_t cwIdTXLevel, uint8_t dmrTXLevel,
-                       uint8_t p25TXLevel, uint16_t txDCOffset, uint16_t rxDCOffset);
+                       uint8_t p25TXLevel, uint8_t nxdnTXLevel, uint16_t txDCOffset, uint16_t rxDCOffset);
     /// <summary>Sets the software Rx sample level.</summary>
     void setRXLevel(uint8_t rxLevel);
 
@@ -116,6 +116,18 @@ private:
     q15_t m_rrc_0_2_State[70U];      // NoTaps + BlockSize - 1, 42 + 20 - 1 plus some spare
     q15_t m_boxcar_5_State[30U];     // NoTaps + BlockSize - 1, 6 + 20 - 1 plus some spare
 
+#if NXDN_BOXCAR_FILTER
+    arm_fir_instance_q15 m_boxcar_10_Filter;
+
+    q15_t m_boxcar_10_State[40U];   // NoTaps + BlockSize - 1, 10 + 20 - 1 plus some spare
+#else
+    arm_fir_instance_q15 m_nxdn_0_2_Filter;
+    arm_fir_instance_q15 m_nxdn_ISinc_Filter;
+    
+    q15_t m_nxdn_0_2_State[110U];   // NoTaps + BlockSize - 1, 82 + 20 - 1 plus some spare
+    q15_t m_nxdn_ISinc_State[60U];  // NoTaps + BlockSize - 1, 32 + 20 - 1 plus some spare
+#endif
+
     q31_t m_dcState[4];
 
     bool m_pttInvert;
@@ -124,6 +136,7 @@ private:
     q15_t m_cwIdTXLevel;
     q15_t m_dmrTXLevel;
     q15_t m_p25TXLevel;
+    q15_t m_nxdnTXLevel;
 
     uint16_t m_rxDCOffset;
     uint16_t m_txDCOffset;
@@ -160,6 +173,8 @@ private:
     void setDMRInt(bool on);
     /// <summary></summary>
     void setP25Int(bool on);
+    /// <summary></summary>
+    void setNXDNInt(bool on);
 
     /// <summary></summary>
     void delayInt(unsigned int dly);

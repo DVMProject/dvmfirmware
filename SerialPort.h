@@ -45,6 +45,8 @@ enum DVM_STATE {
     STATE_DMR = 1U,
     // Project 25
     STATE_P25 = 2U,
+    // NXDN
+    STATE_NXDN = 3U,
 
     // CW
     STATE_CW = 10U,
@@ -60,7 +62,8 @@ enum DVM_STATE {
     STATE_RSSI_CAL = 96U,
 
     STATE_P25_CAL = 97U,
-    STATE_DMR_CAL = 98U
+    STATE_DMR_CAL = 98U,
+    STATE_NXDN_CAL = 99U
 };
 
 enum DVM_COMMANDS {
@@ -89,6 +92,9 @@ enum DVM_COMMANDS {
     CMD_P25_DATA = 0x31U,
     CMD_P25_LOST = 0x32U,
     CMD_P25_CLEAR = 0x33U,
+
+    CMD_NXDN_DATA = 0x41U,
+    CMD_NXDN_LOST = 0x42U,
 
     CMD_ACK = 0x70U,
     CMD_NAK = 0x7FU,
@@ -129,6 +135,7 @@ enum CMD_REASON_CODE {
 
     RSN_DMR_DISABLED = 63U,
     RSN_P25_DISABLED = 64U,
+    RSN_NXDN_DISABLED = 65U
 };
 
 const uint8_t DVM_FRAME_START = 0xFEU;
@@ -161,6 +168,11 @@ public:
     /// <summary>Write lost P25 frame data to serial port.</summary>
     void writeP25Lost();
 
+    /// <summary>Write NXDN frame data to serial port.</summary>
+    void writeNXDNData(const uint8_t* data, uint8_t length);
+    /// <summary>Write lost NXDN frame data to serial port.</summary>
+    void writeNXDNLost();
+    
     /// <summary>Write calibration frame data to serial port.</summary>
     void writeCalData(const uint8_t* data, uint8_t length);
     /// <summary>Write RSSI frame data to serial port.</summary>

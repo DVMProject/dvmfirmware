@@ -53,6 +53,28 @@ static q15_t BOXCAR_5_FILTER[] = { 9600, 9600, 9600, 9600, 9600, 0 };
 #endif
 const uint16_t BOXCAR_5_FILTER_LEN = 6U;
 
+#if defined(NXDN_BOXCAR_FILTER)
+// One symbol boxcar filter
+static q15_t BOXCAR_10_FILTER[] = { 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000, 6000 };
+const uint16_t BOXCAR_10_FILTER_LEN = 10U;
+#else
+// Generated using rcosdesign(0.2, 8, 10, 'sqrt') in MATLAB
+static q15_t NXDN_0_2_FILTER[] = {
+    284, 198, 73, -78, -240, -393, -517, -590, -599, -533, -391, -181, 79, 364, 643, 880, 1041, 1097, 1026, 819,
+    483, 39, -477, -1016, -1516, -1915, -2150, -2164, -1914, -1375, -545, 557, 1886, 3376, 4946, 6502, 7946, 9184,
+    10134, 10731, 10935, 10731, 10134, 9184, 7946, 6502, 4946, 3376, 1886, 557, -545, -1375, -1914, -2164, -2150,
+    -1915, -1516, -1016, -477, 39, 483, 819, 1026, 1097, 1041, 880, 643, 364, 79, -181, -391, -533, -599, -590,
+    -517, -393, -240, -78, 73, 198, 284, 0
+};
+const uint16_t NXDN_0_2_FILTER_LEN = 82U;
+
+static q15_t NXDN_ISINC_FILTER[] = {
+    790, -1085, -1073, -553, 747, 2341, 3156, 2152, -893, -4915, -7834, -7536, -3102, 4441, 12354, 17394, 17394,
+    12354, 4441, -3102, -7536, -7834, -4915, -893, 2152, 3156, 2341, 747, -553, -1073, -1085, 790
+};
+const uint16_t NXDN_ISINC_FILTER_LEN = 32U;
+#endif
+
 // Generated using [b, a] = butter(1, 0.001) in MATLAB
 static q31_t DC_FILTER[] = { 3367972, 0, 3367972, 0, 2140747704, 0 }; // {b0, 0, b1, b2, -a1, -a2}
 const uint32_t DC_FILTER_STAGES = 1U; // One Biquad stage
@@ -106,6 +128,25 @@ IO::IO() :
     m_boxcar_5_Filter.pState = m_boxcar_5_State;
     m_boxcar_5_Filter.pCoeffs = BOXCAR_5_FILTER;
 
+#if NXDN_BOXCAR_FILTER
+    ::memset(m_boxcar_10_State, 0x00U, 40U * sizeof(q15_t));
+    
+    m_boxcar_10_Filter.numTaps = BOXCAR10_FILTER_LEN;
+    m_boxcar_10_Filter.pState  = m_boxcar_10_State;
+    m_boxcar_10_Filter.pCoeffs = BOXCAR10_FILTER;
+#else
+    ::memset(m_nxdn_0_2_State, 0x00U, 110U * sizeof(q15_t));
+    ::memset(m_nxdn_ISinc_State, 0x00U, 60U * sizeof(q15_t));
+
+    m_nxdn_0_2_Filter.numTaps = NXDN_0_2_FILTER_LEN;
+    m_nxdn_0_2_Filter.pState  = m_nxdn_0_2_State;
+    m_nxdn_0_2_Filter.pCoeffs = NXDN_0_2_FILTER;
+    
+    m_nxdn_ISinc_Filter.numTaps = NXDN_ISINC_FILTER_LEN;
+    m_nxdn_ISinc_Filter.pState  = m_nxdn_ISinc_State;
+    m_nxdn_ISinc_Filter.pCoeffs = NXDN_ISINC_FILTER;
+#endif
+
     m_dcFilter.numStages = DC_FILTER_STAGES;
     m_dcFilter.pState = m_dcState;
     m_dcFilter.pCoeffs = DC_FILTER;
@@ -139,8 +180,8 @@ void IO::process()
     if (m_started) {
         // Two seconds timeout
         if (m_watchdog >= 48000U) {
-            if (m_modemState == STATE_DMR) {
-                if (m_tx)
+            if (m_modemState == STATE_DMR || m_modemState == STATE_P25 || m_modemState == STATE_NXDN) {
+                if (m_modemState == STATE_DMR && m_tx)
                     dmrTX.setStart(false);
                 m_modemState = STATE_IDLE;
                 setMode();
@@ -243,6 +284,30 @@ void IO::process()
                         dmrDMORX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
                 }
             }
+
+            /* Next Generation Digital Narrowband */
+            if (m_nxdnEnable) {
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
+#if NXDN_BOXCAR_FILTER
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_boxcar_10_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_boxcar_10_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+#else
+                q15_t c4fmRCSamples[RX_BLOCK_SIZE];
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_nxdn_0_2_Filter, dcSamples, c4fmRCSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_nxdn_0_2_Filter, samples, c4fmRCSamples, RX_BLOCK_SIZE);
+                }
+
+                ::arm_fir_fast_q15(&m_nxdn_ISinc_Filter, c4fmRCSamples, c4fmSamples, RX_BLOCK_SIZE);
+#endif
+                nxdnRX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
+            }
         }
         else if (m_modemState == STATE_DMR) {        // DMR State
             /** Digital Mobile Radio */
@@ -311,6 +376,9 @@ void IO::write(DVM_STATE mode, q15_t* samples, uint16_t length, const uint8_t* c
     case STATE_P25:
         txLevel = m_p25TXLevel;
         break;
+    case STATE_NXDN:
+        txLevel = m_nxdnTXLevel;
+        break;
     default:
         txLevel = m_cwIdTXLevel;
         break;
@@ -369,6 +437,7 @@ void IO::setMode()
 {
     setDMRInt(m_modemState == STATE_DMR);
     setP25Int(m_modemState == STATE_P25);
+    setNXDNInt(m_modemState == STATE_NXDN);
 }
 
 /// <summary>
@@ -397,10 +466,11 @@ void IO::setTransmit()
 /// <param name="cwIdTXLevel"></param>
 /// <param name="dmrTXLevel"></param>
 /// <param name="p25TXLevel"></param>
+/// <param name="nxdnTXLevel"></param>
 /// <param name="txDCOffset"></param>
 /// <param name="rxDCOffset"></param>
 void IO::setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxLevel, uint8_t cwIdTXLevel, uint8_t dmrTXLevel,
-                       uint8_t p25TXLevel, uint16_t txDCOffset, uint16_t rxDCOffset)
+                       uint8_t p25TXLevel, uint8_t nxdnTXLevel, uint16_t txDCOffset, uint16_t rxDCOffset)
 {
     m_pttInvert = pttInvert;
 
@@ -408,6 +478,7 @@ void IO::setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxL
     m_cwIdTXLevel = q15_t(cwIdTXLevel * 128);
     m_dmrTXLevel = q15_t(dmrTXLevel * 128);
     m_p25TXLevel = q15_t(p25TXLevel * 128);
+    m_nxdnTXLevel =  q15_t(nxdnTXLevel * 128);
 
     m_rxDCOffset = DC_OFFSET + rxDCOffset;
     m_txDCOffset = DC_OFFSET + txDCOffset;
@@ -420,6 +491,7 @@ void IO::setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxL
     if (txInvert) {
         m_dmrTXLevel = -m_dmrTXLevel;
         m_p25TXLevel = -m_p25TXLevel;
+        m_nxdnTXLevel = -m_nxdnTXLevel;
     }
 }
 
@@ -509,6 +581,7 @@ void IO::selfTest()
 
         setDMRInt(ledValue);
         setP25Int(ledValue);
+        setNXDNInt(ledValue);
 
         delayInt(250);
     }
@@ -518,6 +591,7 @@ void IO::selfTest()
     setCOSInt(false);
     setDMRInt(false);
     setP25Int(false);
+    setNXDNInt(false);
     delayInt(250);
 
     setLEDInt(true);
@@ -546,25 +620,43 @@ void IO::selfTest()
 
     setLEDInt(false);
     setCOSInt(false);
+    setDMRInt(false);
+    setP25Int(false);
+    setNXDNInt(true);
+    delayInt(250);
+
+    setLEDInt(false);
+    setCOSInt(false);
+    setDMRInt(false);
+    setP25Int(true);
+    setNXDNInt(false);
+    delayInt(250);
+
+    setLEDInt(false);
+    setCOSInt(false);
     setDMRInt(true);
     setP25Int(false);
+    setNXDNInt(false);
     delayInt(250);
 
     setLEDInt(false);
     setCOSInt(true);
     setDMRInt(false);
     setP25Int(false);
+    setNXDNInt(false);
     delayInt(250);
 
     setLEDInt(true);
     setCOSInt(false);
     setDMRInt(false);
     setP25Int(false);
+    setNXDNInt(false);
     delayInt(250);
 
     setLEDInt(false);
     setCOSInt(false);
     setDMRInt(false);
     setP25Int(false);
+    setNXDNInt(false);
     delayInt(250);
 }

@@ -49,6 +49,9 @@
 #include "p25/P25RX.h"
 #include "p25/P25TX.h"
 #include "p25/CalP25.h"
+#include "nxdn/NXDNRX.h"
+#include "nxdn/NXDNTX.h"
+#include "nxdn/CalNXDN.h"
 #include "CalRSSI.h"
 #include "CWIdTX.h"
 #include "IO.h"
@@ -85,6 +88,7 @@ extern DVM_STATE m_modemState;
 
 extern bool m_dmrEnable;
 extern bool m_p25Enable;
+extern bool m_nxdnEnable;
 
 extern bool m_dcBlockerEnable;
 extern bool m_cosLockoutEnable;
@@ -110,9 +114,14 @@ extern dmr::DMRDMOTX dmrDMOTX;
 extern p25::P25RX p25RX;
 extern p25::P25TX p25TX;
 
+/** P25 BS */
+extern nxdn::NXDNRX nxdnRX;
+extern nxdn::NXDNTX nxdnTX;
+
 /** Calibration */
 extern dmr::CalDMR calDMR;
 extern p25::CalP25 calP25;
+extern nxdn::CalNXDN CalNXDN;
 extern CalRSSI calRSSI;
 
 /** CW */

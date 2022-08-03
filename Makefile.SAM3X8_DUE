@@ -23,7 +23,7 @@ CXXFLAGS=$(COMMON_FLAGS) -fno-rtti -fno-exceptions -std=gnu++11 -Wall -Wextra
 
 BINNAME=dvm-firmware_due
 
-CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp)
+CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp) $(wildcard ./nxdn/*.cpp)
 CXXOBJ=$(addsuffix .o,$(addprefix $(OBJDIR)/,$(notdir $(CXXSRC))))
 
 CORESRCXX=$(shell ls ${SAM}/cores/arduino/*.cpp ${SAM}/cores/arduino/USB/*.cpp  ${SAM}/variants/arduino_due_x/variant.cpp)

@@ -138,6 +138,10 @@
 #define PORT_LED          GPIOB
 #define RCC_Per_LED       RCC_AHB1Periph_GPIOB
 
+#define PIN_NXDN          GPIO_Pin_9
+#define PORT_NXDN         GPIOB
+#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+
 #define PIN_P25           GPIO_Pin_8
 #define PORT_P25          GPIOB
 #define RCC_Per_P25       RCC_AHB1Periph_GPIOB
@@ -197,6 +201,10 @@
 #define PIN_LED           GPIO_Pin_3
 #define PORT_LED          GPIOB
 #define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+
+#define PIN_NXDN          GPIO_Pin_9
+#define PORT_NXDN         GPIOB
+#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
 
 #define PIN_P25           GPIO_Pin_8
 #define PORT_P25          GPIOB
@@ -543,6 +551,13 @@ void IO::setDMRInt(bool on)
 void IO::setP25Int(bool on)
 {
     GPIO_WriteBit(PORT_P25, PIN_P25, on ? Bit_SET : Bit_RESET);
+}
+
+/// <summary></summary>
+/// <param name="on"></param>
+void IO::setNXDNInt(bool on)
+{
+    GPIO_WriteBit(PORT_NXDN, PIN_NXDN, on ? Bit_SET : Bit_RESET);
 }
 
 /// <summary></summary>

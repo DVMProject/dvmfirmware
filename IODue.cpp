@@ -281,6 +281,13 @@ void IO::setP25Int(bool on)
 }
 
 /// <summary></summary>
+/// <param name="on"></param>
+void IO::setNXDNInt(bool on)
+{
+    /* stub */
+}
+
+/// <summary></summary>
 /// <param name="dly"></param>
 void IO::delayInt(unsigned int dly)
 {

@@ -39,7 +39,7 @@ SIZE=arm-none-eabi-size
 A2L=arm-none-eabi-addr2line
 
 # Build object lists
-CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp)
+CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp) $(wildcard ./nxdn/*.cpp)
 CSRC_STD_F4=$(wildcard $(STD_LIB_F4)/*.c)
 SYS_F4=$(wildcard $(SYS_DIR_F4)/*.c)
 STARTUP_F4=$(wildcard $(STARTUP_DIR_F4)/*.c)
@@ -81,6 +81,7 @@ $(OBJDIR_F4):
 	mkdir $@
 	mkdir $@/dmr
 	mkdir $@/p25
+	mkdir $@/nxdn
 
 $(BINDIR)/$(BINBIN_F4): $(BINDIR)/$(BINELF_F4)
 	$(CP) -O binary $< $@
@@ -102,4 +103,3 @@ clean-objs:
 clean:
 	test ! -d $(OBJDIR_F4) || rm -rf $(OBJDIR_F4)
 	rm -f $(BINDIR)/*.bin $(BINDIR)/*.elf
-

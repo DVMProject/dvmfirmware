@@ -107,11 +107,17 @@ typedef unsigned long long  ulong64_t;
 // Allow the P25 protocol
 #define ENABLE_P25
 
+// Allow the NXDN protocol
+#define ENABLE_NXDN
+
 // Normal Boxcar Filter for P25
 //#define P25_RX_NORMAL_BOXCAR
 
 // Narrow Boxcar Filter for P25
 #define P25_RX_NARROW_BOXCAR
+
+// Boxcar Filter for NXDN
+//#define NXDN_BOXCAR_FILTER
 
 // Allow for the use of high quality external clock oscillators
 // The number is the frequency of the oscillator in Hertz.

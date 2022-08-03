@@ -114,7 +114,7 @@ extern dmr::DMRDMOTX dmrDMOTX;
 extern p25::P25RX p25RX;
 extern p25::P25TX p25TX;
 
-/** P25 BS */
+/** NXDN BS */
 extern nxdn::NXDNRX nxdnRX;
 extern nxdn::NXDNTX nxdnTX;
 

@@ -77,7 +77,7 @@ NXDNTX::NXDNTX() :
     m_poPtr(0U),
     m_preambleCnt(240U), // 200ms
     m_txHang(3000U),     // 5s
-    m_txCount(0U),
+    m_tailCnt(0U),
     m_symLevel3Adj(0U),
     m_symLevel1Adj(0U)
 {
@@ -99,8 +99,34 @@ NXDNTX::NXDNTX() :
 /// </summary>
 void NXDNTX::process()
 {
-    if (m_poLen == 0U && m_fifo.getData() > 0U) {
+    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
+        // transmit silence until the hang timer has expired
+        uint16_t space = io.getSpace();
+
+        while (space > (4U * NXDN_RADIO_SYMBOL_LENGTH)) {
+            writeSilence();
+
+            space -= 4U * NXDN_RADIO_SYMBOL_LENGTH;
+            m_tailCnt--;
+
+            if (m_tailCnt == 0U)
+                return;
+            if (m_fifo.getData() > 0U) {
+                m_tailCnt = 0U;
+                return;
+            }
+        }
+
+        if (m_fifo.getData() == 0U && m_poLen == 0U)
+            return;
+    }
+
+    if (m_poLen == 0U) {
+        if (m_fifo.getData() == 0U)
+            return;
+
         createData();
+        DEBUG2("P25TX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {
@@ -113,26 +139,13 @@ void NXDNTX::process()
 
             space -= 4U * NXDN_RADIO_SYMBOL_LENGTH;
             if (m_duplex)
-                m_txCount = m_txHang;
+                m_tailCnt = m_txHang;
 
             if (m_poPtr >= m_poLen) {
                 m_poPtr = 0U;
                 m_poLen = 0U;
                 return;
             }
-        }
-    } else if (m_txCount > 0U) {
-        // Transmit silence until the hang timer has expired.
-        uint16_t space = io.getSpace();
-
-        while (space > (4U * NXDN_RADIO_SYMBOL_LENGTH)) {
-            writeSilence();
-
-            space -= 4U * NXDN_RADIO_SYMBOL_LENGTH;
-            m_txCount--;
-
-            if (m_txCount == 0U)
-                return;
         }
     }
 }

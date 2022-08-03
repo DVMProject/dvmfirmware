@@ -982,6 +982,7 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
 
     p25TX.setPreambleCount(fdmaPreamble);
     dmrDMOTX.setPreambleCount(fdmaPreamble);
+    //nxdnTX.setPreambleCount(fdmaPreamble);
 
     p25RX.setNAC(nac);
     p25RX.setCorrCount(p25CorrCount);

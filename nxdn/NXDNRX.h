@@ -101,9 +101,6 @@ namespace nxdn
         void calculateLevels(uint16_t start, uint16_t count);
         /// <summary></summary>
         void samplesToBits(uint16_t start, uint16_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold);
-
-        /// <summary></summary>
-        void writeRSSIData(uint8_t* data);
     };
 } // namespace nxdn
 

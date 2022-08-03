@@ -362,6 +362,12 @@ void IO::initInt()
     GPIO_InitStruct.GPIO_Pin = PIN_P25;
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_Init(PORT_P25, &GPIO_InitStruct);
+
+    // NXDN pin
+    RCC_AHB1PeriphClockCmd(RCC_Per_NXDN, ENABLE);
+    GPIO_InitStruct.GPIO_Pin = PIN_NXDN;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_Init(PORT_NXDN, &GPIO_InitStruct);
 }
 
 /// <summary>

@@ -448,6 +448,11 @@ void SerialPort::writeP25Lost()
     writeInt(1U, reply, 3);
 }
 
+/// <summary>
+/// Write NXDN frame data to serial port.
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
 void SerialPort::writeNXDNData(const uint8_t* data, uint8_t length)
 {
     if (m_modemState != STATE_NXDN && m_modemState != STATE_IDLE)
@@ -471,6 +476,9 @@ void SerialPort::writeNXDNData(const uint8_t* data, uint8_t length)
     writeInt(1U, reply, count);
 }
 
+/// <summary>
+/// Write lost NXDN frame data to serial port.
+/// </summary>
 void SerialPort::writeNXDNLost()
 {
     if (m_modemState != STATE_NXDN && m_modemState != STATE_IDLE)

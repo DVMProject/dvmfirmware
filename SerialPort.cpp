@@ -69,7 +69,7 @@
 #define concat(a, b, c) a " (build " b " " c ")"
 const char HARDWARE[] = concat(DESCRIPTION, __TIME__, __DATE__);
 
-const uint8_t PROTOCOL_VERSION = 2U;
+const uint8_t PROTOCOL_VERSION = 3U;
 
 // ---------------------------------------------------------------------------
 //  Public Class Members

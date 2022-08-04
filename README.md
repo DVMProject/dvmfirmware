@@ -1,6 +1,6 @@
 # Digital Voice Modem Firmware
 
-The DVM firmware provides the embedded microcontroller implementation of a mixed-mode DMR/P25 or dedicated-mode DMR or P25 repeater system. The firmware; is the portion of a complete Over-The-Air modem implementation that connects directly to an appropriate air interface (usually a analog radio) and performs the actual reception and creation of the digitial waveforms.
+The DVM firmware provides the embedded microcontroller implementation of a mixed-mode DMR, P25 and/or NXDN or dedicated-mode DMR, P25 or NXDN repeater system. The firmware; is the portion of a complete Over-The-Air modem implementation that connects directly to an appropriate air interface (usually a analog radio) and performs the actual reception and creation of the digitial waveforms.
 
 This project is a direct fork of the MMDVM (https://github.com/g4klx/MMDVM) project.
 
@@ -38,6 +38,10 @@ Use the ```make``` command to build the firmware, choosing the appropriate makef
 ## Firmware installation
 
 Some devices can be used on top on a RPi attached via the GPIO port or standalone and others are connected via USB. Both variants require different handling of compiling and uploading the firmware, examples on flashing devices are mostly not included here because the methods to flash vary from device to device.
+
+## Notes
+
+**NXDN Support Note**: NXDN support is currently experimental.
 
 ## License
 

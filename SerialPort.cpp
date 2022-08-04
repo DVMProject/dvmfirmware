@@ -316,7 +316,7 @@ void SerialPort::process()
                     }
                     break;
 
-                /* Next Generation Digital Narrowband */
+                /** Next Generation Digital Narrowband */
                 case CMD_NXDN_DATA:
                     if (m_nxdnEnable) {
                         if (m_modemState == STATE_IDLE || m_modemState == STATE_NXDN)

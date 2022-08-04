@@ -285,7 +285,7 @@ void IO::process()
                 }
             }
 
-            /* Next Generation Digital Narrowband */
+            /** Next Generation Digital Narrowband */
             if (m_nxdnEnable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
 #if NXDN_BOXCAR_FILTER

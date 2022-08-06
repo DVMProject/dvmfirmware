@@ -101,6 +101,13 @@ public:
     /// <summary></summary>
     void selfTest();
 
+#if I2C_ENABLED
+    /// <summary>Writes a buffer of data to the I2C bus at the specified address</summary>
+    void I2C_Write(uint8_t addr, uint8_t *buf, uint8_t count);
+    /// <summary>Reads data from the I2C bus into the buffer.</summary>
+    uint8_t I2C_Read(uint8_t addr, uint8_t *buf);
+#endif
+
 private:
     bool m_started;
 

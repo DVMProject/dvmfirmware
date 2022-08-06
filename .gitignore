@@ -41,6 +41,8 @@ package/
 # Compiled binary files
 *.exe
 *.dll
+*.bin
+*.elf
 
 # Compiled Object files
 *.slo

@@ -68,6 +68,7 @@ const q15_t NXDN_LEVELD = -735;
 /// </summary>
 NXDNTX::NXDNTX() :
     m_fifo(NXDN_TX_BUFFER_LEN),
+    m_state(NXDNTXSTATE_NORMAL),
     m_modFilter(),
     m_sincFilter(),
     m_modState(),
@@ -99,7 +100,8 @@ NXDNTX::NXDNTX() :
 /// </summary>
 void NXDNTX::process()
 {
-    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U) {
+    if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U &&
+        m_state != NXDNTXSTATE_CAL) {
         // transmit silence until the hang timer has expired
         uint16_t space = io.getSpace();
 
@@ -122,10 +124,14 @@ void NXDNTX::process()
     }
 
     if (m_poLen == 0U) {
+        if (m_state == NXDNTXSTATE_CAL)
+            m_tailCnt = 0U;
+
         if (m_fifo.getData() == 0U)
             return;
 
         createData();
+
         DEBUG2("NXDNTX: process(): poLen", m_poLen);
     }
 
@@ -138,8 +144,7 @@ void NXDNTX::process()
             writeByte(c);
 
             space -= 4U * NXDN_RADIO_SYMBOL_LENGTH;
-            if (m_duplex)
-                m_tailCnt = m_txHang;
+            m_tailCnt = m_txHang;
 
             if (m_poPtr >= m_poLen) {
                 m_poPtr = 0U;
@@ -203,7 +208,7 @@ void NXDNTX::setPreambleCount(uint8_t preambleCnt)
 /// <param name="txHang">Transmit hang time in seconds.</param>
 void NXDNTX::setTxHang(uint8_t txHang)
 {
-    m_txHang = txHang * 600U;
+    m_txHang = txHang * NXDN_FIXED_TX_HANG;
 }
 
 /// <summary>
@@ -227,6 +232,15 @@ void NXDNTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
         m_symLevel1Adj = 0;
     if (m_symLevel1Adj < -128)
         m_symLevel1Adj = 0;
+}
+
+/// <summary>
+/// Helper to set the calibration state for Tx.
+/// </summary>
+/// <param name="start"></param>
+void NXDNTX::setCal(bool start)
+{
+    m_state = start ? NXDNTXSTATE_CAL : NXDNTXSTATE_NORMAL;
 }
 
 /// <summary>
@@ -256,9 +270,8 @@ void NXDNTX::createData()
         m_poBuffer[m_poLen++] = NXDN_PREAMBLE[2U];
     }
     else {
-        uint8_t length = m_fifo.get();
-        DEBUG3("P25TX: createData(): dataLength/fifoSpace", length, m_fifo.getSpace());
-        for (uint8_t i = 0U; i < length; i++) {
+        DEBUG2("NXDNTX: createData(): fifoSpace", m_fifo.getSpace());
+        for (uint8_t i = 0U; i < NXDN_FRAME_LENGTH_BYTES; i++) {
             m_poBuffer[m_poLen++] = m_fifo.get();
         }
     }

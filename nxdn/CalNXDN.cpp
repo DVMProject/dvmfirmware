@@ -88,17 +88,27 @@ CalNXDN::CalNXDN() :
 /// </summary>
 void CalNXDN::process()
 {
-    nxdnTX.process();
+    if (m_transmit) {
+        nxdnTX.setCal(true);
+        nxdnTX.process();
+    }
+    else {
+        nxdnTX.setCal(false);
+    }
 
     uint16_t space = nxdnTX.getSpace();
     if (space < 1U)
         return;
 
+    if (m_audioSeq > 3U) {
+        m_audioSeq = 0U;
+    }
+
     switch (m_state) {
     case NXDNCAL1K_TX:
         nxdnTX.writeData(NXDN_CAL1K[m_audioSeq], NXDN_FRAME_LENGTH_BYTES + 1U);
-        m_audioSeq = (m_audioSeq + 1U) % 4U;
-        if(!m_transmit)
+        m_audioSeq++;
+        if (!m_transmit)
             m_state = NXDNCAL1K_IDLE;
         break;
     default:

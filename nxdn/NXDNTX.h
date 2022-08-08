@@ -38,6 +38,17 @@
 namespace nxdn
 {
     // ---------------------------------------------------------------------------
+    //  Constants
+    // ---------------------------------------------------------------------------
+
+    #define NXDN_FIXED_TX_HANG 600
+
+    enum NXDNTXSTATE {
+        NXDNTXSTATE_NORMAL,
+        NXDNTXSTATE_CAL
+    };
+
+    // ---------------------------------------------------------------------------
     //  Class Declaration
     //      Implements transmitter logic for NXDN mode operation.
     // ---------------------------------------------------------------------------
@@ -62,12 +73,16 @@ namespace nxdn
         void setTxHang(uint8_t txHang);
         /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
         void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
+        /// <summary>Helper to set the calibration state for Tx.</summary>
+        void setCal(bool start);
 
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
         uint8_t getSpace() const;
 
     private:
         SerialBuffer m_fifo;
+
+        NXDNTXSTATE m_state;
 
         arm_fir_interpolate_instance_q15 m_modFilter;
         arm_fir_instance_q15 m_sincFilter;

@@ -353,6 +353,48 @@ void SerialPort::process()
 }
 
 /// <summary>
+/// Helper to check if the modem is in a calibration state.
+/// </summary>
+/// <param name="state"></param>
+/// <returns></returns>
+bool SerialPort::isCalState(DVM_STATE state)
+{
+    // calibration mode check
+    if (state == STATE_P25_CAL_1K ||
+        state == STATE_DMR_DMO_CAL_1K || state == STATE_DMR_CAL_1K ||
+        state == STATE_DMR_LF_CAL || state == STATE_P25_LF_CAL ||
+        state == STATE_RSSI_CAL ||
+        state == STATE_P25_CAL || state == STATE_DMR_CAL || state == STATE_NXDN_CAL) {
+        return true;
+    }
+
+    return false;
+}
+
+/// <summary>
+/// Helper to determine digital mode if the modem is in a calibration state.
+/// </summary>
+/// <param name="state"></param>
+/// <returns></returns>
+DVM_STATE SerialPort::calRelativeState(DVM_STATE state)
+{
+    if (isCalState(state)) {
+        if (state == STATE_DMR_DMO_CAL_1K || state == STATE_DMR_CAL_1K ||
+            state == STATE_DMR_LF_CAL || state == STATE_DMR_CAL ||
+            state == STATE_RSSI_CAL) {
+            return STATE_DMR;
+        } else if (state == STATE_P25_CAL_1K || state == STATE_P25_LF_CAL ||
+            state == STATE_P25_CAL) {
+            return STATE_P25;
+        } else if (state == STATE_NXDN_CAL) {
+            return STATE_NXDN;
+        }
+    }
+
+    return STATE_CW;
+}
+
+/// <summary>
 /// Write DMR frame data to serial port.
 /// </summary>
 /// <param name="slot"></param>

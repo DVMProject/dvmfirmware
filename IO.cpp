@@ -435,9 +435,17 @@ void IO::setADCDetection(bool detect)
 /// </summary>
 void IO::setMode()
 {
-    setDMRInt(m_modemState == STATE_DMR);
-    setP25Int(m_modemState == STATE_P25);
-    setNXDNInt(m_modemState == STATE_NXDN);
+    DVM_STATE relativeState = m_modemState;
+
+    if (serial.isCalState(m_modemState)) {
+        relativeState = serial.calRelativeState(m_modemState);
+    }
+
+    DEBUG3("IO::setMode(): setting RF hardware", m_modemState, relativeState);
+
+    setDMRInt(relativeState == STATE_DMR);
+    setP25Int(relativeState == STATE_P25);
+    setNXDNInt(relativeState == STATE_NXDN);
 }
 
 /// <summary>

@@ -787,7 +787,7 @@ void SerialPort::getStatus()
 
     // send all sorts of interesting internal values
     reply[0U] = DVM_FRAME_START;
-    reply[1U] = 11U;
+    reply[1U] = 12U;
     reply[2U] = CMD_GET_STATUS;
 
     reply[3U] = 0x00U;

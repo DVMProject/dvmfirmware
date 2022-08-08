@@ -335,15 +335,21 @@ bool NXDNRX::correlateSync()
                 errs += countBits8((sync[i] & NXDN_FSW_BYTES_MASK[i]) ^ NXDN_FSW_BYTES[i]);
 
             if (errs <= maxErrs) {
-                m_maxCorr   = corr;
+                DEBUG2("NXDNRX: correlateSync(): correlateSync errs", errs);
+
+                DEBUG4("NXDNRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
+
+                m_maxCorr = corr;
                 m_lostCount = MAX_FSW_FRAMES;
-                m_fswPtr    = m_dataPtr;
+                m_fswPtr = m_dataPtr;
 
                 m_startPtr = startPtr;
 
                 m_endPtr = m_dataPtr + NXDN_FRAME_LENGTH_SAMPLES - NXDN_FSW_LENGTH_SAMPLES - 1U;
                 if (m_endPtr >= NXDN_FRAME_LENGTH_SAMPLES)
                     m_endPtr -= NXDN_FRAME_LENGTH_SAMPLES;
+
+                DEBUG4("NXDNRX: correlateSync(): dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
 
                 return true;
             }

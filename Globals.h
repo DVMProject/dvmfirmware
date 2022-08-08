@@ -121,7 +121,7 @@ extern nxdn::NXDNTX nxdnTX;
 /** Calibration */
 extern dmr::CalDMR calDMR;
 extern p25::CalP25 calP25;
-extern nxdn::CalNXDN CalNXDN;
+extern nxdn::CalNXDN calNXDN;
 extern CalRSSI calRSSI;
 
 /** CW */

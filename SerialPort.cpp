@@ -322,7 +322,7 @@ void SerialPort::process()
                 case CMD_NXDN_DATA:
                     if (m_nxdnEnable) {
                         if (m_modemState == STATE_IDLE || m_modemState == STATE_NXDN)
-                            err = p25TX.writeData(m_buffer + 3U, m_len - 3U);
+                            err = nxdnTX.writeData(m_buffer + 3U, m_len - 3U);
                     }
                     if (err == RSN_OK) {
                         if (m_modemState == STATE_IDLE)

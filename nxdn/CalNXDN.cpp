@@ -108,8 +108,10 @@ void CalNXDN::process()
     case NXDNCAL1K_TX:
         nxdnTX.writeData(NXDN_CAL1K[m_audioSeq], NXDN_FRAME_LENGTH_BYTES + 1U);
         m_audioSeq++;
-        if (!m_transmit)
+        if (!m_transmit) {
             m_state = NXDNCAL1K_IDLE;
+            m_audioSeq = 0U;
+        }
         break;
     default:
         m_state = NXDNCAL1K_IDLE;

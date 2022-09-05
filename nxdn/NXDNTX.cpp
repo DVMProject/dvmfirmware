@@ -154,6 +154,10 @@ void NXDNTX::process()
     }
 
     if (m_poLen > 0U) {
+        if (!m_tx) {
+            io.setTransmit();
+        }
+
         uint16_t space = io.getSpace();
 
         while (space > (4U * NXDN_RADIO_SYMBOL_LENGTH)) {

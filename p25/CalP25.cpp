@@ -110,8 +110,9 @@ void CalP25::process()
                 break;
             case P25CAL1K_LDU2:
                 p25TX.writeData(LDU2_1K, P25_LDU_FRAME_LENGTH_BYTES + 1U);
-                if (!m_transmit)
+                if (!m_transmit) {
                     m_state = P25CAL1K_IDLE;
+                }
                 else
                     m_state = P25CAL1K_LDU1;
                 break;

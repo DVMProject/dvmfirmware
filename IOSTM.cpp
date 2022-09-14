@@ -88,6 +88,10 @@
 #define PORT_DMR          GPIOC
 #define RCC_Per_DMR       RCC_AHB1Periph_GPIOC
 
+#define PIN_NXDN          GPIO_Pin_9
+#define PORT_NXDN         GPIOB
+#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+
 #define PIN_EXT_CLK       GPIO_Pin_15
 #define SRC_EXT_CLK       GPIO_PinSource15
 #define PORT_EXT_CLK      GPIOA

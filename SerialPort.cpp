@@ -295,6 +295,20 @@ void SerialPort::process()
                     }
                     break;
 
+                case CMD_DMR_CACH_AT_CTRL:
+                    if (m_dmrEnable) {
+                        err = RSN_INVALID_REQUEST;
+                        if (m_len == 4U) {
+                            dmrTX.setIgnoreCACH_AT(m_buffer[3U]);
+                            err = RSN_OK;
+                        }
+                    }
+                    if (err != RSN_OK) {
+                        DEBUG2("SerialPort: process(): received invalid DMR CACH AT Control", err);
+                        sendNAK(err);
+                    }
+                    break;
+
                 /** Project 25 */
                 case CMD_P25_DATA:
                     if (m_p25Enable) {

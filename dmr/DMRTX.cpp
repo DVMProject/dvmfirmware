@@ -14,6 +14,7 @@
 *   Copyright (C) 2009-2017 by Jonathan Naylor G4KLX
 *   Copyright (C) 2016 by Colin Durbridge G4EML
 *   Copyright (C) 2017 by Andy Uribe CA6JAU
+*   Copyright (C) 2022 by Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -96,7 +97,8 @@ DMRTX::DMRTX() :
     m_abortCount(),
     m_abort(),
     m_symLevel3Adj(0U),
-    m_symLevel1Adj(0U)
+    m_symLevel1Adj(0U),
+    m_cachATControl(0U),
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
@@ -337,6 +339,25 @@ uint8_t DMRTX::getSpace2() const
 }
 
 /// <summary>
+/// Sets the ignore flags for setting the CACH Access Type bit.
+/// </summary>
+/// <param name="slot"></param>
+void DMRTX::setIgnoreCACH_AT(uint8_t slot)
+{
+    m_cachATControl = slot;
+    if (m_cachATControl > 3U) {
+        m_cachATControl = 0U;
+    }
+}
+
+/// <summary>
+/// Sets the DMR color code.
+/// </summary>
+/// <param name="colorCode">Color code.</param>
+void DMRTX::setColorCode(uint8_t colorCode)
+{
+
+/// <summary>
 /// Sets the DMR color code.
 /// </summary>
 /// <param name="colorCode">Color code.</param>
@@ -488,8 +509,16 @@ void DMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
     m_markBuffer[2U] = rxSlotIndex == 1U ? MARK_SLOT1 : MARK_SLOT2;
 
     bool at = false;
-    if (m_frameCount >= STARTUP_COUNT)
-        at = m_fifo[rxSlotIndex].getData() > 0U;
+    if (m_frameCount >= STARTUP_COUNT) {
+        if (m_cachATControl == 0U) {
+            at = m_fifo[rxSlotIndex].getData() > 0U;
+        } else {
+            if (m_cachATControl != 3U && m_cachATControl != (rxSlotIndex + 1U)) {
+                at = m_fifo[rxSlotIndex].getData() > 0U;
+            }
+        }
+    }
+
     bool tc = txSlotIndex == 1U;
     bool ls0 = true;              // For 1 and 2
     bool ls1 = true;

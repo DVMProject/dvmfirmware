@@ -13,6 +13,7 @@
 /*
 *   Copyright (C) 2015,2016,2017 by Jonathan Naylor G4KLX
 *   Copyright (C) 2016 by Colin Durbridge G4EML
+*   Copyright (C) 2021-2022 by Bryan Biedenkapp N2PLL
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -83,6 +84,8 @@ namespace dmr
         /// <summary>Helper to get how much space the slot 2 ring buffer has for samples.</summary>
         uint8_t getSpace2() const;
 
+        /// <summary>Sets the ignore flags for setting the CACH Access Type bit.</summary>
+        void setIgnoreCACH_AT(uint8_t slot);
         /// <summary>Sets the DMR color code.</summary>
         void setColorCode(uint8_t colorCode);
         /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
@@ -123,6 +126,8 @@ namespace dmr
 
         int8_t m_symLevel3Adj;
         int8_t m_symLevel1Adj;
+
+        uint8_t m_cachATControl;
 
         /// <summary></summary>
         void createData(uint8_t slotIndex);

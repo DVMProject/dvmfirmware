@@ -98,7 +98,7 @@ DMRTX::DMRTX() :
     m_abort(),
     m_symLevel3Adj(0U),
     m_symLevel1Adj(0U),
-    m_cachATControl(0U),
+    m_cachATControl(0U)
 {
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
@@ -349,13 +349,6 @@ void DMRTX::setIgnoreCACH_AT(uint8_t slot)
         m_cachATControl = 0U;
     }
 }
-
-/// <summary>
-/// Sets the DMR color code.
-/// </summary>
-/// <param name="colorCode">Color code.</param>
-void DMRTX::setColorCode(uint8_t colorCode)
-{
 
 /// <summary>
 /// Sets the DMR color code.

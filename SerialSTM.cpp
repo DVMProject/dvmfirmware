@@ -213,8 +213,6 @@ void SerialPort::flashRead()
 
     ::memcpy(reply + 3U, (void*)STM32_CNF_PAGE, 246U);
 
-    DEBUG1("SerialPort: flashRead(): read bytes from flash");
-
     writeInt(1U, reply, 249U);
 }
 
@@ -229,18 +227,15 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
         return RSN_FLASH_WRITE_TOO_BIG;
     }
 
-    DEBUG1("SerialPort: flashWrite(): unlocking flash");
     FLASH_Unlock();
     FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_WRPERR);
 
 #if defined(STM32F4XX)
-    DEBUG1("SerialPort: flashWrite(): erasing flash sector");
     if (FLASH_EraseSector(STM32_CNF_SECTOR, VoltageRange_3) != FLASH_COMPLETE) {
         FLASH_Lock();
         return RSN_FAILED_ERASE_FLASH;
     }
 #elif defined(STM32F10X_MD)
-    DEBUG1("SerialPort: flashWrite(): erasing flash page");
     if (FLASH_ErasePage(STM32_CNF_PAGE_ADDR) != FLASH_COMPLETE) {
         FLASH_Lock();
         return RSN_FAILED_ERASE_FLASH;
@@ -257,7 +252,6 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
             (data[i + 1] << 8) +
             (data[i + 0] << 0);
 
-        DEBUG3("SerialPort: flashWrite(): writing byte data", address, i);
         if (FLASH_ProgramWord(address, word) == FLASH_COMPLETE) {
             address += 4;
             i += 4;
@@ -268,7 +262,6 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
         }
     }
 
-    DEBUG1("SerialPort: flashWrite(): finished writing, locking flash");
     FLASH_Lock();
     return RSN_OK;
 }

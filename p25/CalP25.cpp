@@ -85,7 +85,7 @@ CalP25::CalP25() :
 /// </summary>
 void CalP25::process()
 {
-    if (m_modemState == STATE_P25_CAL || m_modemState == STATE_P25_LF_CAL) {
+    if (m_modemState == STATE_P25_CAL) {
         m_state = P25CAL1K_IDLE; 
 
         if (m_transmit) {

@@ -179,7 +179,7 @@ void SerialPort::process()
                     if (m_modemState == STATE_DMR_DMO_CAL_1K || m_modemState == STATE_DMR_CAL_1K ||
                         m_modemState == STATE_DMR_LF_CAL || m_modemState == STATE_DMR_CAL)
                         err = calDMR.write(m_buffer + 3U, m_len - 3U);
-                    if (m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_LF_CAL || m_modemState == STATE_P25_CAL)
+                    if (m_modemState == STATE_P25_CAL_1K || m_modemState == STATE_P25_CAL)
                         err = calP25.write(m_buffer + 3U, m_len - 3U);
                     if (m_modemState == STATE_NXDN_CAL)
                         err = calNXDN.write(m_buffer + 3U, m_len - 3U);
@@ -376,7 +376,7 @@ bool SerialPort::isCalState(DVM_STATE state)
     // calibration mode check
     if (state == STATE_P25_CAL_1K ||
         state == STATE_DMR_DMO_CAL_1K || state == STATE_DMR_CAL_1K ||
-        state == STATE_DMR_LF_CAL || state == STATE_P25_LF_CAL ||
+        state == STATE_DMR_LF_CAL ||
         state == STATE_RSSI_CAL ||
         state == STATE_P25_CAL || state == STATE_DMR_CAL || state == STATE_NXDN_CAL) {
         return true;
@@ -397,7 +397,7 @@ DVM_STATE SerialPort::calRelativeState(DVM_STATE state)
             state == STATE_DMR_LF_CAL || state == STATE_DMR_CAL ||
             state == STATE_RSSI_CAL) {
             return STATE_DMR;
-        } else if (state == STATE_P25_CAL_1K || state == STATE_P25_LF_CAL ||
+        } else if (state == STATE_P25_CAL_1K ||
             state == STATE_P25_CAL) {
             return STATE_P25;
         } else if (state == STATE_NXDN_CAL) {
@@ -950,7 +950,7 @@ uint8_t SerialPort::modemStateCheck(DVM_STATE state)
     if (state != STATE_IDLE && state != STATE_DMR && state != STATE_P25 && state != STATE_NXDN && 
         state != STATE_P25_CAL_1K &&
         state != STATE_DMR_DMO_CAL_1K && state != STATE_DMR_CAL_1K &&
-        state != STATE_DMR_LF_CAL && state != STATE_P25_LF_CAL &&
+        state != STATE_DMR_LF_CAL &&
         state != STATE_RSSI_CAL &&
         state != STATE_P25_CAL && state != STATE_DMR_CAL &&
         state != STATE_NXDN_CAL)
@@ -1144,15 +1144,6 @@ void SerialPort::setMode(DVM_STATE modemState)
         break;
     case STATE_NXDN_CAL:
         DEBUG1("SerialPort: setMode(): mode set to NXDN Calibrate");
-        dmrIdleRX.reset();
-        dmrDMORX.reset();
-        dmrRX.reset();
-        p25RX.reset();
-        nxdnRX.reset();
-        cwIdTX.reset();
-        break;
-    case STATE_P25_LF_CAL:
-        DEBUG1("SerialPort: setMode(): mode set to P25 80Hz Calibrate");
         dmrIdleRX.reset();
         dmrDMORX.reset();
         dmrRX.reset();

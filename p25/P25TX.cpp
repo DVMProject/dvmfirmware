@@ -307,21 +307,6 @@ void P25TX::createCal()
         m_poLen = P25_LDU_FRAME_LENGTH_BYTES;
     }
 
-    // 80 Hz square wave generation
-    if (m_modemState == STATE_P25_LF_CAL) {
-        for (unsigned int i = 0U; i < 108U; i++) {
-            m_poBuffer[i] = 0x55U; // +3, +3, ... pattern
-        }
-
-        m_poBuffer[109U] = 0x5FU; // +3, +3, -3, -3 pattern
-
-        for (unsigned int i = 110U; i < 216U; i++) {
-            m_poBuffer[i] = 0xFFU; // -3, -3, ... pattern
-        }
-
-        m_poLen = P25_LDU_FRAME_LENGTH_BYTES;
-    }
-
     m_poLen = P25_LDU_FRAME_LENGTH_BYTES;
     m_poPtr = 0U;
 }

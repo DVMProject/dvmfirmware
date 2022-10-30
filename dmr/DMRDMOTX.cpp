@@ -67,7 +67,7 @@ const uint8_t PR_FILL[] =
 /// Initializes a new instance of the DMRDMOTX class.
 /// </summary>
 DMRDMOTX::DMRDMOTX() :
-    m_fifo(),
+    m_fifo(DMR_TX_BUFFER_LEN),
     m_modFilter(),
     m_modState(),
     m_poBuffer(),

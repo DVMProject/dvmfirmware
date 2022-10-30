@@ -100,6 +100,9 @@ DMRTX::DMRTX() :
     m_symLevel1Adj(0U),
     m_cachATControl(0U)
 {
+    m_fifo[0U].reinitialize(DMR_TX_BUFFER_LEN);
+    m_fifo[1U].reinitialize(DMR_TX_BUFFER_LEN);
+
     ::memset(m_modState, 0x00U, 16U * sizeof(q15_t));
 
     m_modFilter.L = DMR_RADIO_SYMBOL_LENGTH;

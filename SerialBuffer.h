@@ -46,7 +46,7 @@
 //  Constants
 // ---------------------------------------------------------------------------
 
-const uint16_t SERIAL_RINGBUFFER_SIZE = 370U;
+const uint16_t SERIAL_RINGBUFFER_SIZE = 396U;
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
@@ -57,6 +57,8 @@ class DSP_FW_API SerialBuffer {
 public:
     /// <summary>Initializes a new instance of the SerialBuffer class.</summary>
     SerialBuffer(uint16_t length = SERIAL_RINGBUFFER_SIZE);
+    /// <summary>Finalizes a instance of the SerialBuffer class.</summary>
+    ~SerialBuffer();
 
     /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
     uint16_t getSpace() const;
@@ -66,6 +68,8 @@ public:
 
     /// <summary>Helper to reset data values to defaults.</summary>
     void reset();
+    /// <summary>Helper to reset and reinitialize data values to defaults.</summary>
+    void reinitialize(uint16_t length);
 
     /// <summary></summary>
     bool put(uint8_t c);

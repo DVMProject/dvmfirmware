@@ -50,6 +50,14 @@ SerialBuffer::SerialBuffer(uint16_t length) :
 }
 
 /// <summary>
+/// Finalizes a instance of the SerialBuffer class.
+/// </summary>
+SerialBuffer::~SerialBuffer()
+{
+    delete[] m_buffer;
+}
+
+/// <summary>
 /// Helper to get how much space the ring buffer has for samples.
 /// </summary>
 /// <returns></returns>
@@ -92,6 +100,19 @@ void SerialBuffer::reset()
     m_head = 0U;
     m_tail = 0U;
     m_full = false;
+}
+
+/// <summary>
+/// Helper to reset and reinitialize data values to defaults.
+/// </summary>
+void SerialBuffer::reinitialize(uint16_t length)
+{
+    reset();
+
+    m_length = length;
+
+    delete[] m_buffer;
+    m_buffer = new uint8_t[length];
 }
 
 /// <summary>

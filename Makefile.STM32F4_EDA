@@ -63,7 +63,7 @@ LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LI
 
 # Common flags
 CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
-CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -DCUSTOM_NEW -DNO_EXCEPTIONS
+CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
 LDFLAGS=-Os --specs=nano.specs
 
 # Build Rules

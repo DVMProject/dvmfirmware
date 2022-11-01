@@ -36,36 +36,6 @@
 //  Constants
 // ---------------------------------------------------------------------------
 
-#if defined(ENABLE_DMR)
-#define DESCR_DMR        "DMR, "
-#else
-#define DESCR_DMR        ""
-#endif
-#if defined(ENABLE_P25)
-#define DESCR_P25        "P25, "
-#else
-#define DESCR_P25        ""
-#endif
-#if defined(ENABLE_NXDN)
-#define DESCR_NXDN       "NXDN, "
-#else
-#define DESCR_NXDN       ""
-#endif
-
-#if defined(EXTERNAL_OSC)
-#define DESCR_OSC        "TCXO, "
-#else
-#define DESCR_OSC        ""
-#endif
-
-#if defined(SEND_RSSI_DATA)
-#define DESCR_RSSI        "RSSI, "
-#else
-#define DESCR_RSSI        ""
-#endif
-
-#define DESCRIPTION        "Digital Voice Modem DSP (" DESCR_DMR DESCR_P25 DESCR_NXDN DESCR_OSC DESCR_RSSI "CW Id)"
-
 #define concat(a, b, c) a " (build " b " " c ")"
 const char HARDWARE[] = concat(DESCRIPTION, __TIME__, __DATE__);
 

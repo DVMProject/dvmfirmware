@@ -294,4 +294,26 @@ void IO::delayInt(unsigned int dly)
     delay(dly);
 }
 
-#endif
+/// <summary></summary>
+/// <param name="arg"></param>
+/// <returns></returns>
+void* IO::txThreadHelper(void* arg)
+{
+    return NULL;
+}
+
+/// <summary></summary>
+void IO::interruptRx()
+{
+    /* stub */
+}
+
+/// <summary></summary>
+/// <param name="arg"></param>
+/// <returns></returns>
+void* IO::rxThreadHelper(void* arg)
+{
+    return NULL;
+}
+
+#endif // defined(__SAM3X8E__) && defined(ARDUINO_SAM_DUE)

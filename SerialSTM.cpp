@@ -370,4 +370,5 @@ void SerialPort::writeInt(uint8_t n, const uint8_t* data, uint16_t length, bool 
         break;
     }
 }
-#endif
+
+#endif // defined(STM32F4XX)

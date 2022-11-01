@@ -33,6 +33,7 @@
 
 #include <stdint.h>
 
+#if !defined(NATIVE_SDR)
 #if defined(__SAM3X8E__) && !defined(STM32F4XX)
 #define  ARM_MATH_CM3
 #elif defined(STM32F4XX)
@@ -40,8 +41,15 @@
 #else
 #error "Unknown processor type"
 #endif
+#else
+#include <cstring>
+#endif
 
+#if !defined(NATIVE_SDR)
 #include <arm_math.h>
+#else
+#include "sdr/arm_math.h"
+#endif
 
 // ---------------------------------------------------------------------------
 //  Types
@@ -99,6 +107,11 @@ typedef unsigned long long  ulong64_t;
 //  Constants
 // ---------------------------------------------------------------------------
 
+#define __PROG_NAME__ "Digital Voice Modem DSP"
+#define __NET_NAME__ "DVM_DMR_P25"
+#define __EXE_NAME__ "dvm-firmware"
+#define __BUILD__ __DATE__ " " __TIME__
+
 #define DSP_FW_API 
 
 // Allow the DMR protocol
@@ -138,11 +151,42 @@ typedef unsigned long long  ulong64_t;
 // Pass RSSI information to the host
 // #define SEND_RSSI_DATA
 
+#if defined(ENABLE_DMR)
+#define DESCR_DMR        "DMR, "
+#else
+#define DESCR_DMR        ""
+#endif
+#if defined(ENABLE_P25)
+#define DESCR_P25        "P25, "
+#else
+#define DESCR_P25        ""
+#endif
+#if defined(ENABLE_NXDN)
+#define DESCR_NXDN       "NXDN, "
+#else
+#define DESCR_NXDN       ""
+#endif
+
+#if defined(EXTERNAL_OSC)
+#define DESCR_OSC        "TCXO, "
+#else
+#define DESCR_OSC        ""
+#endif
+
+#if defined(SEND_RSSI_DATA)
+#define DESCR_RSSI        "RSSI, "
+#else
+#define DESCR_RSSI        ""
+#endif
+
+#define DESCRIPTION        __PROG_NAME__ " (" DESCR_DMR DESCR_P25 DESCR_NXDN DESCR_OSC DESCR_RSSI "CW Id)"
+
 const uint8_t BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x02U, 0x01U };
 
 #define CPU_TYPE_ARDUINO_DUE 0x00U
 #define CPU_TYPE_NXP 0x01U
 #define CPU_TYPE_STM32 0x02U
+#define CPU_TYPE_NATIVE_SDR 0xF0U
 
 // ---------------------------------------------------------------------------
 //  Macros

@@ -1,0 +1,68 @@
+# MCU external clock frequency (Hz)
+OSC=12000000
+
+# Directory Structure
+BINDIR=.
+OBJDIR_SDR=obj_sdr
+
+# Output files
+BINELF_SDR=dvm-firmware_sdr
+
+# GNU Toolchain
+CC=gcc
+CXX=g++
+LD=ld
+AR=ar
+AS=as
+CP=objcopy
+OD=objdump
+NM=nm
+SIZE=size
+A2L=addr2line
+
+# Build object lists
+CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp) $(wildcard ./nxdn/*.cpp) $(wildcard ./sdr/*.cpp) $(wildcard ./sdr/port/*.cpp)
+OBJ_SDR=$(CXXSRC:./%.cpp=$(OBJDIR_SDR)/%.o)
+
+# Compile flags
+DEFS_PI=-DNATIVE_SDR -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE
+
+# Common flags
+CFLAGS=-g -O3 -Wall -std=c++0x -pthread -I.
+CXXFLAGS=-g -O3 -Wall -std=c++0x -pthread -I.
+LIBS=-lpthread -lzmq -lutil
+LDFLAGS=-g
+
+# Build Rules
+.PHONY: all sdr clean
+
+all: sdr
+
+sdr: CFLAGS+=$(DEFS_PI)
+sdr: CXXFLAGS+=$(DEFS_PI)
+sdr: $(BINDIR)
+sdr: $(OBJDIR_SDR)
+sdr: $(BINDIR)/$(BINELF_SDR)
+
+$(BINDIR):
+	mkdir $@
+$(OBJDIR_SDR):
+	mkdir $@
+	mkdir $@/dmr
+	mkdir $@/p25
+	mkdir $@/nxdn
+	mkdir $@/sdr
+	mkdir $@/sdr/port
+
+$(BINDIR)/$(BINELF_SDR): $(OBJ_SDR)
+	$(CXX) $(OBJ_SDR) $(LDFLAGS) $(LIBS) -o $@
+	$(SIZE) $(BINDIR)/$(BINELF_SDR)
+
+$(OBJDIR_SDR)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+clean-objs:
+	test ! -d $(OBJDIR_SDR) || rm -rf $(OBJDIR_SDR)
+clean:
+	test ! -d $(OBJDIR_SDR) || rm -rf $(OBJDIR_SDR)
+	rm -f $(BINDIR)/$(BINELF_SDR)

@@ -406,7 +406,8 @@ void IO::getUDID(uint8_t* buffer)
 /// Sends specified data over I2C bus to specified address.
 /// </summary>
 /// <returns></returns>
-void IO::I2C_Write(uint8_t addr, uint8_t *buf, uint8_t length) {
+void IO::I2C_Write(uint8_t addr, uint8_t *buf, uint8_t length) 
+{
     I2C_GenerateSTART(I2C_Per, ENABLE);
     while(!I2C_CheckEvent(I2C_Per, I2C_EVENT_MASTER_MODE_SELECT));
 
@@ -425,7 +426,8 @@ void IO::I2C_Write(uint8_t addr, uint8_t *buf, uint8_t length) {
 /// Copies read I2C bytes into provided buffer.
 /// </summary>
 /// <returns>Count of read bytes</returns>
-uint8_t IO::I2C_Read(uint8_t addr, uint8_t *buf) {
+uint8_t IO::I2C_Read(uint8_t addr, uint8_t *buf) 
+{
     return 0;
 }
 #endif
@@ -525,7 +527,6 @@ void IO::initInt()
     I2C_Init(I2C_Per, &I2C_InitStruct);
     // I2C Peripheral Enable
     I2C_Cmd(I2C_Per, ENABLE);
-
 #endif
 }
 
@@ -750,4 +751,26 @@ void IO::delayInt(unsigned int dly)
     }
 }
 
-#endif
+/// <summary></summary>
+/// <param name="arg"></param>
+/// <returns></returns>
+void* IO::txThreadHelper(void* arg)
+{
+    return NULL;
+}
+
+/// <summary></summary>
+void IO::interruptRx()
+{
+    /* stub */
+}
+
+/// <summary></summary>
+/// <param name="arg"></param>
+/// <returns></returns>
+void* IO::rxThreadHelper(void* arg)
+{
+    return NULL;
+}
+
+#endif // defined(STM32F4XX)

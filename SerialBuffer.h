@@ -33,13 +33,6 @@
 #if !defined(__SERIAL_RB_H__)
 #define __SERIAL_RB_H__
 
-#if defined(STM32F4XX)
-#include "stm32f4xx.h"
-#include <cstddef>
-#else
-#include <Arduino.h>
-#endif
-
 #include "Defines.h"
 
 // ---------------------------------------------------------------------------

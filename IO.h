@@ -185,6 +185,13 @@ private:
 
     /// <summary></summary>
     void delayInt(unsigned int dly);
+
+    /// <summary></summary>
+    static void* txThreadHelper(void* arg);
+    /// <summary></summary>
+    void interruptRx();
+    /// <summary></summary>
+    static void* rxThreadHelper(void* arg);
 };
 
 #endif // __IO_H__

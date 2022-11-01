@@ -7,11 +7,11 @@
 *
 */
 //
-// Based on code from the MMDVM project. (https://github.com/g4klx/MMDVM)
+// Based on code from the MMDVMHost project. (https://github.com/g4klx/MMDVMHost)
 // Licensed under the GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 //
 /*
-*   Copyright (C) 2015,2016 by Jonathan Naylor G4KLX
+*   Copyright (C) 2016 by Jonathan Naylor G4KLX
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -27,17 +27,18 @@
 *   along with this program; if not, write to the Free Software
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#if !defined(__UTILS_H__)
-#define __UTILS_H__
+#include "sdr/port/ISerialPort.h"
 
-#include "Defines.h"
+using namespace sdr::port;
 
 // ---------------------------------------------------------------------------
-//  Global Functions
+//  Public Class Members
 // ---------------------------------------------------------------------------
 
-DSP_FW_API uint8_t countBits8(uint8_t bits);
-DSP_FW_API uint8_t countBits32(uint32_t bits);
-DSP_FW_API uint8_t countBits64(ulong64_t bits);
-
-#endif // __UTILS_H__
+/// <summary>
+/// Finalizes a instance of the ISerialPort class.
+/// </summary>
+ISerialPort::~ISerialPort()
+{
+    /* stub */
+}

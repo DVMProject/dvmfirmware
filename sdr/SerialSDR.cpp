@@ -33,8 +33,6 @@
 #include "Globals.h"
 #include "SerialPort.h"
 
-#if defined(NATIVE_SDR) || true
-
 #include "sdr/port/UARTPort.h"
 #include "sdr/port/PseudoPTYPort.h"
 
@@ -153,5 +151,3 @@ void SerialPort::writeInt(uint8_t n, const uint8_t* data, uint16_t length, bool 
         break;
     }
 }
-
-#endif // defined(NATIVE_SDR)

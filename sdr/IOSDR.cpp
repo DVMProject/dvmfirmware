@@ -48,8 +48,6 @@
 //  Constants
 // ---------------------------------------------------------------------------
 
-#if defined(NATIVE_SDR) || true
-
 const uint16_t DC_OFFSET = 2048U;
 
 // ---------------------------------------------------------------------------
@@ -282,5 +280,3 @@ void* IO::rxThreadHelper(void* arg)
 
     return NULL;
 }
-
-#endif // defined(NATIVE_SDR)

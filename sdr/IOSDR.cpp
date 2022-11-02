@@ -146,6 +146,13 @@ void IO::initInt()
 /// </summary>
 void IO::startInt()
 {
+    ::LogMessage(LOG_DSP, "Host connected, starting IO operations...");
+
+    m_zmqSocketTx.close();
+    if (m_zmqSocketRx.connected()) {
+        m_zmqSocketRx.close();
+    }
+
     m_zmqContextTx = zmq::context_t(1);
     m_zmqSocketTx = zmq::socket_t(m_zmqContextTx, ZMQ_PUSH);
 
@@ -164,6 +171,11 @@ void IO::startInt()
     {
         ::LogMessage(LOG_DSP, "Connecting Rx socket to %s", m_zmqRx.c_str());
         m_zmqSocketRx.connect(m_zmqRx);
+        if (m_zmqSocketRx.connected()) {
+            ::LogMessage(LOG_DSP, "IO::startInt(), connected to remote ZMQ listener", m_zmqRx.c_str());
+        } else {
+            ::LogWarning(LOG_DSP, "IO::startInt(), failed to remote ZMQ listener, will continue to retry to connect", m_zmqRx.c_str());
+        }
     }
     catch(const zmq::error_t& zmqE) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", zmqE.what()); }
     catch(const std::exception& e) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", e.what()); }

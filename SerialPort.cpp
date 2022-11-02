@@ -897,7 +897,7 @@ void SerialPort::getVersion()
     reply[4U] = io.getCPU();
 
     // Reserve 16 bytes for the UDID
-    ::memcpy(reply + 5U, 0x00U, 16U);
+    ::memset(reply + 5U, 0x00U, 16U);
     io.getUDID(reply + 5U);
 
     uint8_t count = 21U;

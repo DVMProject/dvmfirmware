@@ -91,7 +91,11 @@ void IO::interrupt()
             zmq::message_t reply = zmq::message_t(720 * sizeof(short));
             ::memcpy(reply.data(), (unsigned char*)m_audioBufTx.data(), 720 * sizeof(short));
 
-            m_zmqSocketTx.send(reply, zmq::send_flags::dontwait);
+            try
+            {
+                m_zmqSocketTx.send(reply, zmq::send_flags::dontwait);
+            }
+            catch(const zmq::error_t& zmqE) { /* stub */ }
 
             usleep(9600 * 3);
             
@@ -149,8 +153,21 @@ void IO::initInt()
 /// </summary>
 void IO::startInt()
 {
-    m_zmqSocketTx.bind(m_zmqTx);
-    m_zmqSocketRx.connect(m_zmqRx);
+    try
+    {
+        ::LogMessage(LOG_DSP, "Binding Tx socket to %s", m_zmqTx.c_str());
+        m_zmqSocketTx.bind(m_zmqTx);
+    }
+    catch(const zmq::error_t& zmqE) { ::LogError(LOG_DSP, "IO::startInt(), Tx Socket: %s", zmqE.what()); }
+    catch(const std::exception& e) { ::LogError(LOG_DSP, "IO::startInt(), Tx Socket: %s", e.what()); }
+
+    try
+    {
+        ::LogMessage(LOG_DSP, "Connecting Rx socket to %s", m_zmqRx.c_str());
+        m_zmqSocketRx.connect(m_zmqRx);
+    }
+    catch(const zmq::error_t& zmqE) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", zmqE.what()); }
+    catch(const std::exception& e) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", e.what()); }
 
     if (::pthread_mutex_init(&m_txLock, NULL) != 0) {
         ::LogError(LOG_DSP, "Tx thread lock failed?");
@@ -248,7 +265,26 @@ void IO::interruptRx()
     uint8_t control = MARK_NONE;
     
     zmq::message_t msg;
-    zmq::recv_result_t recv = m_zmqSocketRx.recv(msg, zmq::recv_flags::none);
+    zmq::recv_result_t recv;
+    try
+    {
+        recv = m_zmqSocketRx.recv(msg, zmq::recv_flags::none);
+    }
+    catch(const zmq::error_t& zmqE) 
+    {
+        if (zmqE.num() == ENOTSOCK || zmqE.num() == ENOTCONN ||
+            zmqE.num() == ECONNABORTED || zmqE.num() == ECONNRESET ||
+            zmqE.num() == ENETDOWN || zmqE.num() == ENETUNREACH || zmqE.num() == ENETRESET) {
+            try
+            {
+                m_zmqSocketRx.connect(m_zmqRx);
+            }
+            catch(const zmq::error_t& zmqE) { /* stub */}
+            return;
+        } else {
+            ::LogError(LOG_DSP, "IO::interruptRx(): %s (%u)", zmqE.what(), zmqE.num()); 
+        }
+    }
 
     int size = msg.size();
     if (size < 1)

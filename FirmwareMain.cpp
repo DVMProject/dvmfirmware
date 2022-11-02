@@ -346,7 +346,7 @@ int checkArgs(int argc, char* argv[])
         else if (IS("-t")) {
             if ((argc - 1) <= 0)
                 usage("error: %s", "must specify the ZeroMQ Tx IPC Endpoint");
-            m_zmqRx = std::string(argv[++i]);
+            m_zmqTx = std::string(argv[++i]);
 
             if (m_zmqTx == "")
                 usage("error: %s", "IPC endpoint cannot be blank!");
@@ -417,6 +417,9 @@ static void sigHandler(int signum)
 
 int main(int argc, char** argv)
 {
+    m_zmqRx = std::string("ipc:///tmp/dvm-rx.ipc");
+    m_zmqTx = std::string("ipc:///tmp/dvm-tx.ipc");
+
     if (argv[0] != nullptr && *argv[0] != 0)
         g_progExe = std::string(argv[0]);
 

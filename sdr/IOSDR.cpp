@@ -59,12 +59,12 @@ static pthread_mutex_t m_txLock;
 static pthread_t m_threadRx;
 static pthread_mutex_t m_rxLock;
 
-static zmq::context_t m_zmqContextTx;
-static zmq::socket_t m_zmqSocketTx;
+zmq::context_t m_zmqContextTx;
+zmq::socket_t m_zmqSocketTx;
 static std::vector<short> m_audioBufTx = std::vector<short>();
 
-static zmq::context_t m_zmqContextRx;
-static zmq::socket_t m_zmqSocketRx;
+zmq::context_t m_zmqContextRx;
+zmq::socket_t m_zmqSocketRx;
 static std::vector<short> m_audioBufRx = std::vector<short>();
 
 static bool m_cosInt = false;
@@ -138,14 +138,7 @@ void IO::getUDID(uint8_t* buffer)
 /// </summary>
 void IO::initInt()
 {
-    m_zmqContextTx = zmq::context_t(1);
-    m_zmqSocketTx = zmq::socket_t(m_zmqContextTx, ZMQ_PUSH);
-
-    m_zmqContextRx = zmq::context_t(1);
-    m_zmqSocketRx = zmq::socket_t(m_zmqContextRx, ZMQ_PULL);
-
-    m_audioBufTx = std::vector<short>();
-    m_audioBufRx = std::vector<short>();
+    /* stub */
 }
 
 /// <summary>
@@ -153,6 +146,12 @@ void IO::initInt()
 /// </summary>
 void IO::startInt()
 {
+    m_zmqContextTx = zmq::context_t(1);
+    m_zmqSocketTx = zmq::socket_t(m_zmqContextTx, ZMQ_PUSH);
+
+    m_zmqContextRx = zmq::context_t(1);
+    m_zmqSocketRx = zmq::socket_t(m_zmqContextRx, ZMQ_PULL);
+
     try
     {
         ::LogMessage(LOG_DSP, "Binding Tx socket to %s", m_zmqTx.c_str());
@@ -168,6 +167,9 @@ void IO::startInt()
     }
     catch(const zmq::error_t& zmqE) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", zmqE.what()); }
     catch(const std::exception& e) { ::LogError(LOG_DSP, "IO::startInt(), Rx Socket: %s", e.what()); }
+
+    m_audioBufTx = std::vector<short>();
+    m_audioBufRx = std::vector<short>();
 
     if (::pthread_mutex_init(&m_txLock, NULL) != 0) {
         ::LogError(LOG_DSP, "Tx thread lock failed?");

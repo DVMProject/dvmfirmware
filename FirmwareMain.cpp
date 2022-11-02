@@ -44,6 +44,8 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+
+#include <zmq.hpp>
 #endif
 
 // ---------------------------------------------------------------------------
@@ -132,6 +134,9 @@ bool g_killed = false;
 bool g_daemon = false;
 
 extern sdr::port::PseudoPTYPort* m_serialPort;
+
+extern zmq::socket_t m_zmqSocketTx;
+extern zmq::socket_t m_zmqSocketRx;
 #endif
 
 // ---------------------------------------------------------------------------
@@ -514,6 +519,14 @@ int main(int argc, char** argv)
         m_serialPort->close();
         delete m_serialPort;
     }
+
+    try
+    {
+        m_zmqSocketTx.close();
+        m_zmqSocketRx.close();
+    }
+    catch(const zmq::error_t& zmqE) { /* stub */ }
+    catch(const std::exception& e) { /* stub */ }
 
     ::LogFinalise();
     return 0;

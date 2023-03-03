@@ -108,7 +108,7 @@ namespace dmr
 
     const int8_t    DMR_MS_VOICE_SYNC_SYMBOLS_VALUES[] = { +3, -3, -3, -3, +3, -3, -3, +3, +3, +3, -3, +3, -3, +3, +3, +3, +3, -3, -3, +3, -3, -3, -3, +3 };
 
-    const uint32_t  DMR_TX_BUFFER_LEN = 1023U;          // 1023 = DMR_FRAME_LENGTH_BYTES * 31 (BUFFER_LEN = DMR_FRAME_LENGTH_BYTES * NO_OF_FRAMES)
+    const uint32_t  DMR_TX_BUFFER_LEN = 1033U; // 1033 = DMR_FRAME_LENGTH_BYTES * 31 + 10 (BUFFER_LEN = DMR_FRAME_LENGTH_BYTES * NO_OF_FRAMES + 10)
 
     // Data Type(s)
     const uint8_t   DT_VOICE_PI_HEADER = 0U;

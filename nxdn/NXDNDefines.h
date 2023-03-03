@@ -68,7 +68,7 @@ namespace nxdn
     const uint16_t  NXDN_FSW_SYMBOLS = 0x014DU;
     const uint16_t  NXDN_FSW_SYMBOLS_MASK = 0x03FFU;
 
-    const uint32_t  NXDN_TX_BUFFER_LEN = 2016U;         // 2016 = NXDN_FRAME_LENGTH_BYTES * 42 (BUFFER_LEN = NXDN_FRAME_LENGTH_BYTES * NO_OF_FRAMES)
+    const uint32_t  NXDN_TX_BUFFER_LEN = 2026U; // 2026 = NXDN_FRAME_LENGTH_BYTES * 42 + 10 (BUFFER_LEN = NXDN_FRAME_LENGTH_BYTES * NO_OF_FRAMES + 10)
 } // namespace nxdn
 
 #endif // __NXDN_DEFINES_H__

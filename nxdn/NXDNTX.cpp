@@ -190,11 +190,6 @@ uint8_t NXDNTX::writeData(const uint8_t* data, uint16_t length)
 
     uint16_t space = m_fifo.getSpace();
     DEBUG3("NXDNTX: writeData(): dataLength/fifoLength", length, space);
-    if (space < length) {
-        m_fifo.reset();
-        return RSN_RINGBUFF_FULL;
-    }
-
     if (space < NXDN_FRAME_LENGTH_BYTES)
         return RSN_RINGBUFF_FULL;
 

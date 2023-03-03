@@ -60,14 +60,15 @@ CXXFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
 
 # Linker flags
 LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
+LDFLAGS_F4_D =-T stm32f4xx_link_debug.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
 
 # Common flags
-CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
-CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
-LDFLAGS=-Os --specs=nano.specs
+CFLAGS=-Os -g -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
+CXXFLAGS=-Os -g -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
+LDFLAGS=-Os -g --specs=nano.specs
 
 # Build Rules
-.PHONY: all eda405 eda446 clean
+.PHONY: all eda405 eda405-debug eda446 eda446-debug clean
 
 all: eda405
 
@@ -78,12 +79,26 @@ eda405: $(BINDIR)
 eda405: $(OBJDIR_EDA)
 eda405: $(BINDIR)/$(BINBIN_EDA)
 
+eda405-debug: CFLAGS+=$(CFLAGS_F4) $(DEFS_EDA_405)
+eda405-debug: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_EDA_405)
+eda405-debug: LDFLAGS+=$(LDFLAGS_F4_D)
+eda405-debug: $(BINDIR)
+eda405-debug: $(OBJDIR_EDA)
+eda405-debug: $(BINDIR)/$(BINBIN_EDA)
+
 eda446: CFLAGS+=$(CFLAGS_F4) $(DEFS_EDA_446)
 eda446: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_EDA_446)
 eda446: LDFLAGS+=$(LDFLAGS_F4)
 eda446: $(BINDIR)
 eda446: $(OBJDIR_EDA)
 eda446: $(BINDIR)/$(BINBIN_EDA)
+
+eda446-debug: CFLAGS+=$(CFLAGS_F4) $(DEFS_EDA_446)
+eda446-debug: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_EDA_446)
+eda446-debug: LDFLAGS+=$(LDFLAGS_F4_D)
+eda446-debug: $(BINDIR)
+eda446-debug: $(OBJDIR_EDA)
+eda446-debug: $(BINDIR)/$(BINBIN_EDA)
 
 $(BINDIR):
 	mkdir $@

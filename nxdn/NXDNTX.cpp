@@ -183,7 +183,7 @@ void NXDNTX::process()
 /// <param name="data"></param>
 /// <param name="length"></param>
 /// <returns></returns>
-uint8_t NXDNTX::writeData(const uint8_t* data, uint16_t length)
+uint8_t NXDNTX::writeData(const uint8_t* data, uint8_t length)
 {
     if (length != (NXDN_FRAME_LENGTH_BYTES + 1U))
         return RSN_ILLEGAL_LENGTH;

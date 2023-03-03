@@ -57,14 +57,15 @@ CXXFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
 
 # Linker flags
 LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
+LDFLAGS_F4_D =-T stm32f4xx_link_debug.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
 
 # Common flags
-CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
-CXXFLAGS=-Os -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
-LDFLAGS=-Os --specs=nano.specs
+CFLAGS=-Os -g -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
+CXXFLAGS=-Os -g -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
+LDFLAGS=-Os -g --specs=nano.specs
 
 # Build Rules
-.PHONY: all f4 clean
+.PHONY: all f4 f4-debug clean
 
 all: f4
 
@@ -74,6 +75,13 @@ f4: LDFLAGS+=$(LDFLAGS_F4)
 f4: $(BINDIR)
 f4: $(OBJDIR_F4)
 f4: $(BINDIR)/$(BINBIN_F4)
+
+f4-debug: CFLAGS+=$(CFLAGS_F4) $(DEFS_PI)
+f4-debug: CXXFLAGS+=$(CXXFLAGS_F4) $(DEFS_PI)
+f4-debug: LDFLAGS+=$(LDFLAGS_F4_D)
+f4-debug: $(BINDIR)
+f4-debug: $(OBJDIR_F4)
+f4-debug: $(BINDIR)/$(BINBIN_F4)
 
 $(BINDIR):
 	mkdir $@

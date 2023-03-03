@@ -62,7 +62,7 @@ namespace nxdn
         void process();
 
         /// <summary>Write data to the local buffer.</summary>
-        uint8_t writeData(const uint8_t* data, uint16_t length);
+        uint8_t writeData(const uint8_t* data, uint8_t length);
 
         /// <summary>Clears the local buffer.</summary>
         void clear();

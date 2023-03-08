@@ -59,6 +59,7 @@
 #endif
 #include "CalRSSI.h"
 #include "CWIdTX.h"
+#include "Digipot.h"
 #include "IO.h"
 
 #if defined(NATIVE_SDR)
@@ -135,6 +136,11 @@ extern CalRSSI calRSSI;
 
 /** CW */
 extern CWIdTX cwIdTX;
+
+#if defined(DIGIPOT_ENABLED)
+/** Digipot */
+extern Digipot digitpot;
+#endif
 
 #if defined(NATIVE_SDR)
 extern std::string m_zmqRx;

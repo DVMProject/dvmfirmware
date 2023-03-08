@@ -116,6 +116,11 @@ CWIdTX cwIdTX;
 SerialPort serial;
 IO io;
 
+#if defined(DIGIPOT_ENABLED)
+/** Digipot */
+Digipot digipot;
+#endif
+
 #if defined(NATIVE_SDR)
 std::string g_progExe = std::string(__EXE_NAME__);
 
@@ -146,6 +151,9 @@ extern zmq::socket_t m_zmqSocketRx;
 void setup()
 {
     serial.start();
+#if defined(DIGIPOT_ENABLED)
+    digitpot.initialize();
+#endif
 }
 
 void loop()

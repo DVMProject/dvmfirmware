@@ -998,15 +998,6 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     if (p25CorrCount > 255U)
         return RSN_INVALID_P25_CORR_COUNT;
 
-    uint8_t rxCoarse = data[16U];
-    uint8_t rxFine = data[17U];
-
-    uint8_t txCoarse = data[18U];
-    uint8_t txFine = data[19U];
-
-    uint8_t rssiCoarse = data[20U];
-    uint8_t rssiFine = data[21U];
-
     //uint8_t nxdnCorrCount = data[22U];
 
     m_modemState = modemState;
@@ -1034,7 +1025,23 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
 
     //nxdnRX.setCorrCount(nxdnCorrCount);
 
-    // TODO TODO: apply softpot values above to softpot class...
+#if defined(DIGIPOT_ENABLED)
+    uint8_t rxCoarse = data[16U];
+    uint8_t rxFine = data[17U];
+
+    uint8_t txCoarse = data[18U];
+    uint8_t txFine = data[19U];
+
+    uint8_t rssiCoarse = data[20U];
+    uint8_t rssiFine = data[21U];
+
+    digipot.setRxFine(rxFine);
+    digipot.setRxCoarse(rxCoarse);
+    digipot.setTxFine(txFine);
+    digipot.setTxCoarse(txCoarse);
+    digipot.setRssiFine(rssiFine);
+    digipot.setRssiCoarse(rssiCoarse);
+#endif
 
     io.setParameters(rxInvert, txInvert, pttInvert, rxLevel, cwIdTXLevel, dmrTXLevel, p25TXLevel, nxdnTXLevel, txDCOffset, rxDCOffset);
 

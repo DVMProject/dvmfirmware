@@ -25,13 +25,11 @@
 *   along with this program; if not, write to the Free Software
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
-#if DIGIPOT_ENABLED
-
 #include "Globals.h"
 #include "Digipot.h"
 #include "IO.h"
 
-
+#if defined(DIGIPOT_ENABLED)
 /// <summary>
 /// Initializes a new instance of the CWIdTX class.
 /// </summary>
@@ -93,4 +91,4 @@ void Digipot::setRssiCoarse(uint8_t val) {
     setPotVal(RssiPotAddr, 0, val);
 }
 
-#endif
+#endif // DIGIPOT_ENABLED

@@ -27,7 +27,9 @@
 */
 #if !defined(__DIGIPOT_H__)
 #define __DIGIPOT_H__
-#include "Globals.h"
+
+#if defined(DIGIPOT_ENABLED)
+
 #include "Defines.h"
 #include <stm32f4xx_i2c.h>
 
@@ -81,4 +83,6 @@ private:
     void setPotVal(uint8_t addr, uint8_t reg, uint8_t value);
 };
 
-#endif // __CWID_TX_H__
+#endif // DIGIPOT_ENABLED
+
+#endif // __DIGIPOT_H__

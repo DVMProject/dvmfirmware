@@ -60,6 +60,9 @@ namespace nxdn
         /// <summary>Sample NXDN values from the air interface.</summary>
         void samples(const q15_t* samples, uint16_t* rssi, uint8_t length);
 
+        /// <summary>Sets the NXDN sync correlation countdown.</summary>
+        void setCorrCount(uint8_t count);
+
     private:
         uint16_t m_bitBuffer[NXDN_RADIO_SYMBOL_LENGTH];
         q15_t m_buffer[NXDN_FRAME_LENGTH_SAMPLES];
@@ -83,6 +86,8 @@ namespace nxdn
 
         uint16_t m_lostCount;
         uint8_t m_countdown;
+
+        uint8_t m_corrCountdown;
 
         NXDNRX_STATE m_state;
 

@@ -46,6 +46,8 @@ const uint8_t MAX_FSW_SYMBOLS_ERRS = 2U;
 
 const unsigned int MAX_FSW_FRAMES = 5U + 1U;
 
+const uint8_t CORRELATION_COUNTDOWN = 5U;
+
 const uint8_t NOAVEPTR = 99U;
 const uint16_t NOENDPTR = 9999U;
 
@@ -74,6 +76,7 @@ NXDNRX::NXDNRX() :
     m_averagePtr(NOAVEPTR),
     m_lostCount(0U),
     m_countdown(0U),
+    m_corrCountdown(CORRELATION_COUNTDOWN),
     m_state(NXDNRXS_NONE),
     m_rssiAccum(0U),
     m_rssiCount(0U)
@@ -149,6 +152,15 @@ void NXDNRX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
     }
 }
 
+/// <summary>
+/// Sets the NXDN sync correlation countdown.
+/// </summary>
+/// <param name="count">Correlation Countdown Count.</param>
+void NXDNRX::setCorrCount(uint8_t count)
+{
+    m_corrCountdown = count;
+}
+
 // ---------------------------------------------------------------------------
 //  Private Class Members
 // ---------------------------------------------------------------------------
@@ -170,8 +182,8 @@ void NXDNRX::processSample(q15_t sample)
             io.setADCDetection(true);
 
             m_averagePtr = NOAVEPTR;
-
-            m_countdown = 5U;
+            m_countdown = m_corrCountdown;
+            DEBUG2("NXDNRX: processSample(): correlation countdown", m_countdown);
         }
     }
 

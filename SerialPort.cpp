@@ -1007,6 +1007,8 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     uint8_t rssiCoarse = data[20U];
     uint8_t rssiFine = data[21U];
 
+    //uint8_t nxdnCorrCount = data[22U];
+
     m_modemState = modemState;
 
     m_dcBlockerEnable = dcBlockerEnable;
@@ -1029,6 +1031,8 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     dmrRX.setRxDelay(dmrRxDelay);
     dmrDMORX.setColorCode(colorCode);
     dmrIdleRX.setColorCode(colorCode);
+
+    //nxdnRX.setCorrCount(nxdnCorrCount);
 
     // TODO TODO: apply softpot values above to softpot class...
 

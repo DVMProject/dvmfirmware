@@ -58,10 +58,17 @@ static q15_t LOWPASS_FILTER[] = {
 };
 const uint16_t LOWPASS_FILTER_LEN = 32U;
 
+#if defined(P25_ALTERNATE_SYM_LEVELS)
+const q15_t P25_LEVELA = 1500;
+const q15_t P25_LEVELB = 330;
+const q15_t P25_LEVELC = -330;
+const q15_t P25_LEVELD = -1500;
+#else
 const q15_t P25_LEVELA = 1220;
 const q15_t P25_LEVELB = 410;
 const q15_t P25_LEVELC = -410;
 const q15_t P25_LEVELD = -1220;
+#endif
 
 // ---------------------------------------------------------------------------
 //  Public Class Members

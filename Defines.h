@@ -132,6 +132,9 @@ typedef unsigned long long  ulong64_t;
 // Boxcar Filter for NXDN
 //#define NXDN_BOXCAR_FILTER
 
+// Alternate P25 Symbol Levels
+//#define P25_ALTERNATE_SYM_LEVELS
+
 // Allow for the use of high quality external clock oscillators
 // The number is the frequency of the oscillator in Hertz.
 //

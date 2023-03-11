@@ -114,15 +114,6 @@ typedef unsigned long long  ulong64_t;
 
 #define DSP_FW_API 
 
-// Allow the DMR protocol
-#define ENABLE_DMR
-
-// Allow the P25 protocol
-#define ENABLE_P25
-
-// Allow the NXDN protocol
-#define ENABLE_NXDN
-
 // Normal Boxcar Filter for P25
 //#define P25_RX_NORMAL_BOXCAR
 
@@ -154,21 +145,9 @@ typedef unsigned long long  ulong64_t;
 // Pass RSSI information to the host
 // #define SEND_RSSI_DATA
 
-#if defined(ENABLE_DMR)
 #define DESCR_DMR        "DMR, "
-#else
-#define DESCR_DMR        ""
-#endif
-#if defined(ENABLE_P25)
 #define DESCR_P25        "P25, "
-#else
-#define DESCR_P25        ""
-#endif
-#if defined(ENABLE_NXDN)
 #define DESCR_NXDN       "NXDN, "
-#else
-#define DESCR_NXDN       ""
-#endif
 
 #if defined(EXTERNAL_OSC)
 #define DESCR_OSC        "TCXO, "

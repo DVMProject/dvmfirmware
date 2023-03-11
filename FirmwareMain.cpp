@@ -62,21 +62,9 @@
 
 DVM_STATE m_modemState = STATE_IDLE;
 
-#ifdef ENABLE_DMR
 bool m_dmrEnable = true;
-#else
-bool m_dmrEnable = false;
-#endif
-#ifdef ENABLE_P25
 bool m_p25Enable = true;
-#else
-bool m_p25Enable = false;
-#endif
-#ifdef ENABLE_NXDN
 bool m_nxdnEnable = true;
-#else
-bool m_nxdnEnable = false;
-#endif
 
 bool m_dcBlockerEnable = true;
 bool m_cosLockoutEnable = false;

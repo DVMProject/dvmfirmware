@@ -240,58 +240,78 @@
 /*
     Pin definitions for STM32F4 DVMV1 Board:
 
+    LEDs:
+    HB      PB3     output  (also known as just "LED")
+    COS     PB4     output
+    DMR     PB5     output
+    P25     PB8     output
+    NXDN    PB9     output
+    FM      PC12    output
+    PTT     PC13    output
+
+    GPIO:
     PTT      PB12   output
-    COSLED   PB4    output
-    LED      PB3    output
-    COS      PB13   input
+    COS      PB13   input   (also known as INHIBIT)
 
-    DMR      PB8    output
-    P25      PB4    output
-    NXDN     PC10   output
-
+    I2C:
     SCL      PC6    output
     SDA      PC7    bidir
 
+    Analog:
     RX       PB0    analog input (ADC1_8)
     RSSI     PB1    analog input (ADC2_9)
     TX       PA4    analog output (DAC_OUT1)
 
     EXT_CLK  PA15   input
 */
-// include the i2c libs
-#include <stm32f4xx_i2c.h>
+// include the i2c bitbang lib
+#include "sw_i2c.h"
 
-#define PIN_COS           GPIO_Pin_13
-#define PORT_COS          GPIOB
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
-
-#define PIN_PTT           GPIO_Pin_12
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
-
-#define PIN_COSLED        GPIO_Pin_4
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+// LEDs
 
 #define PIN_LED           GPIO_Pin_3
 #define PORT_LED          GPIOB
 #define RCC_Per_LED       RCC_AHB1Periph_GPIOB
 
-#define PIN_NXDN          GPIO_Pin_10
-#define PORT_NXDN         GPIOC
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOC
+#define PIN_COSLED        GPIO_Pin_4
+#define PORT_COSLED       GPIOB
+#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_4
+#define PIN_DMR           GPIO_Pin_5
+#define PORT_DMR          GPIOB
+#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+
+#define PIN_P25           GPIO_Pin_8
 #define PORT_P25          GPIOB
 #define RCC_Per_P25       RCC_AHB1Periph_GPIOB
 
-#define PIN_DMR           GPIO_Pin_8
-#define PORT_DMR          GPIOB
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+#define PIN_NXDN          GPIO_Pin_9
+#define PORT_NXDN         GPIOB
+#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+
+#define PIN_FM            GPIO_Pin_12
+#define PORT_FM           GPIOC
+#define RCC_Per_FM        RCC_AHB1Periph_GPIOC
+
+#define PIN_PTTLED        GPIO_Pin_12
+#define PORT_PTTLED       GPIOC
+#define RCC_Per_PTTLED    RCC_AHB1Periph_GPIOC
+
+// GPIO
+
+#define PIN_PTT           GPIO_Pin_12
+#define PORT_PTT          GPIOB
+#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+
+#define PIN_COS           GPIO_Pin_13
+#define PORT_COS          GPIOB
+#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
 
 #define PIN_EXT_CLK       GPIO_Pin_15
 #define SRC_EXT_CLK       GPIO_PinSource15
 #define PORT_EXT_CLK      GPIOA
+
+// Analog
 
 #define PIN_RX            GPIO_Pin_0
 #define PIN_RX_CH         ADC_Channel_8
@@ -305,20 +325,6 @@
 
 #define PIN_TX            GPIO_Pin_4
 #define PIN_TX_CH         DAC_Channel_1
-
-#define PIN_SCL           GPIO_Pin_6
-#define PORT_SCL          GPIOC
-#define RCC_Per_SCL       RCC_AHB1Periph_GPIOC
-#define PINSRC_SCL        GPIO_PinSource6
-
-#define PIN_SDA           GPIO_Pin_7
-#define PORT_SDA          GPIOC
-#define RCC_Per_SDA       RCC_AHB1Periph_GPIOC
-#define PINSRC_SDA        GPIO_PinSource7
-
-#define I2C_AF            GPIO_AF_I2C1
-#define RCC_Per_I2C       RCC_APB1Periph_I2C1
-#define I2C_Per           I2C1
 
 #else
 #error "Only STM32F4_PI, STM32F4_POG, STM32F4_EDA_405, STM32F4_EDA_446, or STM32F4_DVMV1 is supported, others need to be defined!"
@@ -408,18 +414,7 @@ void IO::getUDID(uint8_t* buffer)
 /// <returns></returns>
 void IO::I2C_Write(uint8_t addr, uint8_t *buf, uint8_t length) 
 {
-    I2C_GenerateSTART(I2C_Per, ENABLE);
-    while(!I2C_CheckEvent(I2C_Per, I2C_EVENT_MASTER_MODE_SELECT));
-
-    I2C_Send7bitAddress(I2C_Per, 0x44, I2C_Direction_Transmitter);
-    while(!I2C_CheckEvent(I2C_Per, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
-
-    for (uint8_t i = 0U; i < length; i++) {
-        I2C_SendData(I2C_Per, buf[i]);
-        while(!I2C_CheckEvent(I2C_Per, I2C_EVENT_MASTER_BYTE_TRANSMITTED));
-    }
-
-    I2C_GenerateSTOP(I2C_Per, ENABLE);
+    sw_i2c_write(addr, buf, length);
 }
 
 /// <summary>
@@ -490,43 +485,27 @@ void IO::initInt()
     GPIO_Init(PORT_NXDN, &GPIO_InitStruct);
 
 #if I2C_ENABLED
-    // I2C Pins
-    I2C_InitTypeDef I2C_InitStruct;
-    //Enable the i2c
-    RCC_APB1PeriphClockCmd(RCC_Per_I2C, ENABLE);
-    //Reset the Peripheral
-    RCC_APB1PeriphResetCmd(RCC_Per_I2C, ENABLE);
-    RCC_APB1PeriphResetCmd(RCC_Per_I2C, DISABLE);
-  
-    //Enable the GPIOs for the SCL/SDA Pins
-    RCC_AHB1PeriphClockCmd(RCC_Per_SCL | RCC_Per_SDA, ENABLE);
-
+    // Setup I2C Pins
+    // Init SCL
+    RCC_AHB1PeriphClockCmd(RCC_Per_SCL, ENABLE);
     GPIO_InitStruct.GPIO_Pin = PIN_SCL;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
-    GPIO_InitStruct.GPIO_PuPd  = GPIO_PuPd_UP;
+    GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_Init(PORT_SCL, &GPIO_InitStruct);
 
+    // Init SDA
+    RCC_AHB1PeriphClockCmd(RCC_Per_SDA, ENABLE);
     GPIO_InitStruct.GPIO_Pin = PIN_SDA;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+    GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_Init(PORT_SDA, &GPIO_InitStruct);
-    
-    //Connect GPIO pins to peripheral
-    GPIO_PinAFConfig(PORT_SCL, PINSRC_SCL, I2C_AF);
-    GPIO_PinAFConfig(PORT_SDA, PINSRC_SDA, I2C_AF);
-    
-    //Configure and Initialize the I2C
-    I2C_InitStruct.I2C_Mode = I2C_Mode_I2C;
-    I2C_InitStruct.I2C_DutyCycle = I2C_DutyCycle_2;
-    I2C_InitStruct.I2C_OwnAddress1 = 0x00; //We are the master. We don't need this
-    I2C_InitStruct.I2C_Ack = I2C_Ack_Enable;
-    I2C_InitStruct.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    I2C_InitStruct.I2C_ClockSpeed = 50000;  //400kHz (Fast Mode) (
-    
-    //Initialize the Peripheral
-    I2C_Init(I2C_Per, &I2C_InitStruct);
-    // I2C Peripheral Enable
-    I2C_Cmd(I2C_Per, ENABLE);
+
+    // Init
+    sw_i2c_init();
 #endif
 }
 

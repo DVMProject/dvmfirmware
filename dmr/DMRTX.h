@@ -95,6 +95,10 @@ namespace dmr
         void resetFifo1();
         /// <summary>Helper to reset data values to defaults for slot 2 FIFO.</summary>
         void resetFifo2();
+
+        /// <summary>Helper to resize the FIFO buffer.</summary>
+        void resizeBuffer(uint16_t size);
+
         /// <summary></summary>
         uint32_t getFrameCount();
 

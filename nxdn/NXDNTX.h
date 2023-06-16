@@ -76,6 +76,9 @@ namespace nxdn
         /// <summary>Helper to set the calibration state for Tx.</summary>
         void setCal(bool start);
 
+        /// <summary>Helper to resize the FIFO buffer.</summary>
+        void resizeBuffer(uint16_t size);
+
         /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
         uint8_t getSpace() const;
 

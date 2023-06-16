@@ -80,6 +80,8 @@ enum DVM_COMMANDS {
 
     CMD_SEND_CWID = 0x0AU,
 
+    CMD_SET_BUFFERS = 0x0FU,
+
     CMD_DMR_DATA1 = 0x18U,
     CMD_DMR_LOST1 = 0x19U,
     CMD_DMR_DATA2 = 0x1AU,
@@ -227,6 +229,8 @@ private:
     uint8_t setRXLevel(const uint8_t* data, uint8_t length);
     /// <summary>Sets the RF parameters.</summary>
     uint8_t setRFParams(const uint8_t* data, uint8_t length);
+    /// <summary>Sets the protocol ring buffer sizes.</summary>
+    uint8_t setBuffers(const uint8_t* data, uint8_t length);
 
     /// <summary></summary>
     void flashRead();

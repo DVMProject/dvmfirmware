@@ -268,6 +268,16 @@ void P25TX::setCal(bool start)
 }
 
 /// <summary>
+/// Helper to resize the FIFO buffer.
+/// </summary>
+/// <param name="size"></param>
+void P25TX::resizeBuffer(uint16_t size)
+{
+    m_fifo.reset();
+    m_fifo.reinitialize(size);
+}
+
+/// <summary>
 /// Helper to get how much space the ring buffer has for samples.
 /// </summary>
 /// <returns></returns>

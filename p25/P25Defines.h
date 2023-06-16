@@ -101,7 +101,8 @@ namespace p25
     const uint32_t  P25_SYNC_SYMBOLS = 0x00FB30A0U;
     const uint32_t  P25_SYNC_SYMBOLS_MASK = 0x00FFFFFFU;
 
-    const uint32_t  P25_TX_BUFFER_LEN = 2602U; // 2602 = P25_LDU_FRAME_LENGTH_BYTES * 12 + 10 (BUFFER_LEN = P25_LDU_FRAME_LENGTH_BYTES * NO_OF_FRAMES + 10)
+    // 442 = P25_LDU_FRAME_LENGTH_BYTES * 2 + 10 (BUFFER_LEN = P25_LDU_FRAME_LENGTH_BYTES * NO_OF_FRAMES + 10)
+    const uint32_t  P25_TX_BUFFER_LEN = 442U; // 2 frames + pad
 
     // Data Unit ID(s)
     const uint8_t   P25_DUID_HDU = 0x00U;               // Header Data Unit

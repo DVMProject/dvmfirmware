@@ -405,6 +405,18 @@ void DMRTX::resetFifo2()
 }
 
 /// <summary>
+/// Helper to resize the FIFO buffer.
+/// </summary>
+/// <param name="size"></param>
+void DMRTX::resizeBuffer(uint16_t size)
+{
+    m_fifo[0U].reset();
+    m_fifo[1U].reset();
+    m_fifo[0U].reinitialize(size);
+    m_fifo[1U].reinitialize(size);
+}
+
+/// <summary>
 ///
 /// </summary>
 /// <returns></returns>

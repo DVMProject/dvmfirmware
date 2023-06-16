@@ -177,6 +177,17 @@ void SerialPort::process()
                     }
                     break;
 
+                case CMD_SET_BUFFERS:
+                    err = setBuffers(m_buffer + 3U, m_len - 3U);
+                    if (err == RSN_OK) {
+                        sendACK();
+                    }
+                    else {
+                        DEBUG2("SerialPort: process(): received invalid data to set buffers", err);
+                        sendNAK(err);
+                    }
+                    break;
+
                 /** CW */
                 case CMD_SEND_CWID:
                     err = RSN_RINGBUFF_FULL;
@@ -1272,5 +1283,35 @@ uint8_t SerialPort::setRXLevel(const uint8_t* data, uint8_t length)
 uint8_t SerialPort::setRFParams(const uint8_t* data, uint8_t length)
 {
     // unused on dedicated modem -- see firmware_hs for implementation
+    return RSN_OK;
+}
+
+/// <summary>
+/// Sets the protocol ring buffer sizes.
+/// </summary>
+/// <param name="data"></param>
+/// <param name="length"></param>
+/// <returns></returns>
+uint8_t SerialPort::setBuffers(const uint8_t* data, uint8_t length)
+{
+    if (length < 1U)
+        return RSN_ILLEGAL_LENGTH;
+    if (m_modemState != STATE_IDLE)
+        return RSN_INVALID_MODE;
+
+    uint16_t dmrBufSize = dmr::DMR_TX_BUFFER_LEN;
+    uint16_t p25BufSize = p25::P25_TX_BUFFER_LEN;
+    uint16_t nxdnBufSize = nxdn::NXDN_TX_BUFFER_LEN;
+
+    dmrBufSize = (data[0U] << 8) + (data[1U]);
+    p25BufSize = (data[2U] << 8) + (data[3U]);
+    nxdnBufSize = (data[4U] << 8) + (data[5U]);
+
+    p25TX.resizeBuffer(p25BufSize);
+    nxdnTX.resizeBuffer(nxdnBufSize);
+
+    dmrTX.resizeBuffer(dmrBufSize);
+    dmrDMOTX.resizeBuffer(dmrBufSize);
+
     return RSN_OK;
 }

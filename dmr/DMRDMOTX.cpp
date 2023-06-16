@@ -194,6 +194,16 @@ void DMRDMOTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 }
 
 /// <summary>
+/// Helper to resize the FIFO buffer.
+/// </summary>
+/// <param name="size"></param>
+void DMRDMOTX::resizeBuffer(uint16_t size)
+{
+    m_fifo.reset();
+    m_fifo.reinitialize(size);
+}
+
+/// <summary>
 /// Helper to get how much space the ring buffer has for samples.
 /// </summary>
 /// <returns></returns>

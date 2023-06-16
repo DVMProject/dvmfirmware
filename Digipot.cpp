@@ -36,9 +36,7 @@
 Digipot::Digipot() :
     m_RxFine(127U),
     m_RxCoarse(127U),
-    m_TxFine(127U),
     m_TxCoarse(127U),
-    m_RssiFine(127U),
     m_RssiCoarse(127U)
 {
     /* stub */
@@ -48,47 +46,49 @@ void Digipot::initialize() {
     // reset all values to middle
     m_RxFine     = 127U;
     m_RxCoarse   = 127U;
-    m_TxFine     = 127U;
     m_TxCoarse   = 127U;
-    m_RssiFine   = 127U;
     m_RssiCoarse = 127U;
+
+    // Set the pot's ACR registers to non-volatile, non-shutdown mode
+    setRegister(TxPotAddr, TPL0102_REG_ACR, 0x40);
+    setRegister(RxPotAddr, TPL0102_REG_ACR, 0x40);
     
     // push the values to the pots
-    setPotVal(RxPotAddr, 0, m_RxFine);
-    setPotVal(RxPotAddr, 1, m_RxCoarse);
-    setPotVal(TxPotAddr, 0, m_TxFine);
-    setPotVal(TxPotAddr, 1, m_TxCoarse);
-    setPotVal(RssiPotAddr, 0, m_RssiFine);
-    setPotVal(RssiPotAddr, 1, m_RssiCoarse);
+    setRxFine(m_RxFine);
+    setRxCoarse(m_RxCoarse);
+    setTxCoarse(m_TxCoarse);
+    setRssiCoarse(m_RssiCoarse);
 }
 
-void Digipot::setPotVal(uint8_t addr, uint8_t reg, uint8_t value) {
-    uint8_t cmd[2U];
-    io.I2C_Write(addr, cmd, 2U);
+void Digipot::setRegister(uint8_t i2c_addr, uint8_t reg_addr, uint8_t reg_value) {
+    uint8_t cmd[2] = {reg_addr, reg_value};
+    io.I2C_Write(i2c_addr, cmd, 2U);
 }
 
 void Digipot::setRxFine(uint8_t val) {
-    setPotVal(RxPotAddr, 1, val);
+    setRegister(RxPotAddr, TPL0102_REG_WRB, val);
 }
 
 void Digipot::setRxCoarse(uint8_t val) {
-    setPotVal(RxPotAddr, 0, val);
+    setRegister(RxPotAddr, TPL0102_REG_WRA, val);
 }
 
 void Digipot::setTxFine(uint8_t val) {
-    setPotVal(TxPotAddr, 1, val);
+    //there is no TX fine pot so ignore this
+    return;
 }
 
 void Digipot::setTxCoarse(uint8_t val) {
-    setPotVal(TxPotAddr, 0, val);
+    setRegister(TxPotAddr, TPL0102_REG_WRA, val);
 }
 
 void Digipot::setRssiFine(uint8_t val) {
-    setPotVal(RssiPotAddr, 1, val);
+    //there is no RSSI fine pot so ignore this
+    return;
 }
 
 void Digipot::setRssiCoarse(uint8_t val) {
-    setPotVal(RssiPotAddr, 0, val);
+    setRegister(TxPotAddr, TPL0102_REG_WRB, val);
 }
 
 #endif // DIGIPOT_ENABLED

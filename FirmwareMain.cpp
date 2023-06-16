@@ -140,7 +140,7 @@ void setup()
 {
     serial.start();
 #if defined(DIGIPOT_ENABLED)
-    digitpot.initialize();
+    digipot.initialize();
 #endif
 }
 

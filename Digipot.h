@@ -9,7 +9,7 @@
 // Licensed under the GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 //
 /*
-*   Copyright (C) 2022 by Natalie Moore
+*   Copyright (C) 2023 by Natalie Moore, Patrick McDonnell
 *
 *   This program is free software; you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 *   along with this program; if not, write to the Free Software
 *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
+
 #if !defined(__DIGIPOT_H__)
 #define __DIGIPOT_H__
 
@@ -33,13 +34,13 @@
 #include "Defines.h"
 #include <stm32f4xx_i2c.h>
 
-#define RxPotAddr   0x2C
-#define TxPotAddr   0x2E
-#define RssiPotAddr 0x2F
+#define TxPotAddr   0xA2    // 7-Bit address 1010001 (0x51) becomes 0xA2 after << 1
+#define RxPotAddr   0xA4    // 7-Bit address 1010010 (0x52) becomes 0xA4 after << 1
+//#define RssiPotAddr 0x2E  // RSSI pot is part of TX pot IC
 
-#define AD5242_CMD_SET_RDAC1    0x00
-#define AD5242_CMD_SET_RDAC2    0x80
-#define AD5242_CMD_RESET        0x40
+#define TPL0102_REG_WRA     0x00
+#define TPL0102_REG_WRB     0x01
+#define TPL0102_REG_ACR     0x10
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
@@ -75,12 +76,10 @@ public:
 private:
     uint8_t m_RxFine;
     uint8_t m_RxCoarse;
-    uint8_t m_TxFine;
     uint8_t m_TxCoarse;
-    uint8_t m_RssiFine;
     uint8_t m_RssiCoarse;
-    // helper to set softpot value at given address and register
-    void setPotVal(uint8_t addr, uint8_t reg, uint8_t value);
+    // helper to set registers
+    void setRegister(uint8_t i2c_addr, uint8_t reg_addr, uint8_t reg_value);
 };
 
 #endif // DIGIPOT_ENABLED

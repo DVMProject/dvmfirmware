@@ -139,7 +139,7 @@ extern CWIdTX cwIdTX;
 
 #if defined(DIGIPOT_ENABLED)
 /** Digipot */
-extern Digipot digitpot;
+extern Digipot digipot;
 #endif
 
 #if defined(NATIVE_SDR)

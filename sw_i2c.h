@@ -34,6 +34,8 @@
 #if !defined(__SW_I2C_H__)
 #define __SW_I2C_H__
 
+#if (!defined(__SAM3X8E__) && !defined(__MK20DX256__) && !defined(__MK64FX512__) && !defined(__MK66FX1M0__)) && !defined(ARDUINO_SAM_DUE)
+
 #include "Globals.h"
 
 // Pin Defs
@@ -47,5 +49,7 @@
 
 void sw_i2c_init();
 bool sw_i2c_write(uint8_t address, uint8_t *data, uint8_t size);
+
+#endif
 
 #endif

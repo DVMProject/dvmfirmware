@@ -34,6 +34,8 @@
 #include "sw_i2c.h"
 #include "DWT_delay.h"
 
+#if (!defined(__SAM3X8E__) && !defined(__MK20DX256__) && !defined(__MK64FX512__) && !defined(__MK66FX1M0__)) && !defined(ARDUINO_SAM_DUE)
+
 void scl(bool on)
 {
     GPIO_WriteBit(PORT_SCL, PIN_SCL, on ? Bit_SET : Bit_RESET);
@@ -159,3 +161,5 @@ bool sw_i2c_write(uint8_t address, uint8_t *data, uint8_t size) {
     gen_stop();
     return false;
 }
+
+#endif

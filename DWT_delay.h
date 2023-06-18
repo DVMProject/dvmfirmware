@@ -34,9 +34,13 @@
 #ifndef __DWT_DELAY_H__
 #define __DWT_DELAY_H__
 
+#if (!defined(__SAM3X8E__) && !defined(__MK20DX256__) && !defined(__MK64FX512__) && !defined(__MK66FX1M0__)) && !defined(ARDUINO_SAM_DUE)
+
 #include "stm32f4xx_rcc.h"
 
 uint32_t DWT_Delay_Init(void);
 void DWT_Delay_us(volatile uint32_t microseconds);
+
+#endif
 
 #endif

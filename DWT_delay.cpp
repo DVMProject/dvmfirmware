@@ -33,6 +33,8 @@
 
 #include "DWT_delay.h"
 
+#if (!defined(__SAM3X8E__) && !defined(__MK20DX256__) && !defined(__MK64FX512__) && !defined(__MK66FX1M0__)) && !defined(ARDUINO_SAM_DUE)
+
 RCC_ClocksTypeDef RCC_Clocks;
 uint32_t HCLK_Freq;
 
@@ -90,3 +92,4 @@ void DWT_Delay_us(volatile uint32_t microseconds)
 }
 
 /* Use DWT_Delay_Init (); and DWT_Delay_us (microseconds) in the main */
+#endif

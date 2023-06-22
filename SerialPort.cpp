@@ -290,6 +290,19 @@ void SerialPort::process()
                     }
                     break;
 
+                case CMD_DMR_CLEAR1:
+                    if (m_dmrEnable) {
+                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
+                            dmrTX.resetFifo1();
+                    }
+                    break;
+                case CMD_DMR_CLEAR2:
+                    if (m_dmrEnable) {
+                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
+                            dmrTX.resetFifo2();
+                    }
+                    break;
+
                 /** Project 25 */
                 case CMD_P25_DATA:
                     if (m_p25Enable) {
@@ -326,6 +339,12 @@ void SerialPort::process()
                     else {
                         DEBUG2("SerialPort: process(): Received invalid NXDN data", err);
                         sendNAK(err);
+                    }
+                    break;
+                case CMD_NXDN_CLEAR:
+                    if (m_nxdnEnable) {
+                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
+                            nxdnTX.clear();
                     }
                     break;
 

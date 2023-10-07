@@ -341,6 +341,31 @@ void IO::process()
                 p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
             }
         }
+        else if (m_modemState == STATE_NXDN) {       // NXDN State
+            /** Next Generation Digital Narrowband */
+            if (m_nxdnEnable) {
+                q15_t c4fmSamples[RX_BLOCK_SIZE];
+#if NXDN_BOXCAR_FILTER
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_boxcar_10_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_boxcar_10_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+#else
+                q15_t c4fmRCSamples[RX_BLOCK_SIZE];
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_nxdn_0_2_Filter, dcSamples, c4fmRCSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_nxdn_0_2_Filter, samples, c4fmRCSamples, RX_BLOCK_SIZE);
+                }
+
+                ::arm_fir_fast_q15(&m_nxdn_ISinc_Filter, c4fmRCSamples, c4fmSamples, RX_BLOCK_SIZE);
+#endif
+                nxdnRX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
+            }
+        }
         else if (m_modemState == STATE_RSSI_CAL) {
             calRSSI.samples(rssi, RX_BLOCK_SIZE);
         }

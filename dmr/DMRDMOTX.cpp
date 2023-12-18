@@ -107,7 +107,6 @@ void DMRDMOTX::process()
             m_poLen = 72U;
         }
 
-        DEBUG2("DMRDMOTX: process(): poLen", m_poLen);
         m_poPtr = 0U;
     }
 
@@ -146,7 +145,7 @@ uint8_t DMRDMOTX::writeData(const uint8_t* data, uint8_t length)
         return RSN_ILLEGAL_LENGTH;
 
     uint16_t space = m_fifo.getSpace();
-    DEBUG3("DMRDMOTX: writeData(): dataLength/fifoLength", length, space);
+    DEBUG3("DMRDMOTX::writeData() dataLength/fifoLength", length, space);
     if (space < DMR_FRAME_LENGTH_BYTES)
         return RSN_RINGBUFF_FULL;
 

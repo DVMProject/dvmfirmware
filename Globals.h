@@ -31,13 +31,11 @@
 #if !defined(__GLOBALS_H__)
 #define __GLOBALS_H__
 
-#if !defined(NATIVE_SDR)
 #if defined(STM32F4XX)
 #include "stm32f4xx.h"
 #include <cstddef>
 #else
 #include <Arduino.h>
-#endif
 #endif
 
 #include "Defines.h"
@@ -54,17 +52,10 @@
 #include "nxdn/NXDNRX.h"
 #include "nxdn/NXDNTX.h"
 #include "nxdn/CalNXDN.h"
-#if defined(NATIVE_SDR)
-#include "sdr/Log.h"
-#endif
 #include "CalRSSI.h"
 #include "CWIdTX.h"
 #include "Digipot.h"
 #include "IO.h"
-
-#if defined(NATIVE_SDR)
-#include <cstring>
-#endif
 
 // ---------------------------------------------------------------------------
 //  Constants
@@ -140,13 +131,6 @@ extern CWIdTX cwIdTX;
 #if defined(DIGIPOT_ENABLED)
 /** Digipot */
 extern Digipot digipot;
-#endif
-
-#if defined(NATIVE_SDR)
-extern std::string m_zmqRx;
-extern std::string m_zmqTx;
-extern std::string m_ptyPort;
-extern bool g_debug;
 #endif
 
 #endif // __GLOBALS_H__

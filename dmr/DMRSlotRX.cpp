@@ -176,7 +176,7 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
 
                 switch (dataType) {
                 case DT_DATA_HEADER:
-                    DEBUG5("DMRSlotRX: processSample(): data header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                    DEBUG5("DMRSlotRX::processSample() data header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     m_state = DMRRXS_DATA;
                     m_type = 0x00U;
@@ -185,33 +185,33 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
                 case DT_RATE_34_DATA:
                 case DT_RATE_1_DATA:
                     if (m_state == DMRRXS_DATA) {
-                        DEBUG5("DMRSlotRX: processSample(): data payload found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                        DEBUG5("DMRSlotRX::processSample() data payload found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                         m_type = dataType;
                     }
                     break;
                 case DT_VOICE_LC_HEADER:
-                    DEBUG5("DMRSlotRX: processSample(): voice header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                    DEBUG5("DMRSlotRX::processSample() voice header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     m_state = DMRRXS_VOICE;
                     break;
                 case DT_VOICE_PI_HEADER:
                     if (m_state == DMRRXS_VOICE) {
-                        DEBUG5("DMRSlotRX: processSample(): voice pi header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                        DEBUG5("DMRSlotRX::processSample() voice pi header found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                     }
                     m_state = DMRRXS_VOICE;
                     break;
                 case DT_TERMINATOR_WITH_LC:
                     if (m_state == DMRRXS_VOICE) {
-                        DEBUG5("DMRSlotRX: processSample(): voice terminator found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                        DEBUG5("DMRSlotRX::processSample() voice terminator found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                         writeRSSIData(frame);
                         m_state = DMRRXS_NONE;
                         m_endPtr = NOENDPTR;
                     }
                     break;
                 default:    // DT_CSBK
-                    DEBUG5("DMRSlotRX: processSample(): csbk found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+                    DEBUG5("DMRSlotRX::processSample() csbk found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
                     writeRSSIData(frame);
                     m_state = DMRRXS_NONE;
                     m_endPtr = NOENDPTR;
@@ -221,7 +221,7 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
         }
         else if (m_control == CONTROL_VOICE) {
             // Voice sync
-            DEBUG5("DMRSlotRX: processSample(): voice sync found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
+            DEBUG5("DMRSlotRX::processSample() voice sync found slot/pos/centre/threshold", m_slot ? 2U : 1U, m_syncPtr, centre, threshold);
             writeRSSIData(frame);
             m_state = DMRRXS_VOICE;
             m_syncCount = 0U;
@@ -231,7 +231,7 @@ bool DMRSlotRX::processSample(q15_t sample, uint16_t rssi)
             if (m_state != DMRRXS_NONE) {
                 m_syncCount++;
                 if (m_syncCount >= MAX_SYNC_LOST_FRAMES) {
-                    DEBUG1("DMRSlotRX: processSample(): sync timeout, lost lock");
+                    DEBUG1("DMRSlotRX::processSample() sync timeout, lost lock");
                     serial.writeDMRLost(m_slot);
                     m_state = DMRRXS_NONE;
                     m_endPtr = NOENDPTR;
@@ -356,11 +356,11 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_DATA_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
-                    DEBUG3("DMRSlotRX: correlateSync(): sync slot/errs",  m_slot ? 2U : 1U, errs);
+                    DEBUG3("DMRSlotRX::correlateSync() sync slot/errs",  m_slot ? 2U : 1U, errs);
 
-                    DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
-                    DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
-                    DEBUG2("DMRSlotRX: correlateSync(): sync [b6]", sync[6]);
+                    DEBUG4("DMRSlotRX::correlateSync() sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                    DEBUG4("DMRSlotRX::correlateSync() sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                    DEBUG2("DMRSlotRX::correlateSync() sync [b6]", sync[6]);
 
                     if (first) {
                         m_threshold[0U] = m_threshold[1U] = m_threshold[2U] = m_threshold[3U] = threshold;
@@ -382,7 +382,7 @@ void DMRSlotRX::correlateSync(bool first)
                     m_startPtr = m_dataPtr - DMR_SLOT_TYPE_LENGTH_SAMPLES / 2U - DMR_INFO_LENGTH_SAMPLES / 2U - DMR_SYNC_LENGTH_SAMPLES;
                     m_endPtr = m_dataPtr + DMR_SLOT_TYPE_LENGTH_SAMPLES / 2U + DMR_INFO_LENGTH_SAMPLES / 2U - 1U;
 
-                    DEBUG5("DMRSlotRX: correlateSync(): dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
+                    DEBUG5("DMRSlotRX::correlateSync() dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
                 }
             }
             else {  // if (voice)
@@ -391,11 +391,11 @@ void DMRSlotRX::correlateSync(bool first)
                     errs += countBits8((sync[i] & DMR_SYNC_BYTES_MASK[i]) ^ DMR_MS_VOICE_SYNC_BYTES[i]);
 
                 if (errs <= MAX_SYNC_BYTES_ERRS) {
-                    DEBUG3("DMRSlotRX: correlateSync(): sync slot/errs",  m_slot ? 2U : 1U, errs);
+                    DEBUG3("DMRSlotRX::correlateSync() sync slot/errs",  m_slot ? 2U : 1U, errs);
 
-                    DEBUG4("DMRSlotRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
-                    DEBUG4("DMRSlotRX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
-                    DEBUG2("DMRSlotRX: correlateSync(): sync [b6]", sync[6]);
+                    DEBUG4("DMRSlotRX::correlateSync() sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                    DEBUG4("DMRSlotRX::correlateSync() sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                    DEBUG2("DMRSlotRX::correlateSync() sync [b6]", sync[6]);
 
                     if (first) {
                         m_threshold[0U] = m_threshold[1U] = m_threshold[2U] = m_threshold[3U] = threshold;
@@ -417,7 +417,7 @@ void DMRSlotRX::correlateSync(bool first)
                     m_startPtr = m_dataPtr - DMR_SLOT_TYPE_LENGTH_SAMPLES / 2U - DMR_INFO_LENGTH_SAMPLES / 2U - DMR_SYNC_LENGTH_SAMPLES;
                     m_endPtr = m_dataPtr + DMR_SLOT_TYPE_LENGTH_SAMPLES / 2U + DMR_INFO_LENGTH_SAMPLES / 2U - 1U;
 
-                    DEBUG5("DMRSlotRX: correlateSync(): dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
+                    DEBUG5("DMRSlotRX::correlateSync() dataPtr/syncPtr/startPtr/lduEndPtr", m_dataPtr, m_syncPtr, m_startPtr, m_endPtr);
                 }
             }
         }

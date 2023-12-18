@@ -466,9 +466,9 @@ void IO::setMode()
         relativeState = serial.calRelativeState(m_modemState);
     }
 
-    DEBUG3("IO::setMode(): setting modem state", m_modemState, relativeState);
+    DEBUG3("IO::setMode() setting modem state", m_modemState, relativeState);
 
-    DEBUG4("IO::setMode(): setting lights", relativeState == STATE_DMR, relativeState == STATE_P25, relativeState == STATE_NXDN);
+    DEBUG4("IO::setMode() setting lights", relativeState == STATE_DMR, relativeState == STATE_P25, relativeState == STATE_NXDN);
     setDMRInt(relativeState == STATE_DMR);
     setP25Int(relativeState == STATE_P25);
     setNXDNInt(relativeState == STATE_NXDN);

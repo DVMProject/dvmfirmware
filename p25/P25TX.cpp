@@ -145,8 +145,6 @@ void P25TX::process()
 
             createData();
         }
-
-        DEBUG2("P25TX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {
@@ -185,7 +183,7 @@ uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
         return RSN_ILLEGAL_LENGTH;
 
     uint16_t space = m_fifo.getSpace();
-    DEBUG3("P25TX: writeData(): dataLength/fifoLength", length, space);
+    DEBUG3("P25TX::writeData() dataLength/fifoLength", length, space);
     if (space < length) {
         m_fifo.reset();
         return RSN_RINGBUFF_FULL;
@@ -301,7 +299,7 @@ void P25TX::createData()
     }
     else {
         uint8_t length = m_fifo.get();
-        DEBUG3("P25TX: createData(): dataLength/fifoSpace", length, m_fifo.getSpace());
+        DEBUG3("P25TX::createData() dataLength/fifoSpace", length, m_fifo.getSpace());
         for (uint8_t i = 0U; i < length; i++) {
             m_poBuffer[m_poLen++] = m_fifo.get();
         }

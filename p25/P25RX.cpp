@@ -157,7 +157,7 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
                     m_averagePtr = NOAVEPTR;
 
                     m_countdown = m_corrCountdown;
-                    DEBUG2("P25RX: samples(): correlation countdown", m_countdown);
+                    DEBUG2("P25RX::samples() correlation countdown", m_countdown);
                 }
             }
 
@@ -173,8 +173,8 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
                 if (m_maxSyncPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
                     m_maxSyncPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
 
-                DEBUG4("P25RX: samples(): dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
-                DEBUG4("P25RX: samples(): lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+                DEBUG4("P25RX::samples() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
+                DEBUG4("P25RX::samples() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
                 m_state = P25RXS_SYNC;
                 m_countdown = 0U;
@@ -233,8 +233,8 @@ void P25RX::processSample(q15_t sample)
     // initial sample processing does not have an end pointer -- we simply wait till we've read
     // the samples up to the maximum sync pointer
     if (m_dataPtr == m_maxSyncPtr) {
-        DEBUG4("P25RX: processSample(): dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_maxSyncPtr);
-        DEBUG4("P25RX: processSample(): lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+        DEBUG4("P25RX::processSample() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_maxSyncPtr);
+        DEBUG4("P25RX::processSample() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
         if (!decodeNid(m_startPtr)) {
             io.setDecode(false);
@@ -249,7 +249,7 @@ void P25RX::processSample(q15_t sample)
                 {
                     calculateLevels(m_startPtr, P25_HDU_FRAME_LENGTH_SYMBOLS);
 
-                    DEBUG4("P25RX: processSample(): sync found in HDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                    DEBUG4("P25RX::processSample() sync found in HDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                     uint8_t frame[P25_HDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_HDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -263,7 +263,7 @@ void P25RX::processSample(q15_t sample)
                 {
                     calculateLevels(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS);
 
-                    DEBUG4("P25RX: processSample(): sync found in TDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                    DEBUG4("P25RX::processSample() sync found in TDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                     uint8_t frame[P25_TDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -280,7 +280,7 @@ void P25RX::processSample(q15_t sample)
                 {
                     // calculateLevels(m_startPtr, P25_TSDU_FRAME_LENGTH_SYMBOLS);
 
-                    DEBUG4("P25RX: processSample(): sync found in TSDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                    DEBUG4("P25RX::processSample() sync found in TSDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                     uint8_t frame[P25_TSDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TSDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -300,7 +300,7 @@ void P25RX::processSample(q15_t sample)
                 {
                     calculateLevels(m_startPtr, P25_TDULC_FRAME_LENGTH_SYMBOLS);
 
-                    DEBUG4("P25RX: processSample(): sync found in TDULC pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                    DEBUG4("P25RX::processSample() sync found in TDULC pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                     uint8_t frame[P25_TDULC_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TDULC_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -312,7 +312,7 @@ void P25RX::processSample(q15_t sample)
                 return;
             default:
                 {
-                    DEBUG3("P25RX: processSample(): illegal DUID in NID", m_nac, m_duid);
+                    DEBUG3("P25RX::processSample() illegal DUID in NID", m_nac, m_duid);
                     reset();
                 }
                 return;
@@ -372,12 +372,12 @@ void P25RX::processVoice(q15_t sample)
 
         m_lostCount--;
 
-        DEBUG4("P25RX: processVoice(): dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
-        DEBUG4("P25RX: processVoice(): lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+        DEBUG4("P25RX::processVoice() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
+        DEBUG4("P25RX::processVoice() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
         // we've not seen a data sync for too long, signal sync lost and change to P25RXS_NONE
         if (m_lostCount == 0U) {
-            DEBUG1("P25RX: processVoice(): sync timeout in LDU, lost lock");
+            DEBUG1("P25RX::processVoice() sync timeout in LDU, lost lock");
 
             io.setDecode(false);
             io.setADCDetection(false);
@@ -397,7 +397,7 @@ void P25RX::processVoice(q15_t sample)
                 if (m_duid == P25_DUID_TDU) {
                     calculateLevels(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS);
 
-                    DEBUG4("P25RX: processVoice(): sync found in TDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                    DEBUG4("P25RX::processVoice() sync found in TDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                     uint8_t frame[P25_TDU_FRAME_LENGTH_BYTES + 1U];
                     samplesToBits(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -414,7 +414,7 @@ void P25RX::processVoice(q15_t sample)
 
                 calculateLevels(m_startPtr, P25_LDU_FRAME_LENGTH_SYMBOLS);
 
-                DEBUG4("P25RX: processVoice(): sync found in LDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                DEBUG4("P25RX::processVoice() sync found in LDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                 uint8_t frame[P25_LDU_FRAME_LENGTH_BYTES + 3U];
                 samplesToBits(m_startPtr, P25_LDU_FRAME_LENGTH_SYMBOLS, frame, P25_NID_LENGTH_SYMBOLS, m_centreVal, m_thresholdVal);
@@ -472,12 +472,12 @@ void P25RX::processData(q15_t sample)
 
         m_lostCount--;
 
-        DEBUG4("P25RX: processData(): dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
-        DEBUG4("P25RX: processData(): lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+        DEBUG4("P25RX::processData() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
+        DEBUG4("P25RX::processData() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
         // we've not seen a data sync for too long, signal sync lost and change to P25RXS_NONE
         if (m_lostCount == 0U) {
-            DEBUG1("P25RX: processData(): sync timeout in PDU, lost lock");
+            DEBUG1("P25RX::processData() sync timeout in PDU, lost lock");
 
             io.setDecode(false);
             io.setADCDetection(false);
@@ -496,7 +496,7 @@ void P25RX::processData(q15_t sample)
             else {
                 // calculateLevels(m_lduStartPtr, P25_LDU_FRAME_LENGTH_SYMBOLS);
 
-                DEBUG4("P25RX: processPdu(): sync found in PDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
+                DEBUG4("P25RX::processData() sync found in PDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
                 uint8_t frame[P25_LDU_FRAME_LENGTH_BYTES + 1U];
                 samplesToBits(m_startPtr, P25_LDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
@@ -584,10 +584,10 @@ bool P25RX::correlateSync()
                 errs += countBits8(sync[i] ^ P25_SYNC_BYTES[i]);
 
             if (errs <= maxErrs) {
-                DEBUG2("P25RX: correlateSync(): correlateSync errs", errs);
+                DEBUG2("P25RX::correlateSync() sync errs", errs);
 
-                DEBUG4("P25RX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
-                DEBUG4("P25RX: correlateSync(): sync [b3 - b5]", sync[3], sync[4], sync[5]);
+                DEBUG4("P25RX::correlateSync() sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                DEBUG4("P25RX::correlateSync() sync [b3 - b5]", sync[3], sync[4], sync[5]);
 
                 m_maxCorr = corr;
                 m_lostCount = MAX_SYNC_FRAMES;
@@ -599,7 +599,7 @@ bool P25RX::correlateSync()
                 if (m_endPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
                     m_endPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
 
-                DEBUG4("P25RX: correlateSync(): dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
+                DEBUG4("P25RX::correlateSync() dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
 
                 return true;
             }
@@ -624,18 +624,18 @@ bool P25RX::decodeNid(uint16_t start)
 
     if (m_nac == 0xF7EU) {
         m_duid = nid[1U] & 0x0FU;
-        DEBUG2("P25RX: decodeNid(): DUID for xDU", m_duid);
+        DEBUG2("P25RX::decodeNid() DUID for xDU", m_duid);
         return true;
     }
 
     uint16_t nac = (nid[0U] << 4) | ((nid[1U] & 0xF0U) >> 4);
     if (nac == m_nac) {
         m_duid = nid[1U] & 0x0FU;
-        DEBUG2("P25RX: decodeNid(): DUID for xDU", m_duid);
+        DEBUG2("P25RX::decodeNid() DUID for xDU", m_duid);
         return true;
     }
     else {
-        DEBUG3("P25RX: decodeNid(): invalid NAC found; nac != m_nac", nac, m_nac);
+        DEBUG3("P25RX::decodeNid() invalid NAC found; nac != m_nac", nac, m_nac);
     }
 
     return false;
@@ -681,7 +681,7 @@ void P25RX::calculateLevels(uint16_t start, uint16_t count)
 
     q15_t threshold = posThresh - centre;
 
-    DEBUG5("P25RX: calculateLevels(): pos/neg/centre/threshold", posThresh, negThresh, centre, threshold);
+    DEBUG5("P25RX::calculateLevels() pos/neg/centre/threshold", posThresh, negThresh, centre, threshold);
 
     if (m_averagePtr == NOAVEPTR) {
         for (uint8_t i = 0U; i < 16U; i++) {

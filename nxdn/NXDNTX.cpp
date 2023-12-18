@@ -149,8 +149,6 @@ void NXDNTX::process()
             return;
 
         createData();
-
-        DEBUG2("NXDNTX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {
@@ -189,7 +187,7 @@ uint8_t NXDNTX::writeData(const uint8_t* data, uint8_t length)
         return RSN_ILLEGAL_LENGTH;
 
     uint16_t space = m_fifo.getSpace();
-    DEBUG3("NXDNTX: writeData(): dataLength/fifoLength", length, space);
+    DEBUG3("NXDNTX::writeData() dataLength/fifoLength", length, space);
     if (space < NXDN_FRAME_LENGTH_BYTES)
         return RSN_RINGBUFF_FULL;
 
@@ -297,7 +295,7 @@ void NXDNTX::createData()
         m_poBuffer[m_poLen++] = NXDN_PREAMBLE[2U];
     }
     else {
-        DEBUG2("NXDNTX: createData(): fifoSpace", m_fifo.getSpace());
+        DEBUG2("NXDNTX::createData() fifoSpace", m_fifo.getSpace());
         for (uint8_t i = 0U; i < NXDN_FRAME_LENGTH_BYTES; i++) {
             m_poBuffer[m_poLen++] = m_fifo.get();
         }

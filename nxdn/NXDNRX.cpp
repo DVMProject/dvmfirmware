@@ -183,7 +183,7 @@ void NXDNRX::processSample(q15_t sample)
 
             m_averagePtr = NOAVEPTR;
             m_countdown = m_corrCountdown;
-            DEBUG2("NXDNRX: processSample(): correlation countdown", m_countdown);
+            DEBUG2("NXDNRX::processSample() correlation countdown", m_countdown);
         }
     }
 
@@ -232,7 +232,7 @@ void NXDNRX::processData(q15_t sample)
 
         calculateLevels(m_startPtr, NXDN_FRAME_LENGTH_SYMBOLS);
 
-        DEBUG4("NXDNRX: sync found pos/centre/threshold", m_fswPtr, m_centreVal, m_thresholdVal);
+        DEBUG4("NXDNRX::processData() sync found pos/centre/threshold", m_fswPtr, m_centreVal, m_thresholdVal);
 
         uint8_t frame[NXDN_FRAME_LENGTH_BYTES + 3U];
         samplesToBits(m_startPtr, NXDN_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
@@ -240,7 +240,7 @@ void NXDNRX::processData(q15_t sample)
         // We've not seen a data sync for too long, signal RXLOST and change to RX_NONE
         m_lostCount--;
         if (m_lostCount == 0U) {
-            DEBUG1("NXDNRX: sync timed out, lost lock");
+            DEBUG1("NXDNRX::processData() sync timed out, lost lock");
 
             io.setDecode(false);
             io.setADCDetection(false);
@@ -347,9 +347,9 @@ bool NXDNRX::correlateSync()
                 errs += countBits8((sync[i] & NXDN_FSW_BYTES_MASK[i]) ^ NXDN_FSW_BYTES[i]);
 
             if (errs <= maxErrs) {
-                DEBUG2("NXDNRX: correlateSync(): correlateSync errs", errs);
+                DEBUG2("NXDNRX::correlateSync() sync errs", errs);
 
-                DEBUG4("NXDNRX: correlateSync(): sync [b0 - b2]", sync[0], sync[1], sync[2]);
+                DEBUG4("NXDNRX::correlateSync() sync [b0 - b2]", sync[0], sync[1], sync[2]);
 
                 m_maxCorr = corr;
                 m_lostCount = MAX_FSW_FRAMES;
@@ -361,7 +361,7 @@ bool NXDNRX::correlateSync()
                 if (m_endPtr >= NXDN_FRAME_LENGTH_SAMPLES)
                     m_endPtr -= NXDN_FRAME_LENGTH_SAMPLES;
 
-                DEBUG4("NXDNRX: correlateSync(): dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
+                DEBUG4("NXDNRX::correlateSync() dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
 
                 return true;
             }
@@ -410,7 +410,7 @@ void NXDNRX::calculateLevels(uint16_t start, uint16_t count)
 
     q15_t threshold = posThresh - centre;
 
-    DEBUG5("NXDNRX: pos/neg/centre/threshold", posThresh, negThresh, centre, threshold);
+    DEBUG5("NXDNRX::calculateLevels() pos/neg/centre/threshold", posThresh, negThresh, centre, threshold);
 
     if (m_averagePtr == NOAVEPTR) {
         for (uint8_t i = 0U; i < 16U; i++) {

@@ -154,8 +154,6 @@ void DMRTX::process()
             m_state = DMRTXSTATE_SLOT1;
             break;
         }
-    
-        DEBUG2("DMRTX: process(): poLen", m_poLen);
     }
 
     if (m_poLen > 0U) {
@@ -195,7 +193,7 @@ uint8_t DMRTX::writeData1(const uint8_t* data, uint8_t length)
         return RSN_ILLEGAL_LENGTH;
 
     uint16_t space = m_fifo[0U].getSpace();
-    DEBUG3("DMRTX: writeData1(): dataLength/fifoLength", length, space);
+    DEBUG3("DMRTX::writeData1() dataLength/fifoLength", length, space);
     if (space < DMR_FRAME_LENGTH_BYTES) {
         m_fifo[0U].reset();
         return RSN_RINGBUFF_FULL;
@@ -228,7 +226,7 @@ uint8_t DMRTX::writeData2(const uint8_t* data, uint8_t length)
         return RSN_ILLEGAL_LENGTH;
 
     uint16_t space = m_fifo[1U].getSpace();
-    DEBUG3("DMRTX: writeData2(): dataLength/fifoLength", length, space);
+    DEBUG3("DMRTX::writeData2() dataLength/fifoLength", length, space);
     if (space < DMR_FRAME_LENGTH_BYTES) {
         m_fifo[1U].reset();
         return RSN_RINGBUFF_FULL;

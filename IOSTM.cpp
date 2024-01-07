@@ -446,8 +446,9 @@ void IO::getUDID(uint8_t* buffer)
 /// <returns></returns>
 void IO::SPI_Write(uint8_t byte)
 {
+    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_TXE) == RESET);
     DEBUG2("IO::SPI_Write() ", byte);
-    SPI_SendData(SPI_PERIPH, byte);
+    SPI_I2S_SendData(SPI_PERIPH, byte);
 }
 
 /// <summary>
@@ -456,7 +457,8 @@ void IO::SPI_Write(uint8_t byte)
 /// <returns>the received byte</returns>
 uint16_t IO::SPI_Read()
 {
-    uint8_t byte = SPI_ReceiveData(SPI_PERIPH);
+    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
+    uint8_t byte = SPI_I2S_ReceiveData(SPI_PERIPH);
     DEBUG2("IO::SPI_Read() ", byte);
     return byte;
 }
@@ -571,7 +573,7 @@ void IO::initInt()
 
     // Init GPIO Pins
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+    GPIO_InitStruct.GPIO_Speed = GPIO_Low_Speed;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
 
@@ -748,6 +750,21 @@ void IO::startInt()
     nvicStructure.NVIC_IRQChannelSubPriority = 1;
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvicStructure);
+
+    #if defined(SPI_ENABLED)
+    SPI_InitTypeDef SPI_Initstruct;
+    SPI_Initstruct.SPI_Direction = SPI_Direction_1Line_Tx;
+    SPI_Initstruct.SPI_Mode = SPI_Mode_Master;
+    SPI_Initstruct.SPI_DataSize = SPI_DataSize_8b;
+    // MCP41010 uses rising edge clock, low clock idle (0,0)
+    SPI_Initstruct.SPI_CPOL = SPI_CPOL_Low;
+    SPI_Initstruct.SPI_CPHA = SPI_CPHA_1Edge;
+    SPI_Initstruct.SPI_NSS = SPI_NSS_Soft;
+    SPI_Initstruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+    SPI_Initstruct.SPI_FirstBit = SPI_FirstBit_MSB;
+    SPI_Init(SPI_PERIPH, &SPI_Initstruct);
+    SPI_Cmd(SPI_PERIPH, ENABLE);
+    #endif
 
     GPIO_ResetBits(PORT_COSLED, PIN_COSLED);
     GPIO_SetBits(PORT_LED, PIN_LED);

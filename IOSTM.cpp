@@ -444,11 +444,21 @@ void IO::getUDID(uint8_t* buffer)
 /// Sends a byte over SPI
 /// </summary>
 /// <returns></returns>
-void IO::SPI_Write(uint8_t byte)
+void IO::SPI_Write(uint8_t* bytes, uint8_t length)
 {
-    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_TXE) == RESET);
-    DEBUG2("IO::SPI_Write() ", byte);
-    SPI_I2S_SendData(SPI_PERIPH, byte);
+    // Write the first byte
+    SPI_I2S_SendData(SPI_PERIPH, bytes[0]);
+    DEBUG2("IO::SPI_Write() ", bytes[0]);
+    if (length <= 1) { return; }
+    // Write the remaining bytes once the TX buffer is ready
+    for (int i=1; i<length; i++)
+    {
+        while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
+        SPI_I2S_SendData(SPI_PERIPH, bytes[i]);
+        DEBUG2("IO::SPI_Write() ", bytes[i]);
+    }
+    // Wait for the final byte to finish
+    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
 }
 
 /// <summary>
@@ -457,7 +467,7 @@ void IO::SPI_Write(uint8_t byte)
 /// <returns>the received byte</returns>
 uint16_t IO::SPI_Read()
 {
-    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
+    //while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
     uint8_t byte = SPI_I2S_ReceiveData(SPI_PERIPH);
     DEBUG2("IO::SPI_Read() ", byte);
     return byte;
@@ -472,8 +482,10 @@ uint16_t IO::SPI_Read()
 /// <returns></returns>
 void IO::SetDigipot(uint8_t value)
 {
-    SPI_Write(0b00010001);  // write command to pot 0
-    SPI_Write(value);
+    uint8_t bytes[2];
+    bytes[0] = 0b00010001;  // write command to pot 0
+    bytes[1] = value;
+    SPI_Write(bytes, 2);
 }
 
 void IO::SetTxDigipot(uint8_t value)
@@ -753,14 +765,14 @@ void IO::startInt()
 
     #if defined(SPI_ENABLED)
     SPI_InitTypeDef SPI_Initstruct;
-    SPI_Initstruct.SPI_Direction = SPI_Direction_1Line_Tx;
+    SPI_Initstruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
     SPI_Initstruct.SPI_Mode = SPI_Mode_Master;
     SPI_Initstruct.SPI_DataSize = SPI_DataSize_8b;
     // MCP41010 uses rising edge clock, low clock idle (0,0)
     SPI_Initstruct.SPI_CPOL = SPI_CPOL_Low;
     SPI_Initstruct.SPI_CPHA = SPI_CPHA_1Edge;
     SPI_Initstruct.SPI_NSS = SPI_NSS_Soft;
-    SPI_Initstruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
+    SPI_Initstruct.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_64;
     SPI_Initstruct.SPI_FirstBit = SPI_FirstBit_MSB;
     SPI_Init(SPI_PERIPH, &SPI_Initstruct);
     SPI_Cmd(SPI_PERIPH, ENABLE);

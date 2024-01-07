@@ -102,7 +102,7 @@ public:
     void selfTest();
 
 #if SPI_ENABLED
-void SPI_Write(uint8_t byte);
+void SPI_Write(uint8_t* bytes, uint8_t length);
 
 uint16_t SPI_Read();
 #endif

@@ -253,10 +253,6 @@
     PTT      PB12   output
     COS      PB13   input   (also known as INHIBIT)
 
-    I2C:
-    SCL      PC6    output
-    SDA      PC7    bidir
-
     Analog:
     RX       PB0    analog input (ADC1_8)
     RSSI     PB1    analog input (ADC2_9)
@@ -264,11 +260,10 @@
 
     EXT_CLK  PA15   input
 */
-// include the i2c bitbang lib
-#include "sw_i2c.h"
 
 // LEDs
 
+// PIN_LED is also known as the HB LED
 #define PIN_LED           GPIO_Pin_3
 #define PORT_LED          GPIOB
 #define RCC_Per_LED       RCC_AHB1Periph_GPIOB
@@ -293,7 +288,7 @@
 #define PORT_FM           GPIOC
 #define RCC_Per_FM        RCC_AHB1Periph_GPIOC
 
-#define PIN_PTTLED        GPIO_Pin_12
+#define PIN_PTTLED        GPIO_Pin_13
 #define PORT_PTTLED       GPIOC
 #define RCC_Per_PTTLED    RCC_AHB1Periph_GPIOC
 
@@ -325,6 +320,43 @@
 
 #define PIN_TX            GPIO_Pin_4
 #define PIN_TX_CH         DAC_Channel_1
+
+// SPI
+
+#define SPI_APB_CLK_INIT  RCC_APB2PeriphClockCmd
+#define SPI_APB_CLK       RCC_APB2Periph_SPI1
+
+#define SPI_GPIO_AF       GPIO_AF_SPI1
+
+#define SPI_PERIPH        SPI1
+
+#define PIN_SPI_SCK       GPIO_Pin_5
+#define PORT_SPI_SCK      GPIOA
+#define RCC_Per_SCK       RCC_AHB1Periph_GPIOA
+#define SRC_SPI_SCK       GPIO_PinSource5
+
+#define PIN_SPI_MISO      GPIO_Pin_6
+#define PORT_SPI_MISO     GPIOA
+#define RCC_Per_MISO      RCC_AHB1Periph_GPIOA
+#define SRC_SPI_MISO      GPIO_PinSource6
+
+#define PIN_SPI_MOSI      GPIO_Pin_7
+#define PORT_SPI_MOSI     GPIOA
+#define RCC_Per_MOSI      RCC_AHB1Periph_GPIOA
+#define SRC_SPI_MOSI      GPIO_PinSource7
+
+// Digipot Chip Selects
+#define PIN_CS_TXPOT      GPIO_Pin_0
+#define PORT_CS_TXPOT     GPIOA
+#define RCC_Per_TXPOT     RCC_AHB1Periph_GPIOA
+
+#define PIN_CS_RXPOT      GPIO_Pin_1
+#define PORT_CS_RXPOT     GPIOA
+#define RCC_Per_RXPOT     RCC_AHB1Periph_GPIOA
+
+#define PIN_CS_RSPOT      GPIO_Pin_2
+#define PORT_CS_RSPOT     GPIOA
+#define RCC_Per_RSPOT     RCC_AHB1Periph_GPIOA
 
 #else
 #error "Only STM32F4_PI, STM32F4_POG, STM32F4_EDA_405, STM32F4_EDA_446, or STM32F4_DVMV1 is supported, others need to be defined!"
@@ -407,24 +439,62 @@ void IO::getUDID(uint8_t* buffer)
     ::memcpy(buffer, (void*)STM32_UUID, 12U);
 }
 
-#if DIGIPOT_ENABLED
+#if SPI_ENABLED
 /// <summary>
-/// Sends specified data over I2C bus to specified address.
+/// Sends a byte over SPI
 /// </summary>
 /// <returns></returns>
-void IO::I2C_Write(uint8_t addr, uint8_t *buf, uint8_t length) 
+void IO::SPI_Write(uint8_t byte)
 {
-    sw_i2c_write(addr, buf, length);
+    SPI_SendData(SPI_PERIPH, byte);
 }
 
 /// <summary>
-/// Copies read I2C bytes into provided buffer.
+/// Receives a byte from SPI
 /// </summary>
-/// <returns>Count of read bytes</returns>
-uint8_t IO::I2C_Read(uint8_t addr, uint8_t *buf) 
+/// <returns>the received byte</returns>
+uint16_t IO::SPI_Read()
 {
-    return 0;
+    return SPI_ReceiveData(SPI_PERIPH);
 }
+
+#endif
+
+#if DIGIPOT_ENABLED
+/// <summary>
+/// Sends the digipot set value command over SPI (chip select must be set first)
+/// </summary>
+/// <returns></returns>
+void IO::SetDigipot(uint8_t value)
+{
+    SPI_Write(0b00010001);  // write command to pot 0
+    SPI_Write(value);
+}
+
+void IO::SetTxDigipot(uint8_t value)
+{
+    // Set CS for TX pot to low
+    GPIO_WriteBit(PORT_CS_TXPOT, PIN_CS_TXPOT, Bit_RESET);
+    SetDigipot(value);
+    GPIO_WriteBit(PORT_CS_TXPOT, PIN_CS_TXPOT, Bit_SET);
+}
+
+void IO::SetRxDigipot(uint8_t value)
+{
+    // Set CS for RX pot to low
+    GPIO_WriteBit(PORT_CS_RXPOT, PIN_CS_RXPOT, Bit_RESET);
+    SetDigipot(value);
+    GPIO_WriteBit(PORT_CS_RXPOT, PIN_CS_RXPOT, Bit_SET);
+}
+
+void IO::SetRsDigipot(uint8_t value)
+{
+    // Set CS for TX pot to low
+    GPIO_WriteBit(PORT_CS_RSPOT, PIN_CS_RSPOT, Bit_RESET);
+    SetDigipot(value);
+    GPIO_WriteBit(PORT_CS_RSPOT, PIN_CS_RSPOT, Bit_SET);
+}
+
 #endif
 
 // ---------------------------------------------------------------------------
@@ -484,28 +554,52 @@ void IO::initInt()
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_Init(PORT_NXDN, &GPIO_InitStruct);
 
-#if I2C_ENABLED
-    // Setup I2C Pins
-    // Init SCL
-    RCC_AHB1PeriphClockCmd(RCC_Per_SCL, ENABLE);
-    GPIO_InitStruct.GPIO_Pin = PIN_SCL;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
-    GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_Init(PORT_SCL, &GPIO_InitStruct);
+#if SPI_ENABLED
+    // Init SPI Clock
+    SPI_APB_CLK_INIT(SPI_APB_CLK, ENABLE);
 
-    // Init SDA
-    RCC_AHB1PeriphClockCmd(RCC_Per_SDA, ENABLE);
-    GPIO_InitStruct.GPIO_Pin = PIN_SDA;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-    GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
-    GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-    GPIO_Init(PORT_SDA, &GPIO_InitStruct);
+    // Init AHB1 GPIO CLocks
+    RCC_AHB1PeriphClockCmd(RCC_Per_SCK | RCC_Per_MISO | RCC_Per_MOSI | RCC_Per_TXPOT | RCC_Per_RXPOT | RCC_Per_RSPOT, ENABLE);
 
-    // Init
-    sw_i2c_init();
+    // Init Alternate Functions
+    GPIO_PinAFConfig(PORT_SPI_SCK, SRC_SPI_SCK, SPI_GPIO_AF);
+    GPIO_PinAFConfig(PORT_SPI_MISO, SRC_SPI_MISO, SPI_GPIO_AF);
+    GPIO_PinAFConfig(PORT_SPI_MOSI, SRC_SPI_MOSI, SPI_GPIO_AF);
+
+    // Init GPIO Pins
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+
+    // Init SCK
+    GPIO_InitStruct.GPIO_Pin = PIN_SPI_SCK;
+    GPIO_Init(PORT_SPI_SCK, &GPIO_InitStruct);
+
+    // Init MOSI
+    GPIO_InitStruct.GPIO_Pin = PIN_SPI_MOSI;
+    GPIO_Init(PORT_SPI_MOSI, &GPIO_InitStruct);
+
+    // Init MISO
+    GPIO_InitStruct.GPIO_Pin = PIN_SPI_MISO;
+    GPIO_Init(PORT_SPI_MISO, &GPIO_InitStruct);
+
+    // Init CS Pins
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+
+    // Init CS for TX Pot
+    GPIO_InitStruct.GPIO_Pin = PIN_CS_TXPOT;
+    GPIO_Init(PORT_CS_TXPOT, &GPIO_InitStruct);
+
+    // Init CS for RX Pot
+    GPIO_InitStruct.GPIO_Pin = PIN_CS_RXPOT;
+    GPIO_Init(PORT_CS_RXPOT, &GPIO_InitStruct);
+
+    // Init CS for RSSI Pot
+    GPIO_InitStruct.GPIO_Pin = PIN_CS_RSPOT;
+    GPIO_Init(PORT_CS_RSPOT, &GPIO_InitStruct);
+
 #endif
 }
 

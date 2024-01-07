@@ -54,7 +54,6 @@
 #include "nxdn/CalNXDN.h"
 #include "CalRSSI.h"
 #include "CWIdTX.h"
-#include "Digipot.h"
 #include "IO.h"
 
 // ---------------------------------------------------------------------------
@@ -127,10 +126,5 @@ extern CalRSSI calRSSI;
 
 /** CW */
 extern CWIdTX cwIdTX;
-
-#if defined(DIGIPOT_ENABLED)
-/** Digipot */
-extern Digipot digipot;
-#endif
 
 #endif // __GLOBALS_H__

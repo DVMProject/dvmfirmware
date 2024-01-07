@@ -49,7 +49,7 @@ OBJ_F4=$(CXXSRC:./%.cpp=$(OBJDIR_F4)/%.o) $(CSRC_STD_F4:$(STD_LIB_F4)/%.c=$(OBJD
 MCFLAGS_F4=-mcpu=cortex-m4 -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork
 
 # Compile flags (note that the V1 uses a different ext osc frequency)
-DEFS_PI=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_DVMV1 -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE -DEXTERNAL_OSC=16368000
+DEFS_PI=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_DVMV1 -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE -DDIGIPOT_ENABLED -DSPI_ENABLED
 
 # Build compiler flags
 CFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)

@@ -446,6 +446,7 @@ void IO::getUDID(uint8_t* buffer)
 /// <returns></returns>
 void IO::SPI_Write(uint8_t byte)
 {
+    DEBUG2("IO::SPI_Write() ", byte);
     SPI_SendData(SPI_PERIPH, byte);
 }
 
@@ -455,7 +456,9 @@ void IO::SPI_Write(uint8_t byte)
 /// <returns>the received byte</returns>
 uint16_t IO::SPI_Read()
 {
-    return SPI_ReceiveData(SPI_PERIPH);
+    uint8_t byte = SPI_ReceiveData(SPI_PERIPH);
+    DEBUG2("IO::SPI_Read() ", byte);
+    return byte;
 }
 
 #endif

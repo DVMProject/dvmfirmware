@@ -448,14 +448,14 @@ void IO::SPI_Write(uint8_t* bytes, uint8_t length)
 {
     // Write the first byte
     SPI_I2S_SendData(SPI_PERIPH, bytes[0]);
-    DEBUG2("IO::SPI_Write() ", bytes[0]);
+    //DEBUG2("IO::SPI_Write() ", bytes[0]);
     if (length <= 1) { return; }
     // Write the remaining bytes once the TX buffer is ready
     for (int i=1; i<length; i++)
     {
         while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
         SPI_I2S_SendData(SPI_PERIPH, bytes[i]);
-        DEBUG2("IO::SPI_Write() ", bytes[i]);
+        //DEBUG2("IO::SPI_Write() ", bytes[i]);
     }
     // Wait for the final byte to finish
     while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);

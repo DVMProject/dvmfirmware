@@ -1065,12 +1065,9 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
     uint8_t rssiCoarse = data[20U];
     uint8_t rssiFine = data[21U];
 
-    digipot.setRxFine(rxFine);
-    digipot.setRxCoarse(rxCoarse);
-    digipot.setTxFine(txFine);
-    digipot.setTxCoarse(txCoarse);
-    digipot.setRssiFine(rssiFine);
-    digipot.setRssiCoarse(rssiCoarse);
+    io.SetTxDigipot(txCoarse);
+    io.SetRxDigipot(rxCoarse);
+    io.SetRsDigipot(rssiCoarse);
 #endif
 
     io.setParameters(rxInvert, txInvert, pttInvert, rxLevel, cwIdTXLevel, dmrTXLevel, p25TXLevel, nxdnTXLevel, txDCOffset, rxDCOffset);

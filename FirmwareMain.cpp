@@ -80,11 +80,6 @@ CWIdTX cwIdTX;
 SerialPort serial;
 IO io;
 
-#if defined(DIGIPOT_ENABLED)
-/** Digipot */
-Digipot digipot;
-#endif
-
 // ---------------------------------------------------------------------------
 //  Global Functions
 // ---------------------------------------------------------------------------
@@ -92,9 +87,6 @@ Digipot digipot;
 void setup()
 {
     serial.start();
-#if defined(DIGIPOT_ENABLED)
-    digipot.initialize();
-#endif
 }
 
 void loop()

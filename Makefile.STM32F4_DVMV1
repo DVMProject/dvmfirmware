@@ -48,8 +48,8 @@ OBJ_F4=$(CXXSRC:./%.cpp=$(OBJDIR_F4)/%.o) $(CSRC_STD_F4:$(STD_LIB_F4)/%.c=$(OBJD
 # MCU flags
 MCFLAGS_F4=-mcpu=cortex-m4 -mthumb -mlittle-endian -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb-interwork
 
-# Compile flags
-DEFS_PI=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_DVMV1 -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE -DDIGIPOT_ENABLED -DI2C_ENABLED
+# Compile flags (note that the V1 uses a different ext osc frequency)
+DEFS_PI=-DUSE_STDPERIPH_DRIVER -DSTM32F4XX -DSTM32F446xx -DSTM32F4_DVMV1 -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE -DDIGIPOT_ENABLED -DSPI_ENABLED
 
 # Build compiler flags
 CFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
@@ -58,6 +58,11 @@ CXXFLAGS_F4=-c $(MCFLAGS_F4) $(INCLUDES_F4)
 # Linker flags
 LDFLAGS_F4 =-T stm32f4xx_link.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
 LDFLAGS_F4_D =-T stm32f4xx_link_debug.ld $(MCFLAGS_F4) --specs=nosys.specs $(INCLUDES_LIBS_F4)
+
+# Debug Symbols
+CFLAGS_F4 += -ggdb
+CXXFLAGS_F4 += -ggdb
+LDFLAGS_F4 += -ggdb
 
 # Common flags
 CFLAGS=-Os -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS

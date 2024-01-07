@@ -102,19 +102,25 @@ public:
     void selfTest();
 
 #if SPI_ENABLED
-void SPI_Write(uint8_t* bytes, uint8_t length);
+    /// <summary></summary>
+    void SPI_Write(uint8_t* bytes, uint8_t length);
 
-uint16_t SPI_Read();
+    /// <summary></summary>
+    uint16_t SPI_Read();
 #endif
 
 #if DIGIPOT_ENABLED
-void SetDigipot(uint8_t value);
+    /// <summary></summary>
+    void SetDigipot(uint8_t value);
 
-void SetTxDigipot(uint8_t value);
+    /// <summary></summary>
+    void SetTxDigipot(uint8_t value);
 
-void SetRxDigipot(uint8_t value);
+    /// <summary></summary>
+    void SetRxDigipot(uint8_t value);
 
-void SetRsDigipot(uint8_t value);
+    /// <summary></summary>
+    void SetRsDigipot(uint8_t value);
 #endif
 
 private:

@@ -129,16 +129,9 @@ typedef unsigned long long  ulong64_t;
 // Frequencies such as 12.0 Mhz (48000 * 250) and 14.4 Mhz (48000 * 300) are suitable.
 // Frequencies such as 10.0 Mhz (48000 * 208.333) or 20 Mhz (48000 * 416.666) are not suitable.
 //
-// For 12 MHz
 #ifndef EXTERNAL_OSC
 #define EXTERNAL_OSC 12000000
 #endif
-// For 12.288 MHz
-// #define EXTERNAL_OSC 12288000
-// For 14.4 MHz
-// #define EXTERNAL_OSC 14400000
-// For 19.2 MHz
-// #define EXTERNAL_OSC 19200000
 
 // Sanity check to make sure EXTERNAL_OSC is a valid integer multiple of 48kHz
 #if (EXTERNAL_OSC % 48000 != 0)

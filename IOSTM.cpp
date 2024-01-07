@@ -488,6 +488,10 @@ void IO::SetDigipot(uint8_t value)
     SPI_Write(bytes, 2);
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="value"></param>
 void IO::SetTxDigipot(uint8_t value)
 {
     // Set CS for TX pot to low
@@ -496,6 +500,10 @@ void IO::SetTxDigipot(uint8_t value)
     GPIO_WriteBit(PORT_CS_TXPOT, PIN_CS_TXPOT, Bit_SET);
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="value"></param>
 void IO::SetRxDigipot(uint8_t value)
 {
     // Set CS for RX pot to low
@@ -504,6 +512,10 @@ void IO::SetRxDigipot(uint8_t value)
     GPIO_WriteBit(PORT_CS_RXPOT, PIN_CS_RXPOT, Bit_SET);
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="value"></param>
 void IO::SetRsDigipot(uint8_t value)
 {
     // Set CS for TX pot to low
@@ -763,7 +775,7 @@ void IO::startInt()
     nvicStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&nvicStructure);
 
-    #if defined(SPI_ENABLED)
+#if defined(SPI_ENABLED)
     SPI_InitTypeDef SPI_Initstruct;
     SPI_Initstruct.SPI_Direction = SPI_Direction_2Lines_FullDuplex;
     SPI_Initstruct.SPI_Mode = SPI_Mode_Master;
@@ -776,7 +788,7 @@ void IO::startInt()
     SPI_Initstruct.SPI_FirstBit = SPI_FirstBit_MSB;
     SPI_Init(SPI_PERIPH, &SPI_Initstruct);
     SPI_Cmd(SPI_PERIPH, ENABLE);
-    #endif
+#endif
 
     GPIO_ResetBits(PORT_COSLED, PIN_COSLED);
     GPIO_SetBits(PORT_LED, PIN_LED);

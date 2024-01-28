@@ -1,37 +1,24 @@
+// SPDX-License-Identifier: GPL-2.0-only
 /**
-* Digital Voice Modem - DSP Firmware
+* Digital Voice Modem - Modem Firmware
 * GPLv2 Open Source. Use is subject to license terms.
 * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 *
-* @package DVM / DSP Firmware
+* @package DVM / Modem Firmware
+* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
+* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 *
-*/
-//
-// Based on code from the MMDVM project. (https://github.com/g4klx/MMDVM)
-// Licensed under the GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-//
-/*
-*   Copyright (C) 2017 Wojciech Krutnik N0CALL
-*
-*   This program is free software: you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation, either version 3 of the License, or
-*   (at your option) any later version.
-*
-*   This program is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-*
-*   You should have received a copy of the GNU General Public License
-*   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-*   FIFO ring buffer source:
-*   http://stackoverflow.com/questions/6822548/correct-way-of-implementing-a-uart-receive-buffer-in-a-small-arm-microcontroller (modified)
+*   Copyright (C) 2017 Wojciech Krutnik, N0CALL
 *
 */
 #if !defined(__RING_BUFFER_H__)
 #define __RING_BUFFER_H__
+
+/*
+*   FIFO ring buffer source:
+*   http://stackoverflow.com/questions/6822548/correct-way-of-implementing-a-uart-receive-buffer-in-a-small-arm-microcontroller (modified)
+*
+*/
 
 #include "Defines.h"
 

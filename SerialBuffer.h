@@ -1,33 +1,15 @@
+// SPDX-License-Identifier: GPL-2.0-only
 /**
-* Digital Voice Modem - DSP Firmware
+* Digital Voice Modem - Modem Firmware
 * GPLv2 Open Source. Use is subject to license terms.
 * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 *
-* @package DVM / DSP Firmware
+* @package DVM / Modem Firmware
+* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
+* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 *
-*/
-//
-// Based on code from the MMDVM project. (https://github.com/g4klx/MMDVM)
-// Licensed under the GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-//
-/*
-*   Copyright (C) 2015,2016 by Jonathan Naylor G4KLX
-*   Serial FIFO Control Copyright (C) 2015 by James McLaughlin KI6ZUM
-*
-*   This library is free software; you can redistribute it and/or
-*   modify it under the terms of the GNU Library General Public
-*   License as published by the Free Software Foundation; either
-*   version 2 of the License, or (at your option) any later version.
-*
-*   This library is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-*   Library General Public License for more details.
-*
-*   You should have received a copy of the GNU Library General Public
-*   License along with this library; if not, write to the
-*   Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
-*   Boston, MA  02110-1301, USA.
+*   Copyright (C) 2015,2016 Jonathan Naylor, G4KLX
+*   Serial FIFO Control Copyright (C) 2015 by James McLaughlin, KI6ZUM
 *
 */
 #if !defined(__SERIAL_RB_H__)

@@ -92,7 +92,9 @@ namespace p25
     const uint8_t   P25_DUID_HDU = 0x00U;               // Header Data Unit
     const uint8_t   P25_DUID_TDU = 0x03U;               // Simple Terminator Data Unit
     const uint8_t   P25_DUID_LDU1 = 0x05U;              // Logical Link Data Unit 1
+    const uint8_t   P25_DUID_VSELP1 = 0x06U;            // Motorola VSELP 1
     const uint8_t   P25_DUID_TSDU = 0x07U;              // Trunking System Data Unit
+    const uint8_t   P25_DUID_VSELP2 = 0x09U;            // Motorola VSELP 2
     const uint8_t   P25_DUID_LDU2 = 0x0AU;              // Logical Link Data Unit 2
     const uint8_t   P25_DUID_PDU = 0x0CU;               // Packet Data Unit 
     const uint8_t   P25_DUID_TDULC = 0x0FU;             // Terminator Data Unit with Link Control

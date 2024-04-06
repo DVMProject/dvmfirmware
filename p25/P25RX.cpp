@@ -258,6 +258,7 @@ void P25RX::processSample(q15_t sample)
                 }
                 return;
             case P25_DUID_LDU1:
+            case P25_DUID_VSELP1:
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_TSDU:
@@ -275,6 +276,7 @@ void P25RX::processSample(q15_t sample)
                 }
                 return;
             case P25_DUID_LDU2:
+            case P25_DUID_VSELP2:
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_PDU:

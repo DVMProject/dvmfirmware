@@ -82,12 +82,18 @@ void SerialPort::process()
         }
         else if (m_ptr == 1U) {
             // Handle the frame length
-            m_len = m_buffer[m_ptr] = c;
+            if (m_dblFrame) {
+                m_buffer[m_ptr] = c;
+                m_len = ((c & 0xFFU) << 8);
+            } else {
+                m_len = m_buffer[m_ptr] = c;
+            }
             m_ptr = 2U;
         }
         else if (m_ptr == 2U && m_dblFrame) {
             // Handle the frame length
-            m_len = m_buffer[m_ptr] = (c + 255U);
+            m_buffer[m_ptr] = c;
+            m_len = (m_len + (c & 0xFFU));
             m_ptr = 3U;
         }
         else {

@@ -9,7 +9,7 @@
 * @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 *
 *   Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2019 Bryan Biedenkapp, N2PLL
+*   Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
 *
 */
 #include "Globals.h"
@@ -51,6 +51,7 @@ P25RX::P25RX() :
     m_maxSyncPtr(NOENDPTR),
     m_startPtr(0U),
     m_endPtr(NOENDPTR),
+    m_pduEndPtr(NOENDPTR),
     m_syncPtr(0U),
     m_maxCorr(0),
     m_centre(),
@@ -80,6 +81,7 @@ void P25RX::reset()
 
     m_startPtr = 0U;
     m_endPtr = NOENDPTR;
+    m_pduEndPtr = NOENDPTR;
     m_syncPtr = 0U;
 
     m_maxCorr = 0;
@@ -166,9 +168,16 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
         }
 
         m_dataPtr++;
-        if (m_dataPtr >= P25_LDU_FRAME_LENGTH_SAMPLES) {
-            m_duid = 0xFFU;
-            m_dataPtr = 0U;
+        if (m_state != P25RXS_DATA) {
+            if (m_dataPtr >= P25_LDU_FRAME_LENGTH_SAMPLES) {
+                m_duid = 0xFFU;
+                m_dataPtr = 0U;
+            }
+        } else {
+            if (m_dataPtr >= P25_PDU_FRAME_LENGTH_SAMPLES) {
+                m_duid = 0xFFU;
+                m_dataPtr = 0U;
+            }
         }
 
         m_bitPtr++;
@@ -345,6 +354,7 @@ void P25RX::processVoice(q15_t sample)
             correlateSync();
     }
 
+    // process voice frame
     if (m_dataPtr == m_endPtr) {
         if (m_lostCount == MAX_SYNC_FRAMES) {
             m_minSyncPtr = m_syncPtr + P25_LDU_FRAME_LENGTH_SAMPLES - 1U;
@@ -444,21 +454,22 @@ void P25RX::processData(q15_t sample)
             correlateSync();
     }
 
-    if (m_dataPtr == m_endPtr) {
+    // process data frame
+    if (m_dataPtr == m_pduEndPtr) {
         // only update the centre and threshold if they are from a good sync
         if (m_lostCount == MAX_SYNC_FRAMES) {
-            m_minSyncPtr = m_syncPtr + P25_LDU_FRAME_LENGTH_SAMPLES - 1U;
-            if (m_minSyncPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
-                m_minSyncPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
+            m_minSyncPtr = m_syncPtr + P25_PDU_FRAME_LENGTH_SAMPLES - 1U;
+            if (m_minSyncPtr >= P25_PDU_FRAME_LENGTH_SAMPLES)
+                m_minSyncPtr -= P25_PDU_FRAME_LENGTH_SAMPLES;
 
             m_maxSyncPtr = m_syncPtr + 1U;
-            if (m_maxSyncPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
-                m_maxSyncPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
+            if (m_maxSyncPtr >= P25_PDU_FRAME_LENGTH_SAMPLES)
+                m_maxSyncPtr -= P25_PDU_FRAME_LENGTH_SAMPLES;
         }
 
         m_lostCount--;
 
-        DEBUG4("P25RX::processData() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
+        DEBUG4("P25RX::processData() dataPtr/startPtr/pduEndPtr", m_dataPtr, m_startPtr, m_pduEndPtr);
         DEBUG4("P25RX::processData() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
         // we've not seen a data sync for too long, signal sync lost and change to P25RXS_NONE
@@ -480,15 +491,15 @@ void P25RX::processData(q15_t sample)
                 reset();
             }
             else {
-                // calculateLevels(m_lduStartPtr, P25_LDU_FRAME_LENGTH_SYMBOLS);
+                // calculateLevels(m_lduStartPtr, P25_PDU_FRAME_LENGTH_SYMBOLS);
 
                 DEBUG4("P25RX::processData() sync found in PDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 
-                uint8_t frame[P25_LDU_FRAME_LENGTH_BYTES + 1U];
-                samplesToBits(m_startPtr, P25_LDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
+                uint8_t frame[P25_PDU_FRAME_LENGTH_BYTES + 1U];
+                samplesToBits(m_startPtr, P25_PDU_FRAME_LENGTH_SYMBOLS, frame, 8U, m_centreVal, m_thresholdVal);
 
                 frame[0U] = m_lostCount == (MAX_SYNC_FRAMES - 1U) ? 0x01U : 0x00U; // set sync flag
-                serial.writeP25Data(frame, P25_LDU_FRAME_LENGTH_BYTES + 1U);
+                serial.writeP25Data(frame, P25_PDU_FRAME_LENGTH_BYTES + 1U);
 
                 m_rssiAccum = 0U;
                 m_rssiCount = 0U;
@@ -584,8 +595,11 @@ bool P25RX::correlateSync()
                 m_endPtr = m_dataPtr + P25_LDU_FRAME_LENGTH_SAMPLES - P25_SYNC_LENGTH_SAMPLES - 1U;
                 if (m_endPtr >= P25_LDU_FRAME_LENGTH_SAMPLES)
                     m_endPtr -= P25_LDU_FRAME_LENGTH_SAMPLES;
+                m_pduEndPtr = m_dataPtr + P25_PDU_FRAME_LENGTH_SAMPLES - P25_SYNC_LENGTH_SAMPLES - 1U;
+                if (m_pduEndPtr >= P25_PDU_FRAME_LENGTH_SAMPLES)
+                    m_pduEndPtr -= P25_PDU_FRAME_LENGTH_SAMPLES;
 
-                DEBUG4("P25RX::correlateSync() dataPtr/startPtr/endPtr", m_dataPtr, startPtr, m_endPtr);
+                DEBUG5("P25RX::correlateSync() dataPtr/startPtr/endPtr/pduEndPtr", m_dataPtr, startPtr, m_endPtr, m_pduEndPtr);
 
                 return true;
             }

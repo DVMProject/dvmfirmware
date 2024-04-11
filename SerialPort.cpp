@@ -497,6 +497,7 @@ void SerialPort::writeP25Data(const uint8_t* data, uint16_t length)
         writeInt(1U, reply, length + 3U);
     }
     else {
+        length += 4U;
         reply[0U] = DVM_LONG_FRAME_START;
         reply[1U] = (length >> 8U) & 0xFFU;
         reply[2U] = (length & 0xFFU);

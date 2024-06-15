@@ -9,7 +9,7 @@
 * @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 *
 *   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2018,2021-2022 Bryan Biedenkapp, N2PLL
+*   Copyright (C) 2018,2021-2024 Bryan Biedenkapp, N2PLL
 *
 */
 #if !defined(__SERIAL_PORT_H__)
@@ -127,7 +127,8 @@ enum CMD_REASON_CODE {
     RSN_NXDN_DISABLED = 65U
 };
 
-const uint8_t DVM_FRAME_START = 0xFEU;
+const uint8_t DVM_SHORT_FRAME_START = 0xFEU;
+const uint8_t DVM_LONG_FRAME_START = 0xFDU;
 
 #define SERIAL_SPEED 115200
 
@@ -158,7 +159,7 @@ public:
     void writeDMRLost(bool slot);
 
     /// <summary>Write P25 frame data to serial port.</summary>
-    void writeP25Data(const uint8_t* data, uint8_t length);
+    void writeP25Data(const uint8_t* data, uint16_t length);
     /// <summary>Write lost P25 frame data to serial port.</summary>
     void writeP25Lost();
 
@@ -189,6 +190,7 @@ private:
     uint8_t m_buffer[256U];
     uint8_t m_ptr;
     uint8_t m_len;
+    bool m_dblFrame;
 
     bool m_debug;
 

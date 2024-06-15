@@ -11,7 +11,7 @@
 *   Copyright (C) 2016 Jim McLaughlin, KI6ZUM
 *   Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
 *   Copyright (c) 2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2018,2022 Bryan Biedenkapp, N2PLL
+*   Copyright (C) 2018,2022,2024 Bryan Biedenkapp, N2PLL
 *
 */
 #include "Globals.h"
@@ -191,7 +191,7 @@ void SerialPort::flashRead()
 {
     uint8_t reply[249U];
 
-    reply[0U] = DVM_FRAME_START;
+    reply[0U] = DVM_SHORT_FRAME_START;
     reply[1U] = 249U;
     reply[2U] = CMD_FLSH_READ;
 

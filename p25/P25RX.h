@@ -9,7 +9,7 @@
 * @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
 *
 *   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2019 Bryan Biedenkapp, N2PLL
+*   Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
 *
 */
 #if !defined(__P25_RX_H__)
@@ -54,7 +54,7 @@ namespace p25
 
     private:
         uint32_t m_bitBuffer[P25_RADIO_SYMBOL_LENGTH];
-        q15_t m_buffer[P25_LDU_FRAME_LENGTH_SAMPLES];
+        q15_t m_buffer[P25_PDU_FRAME_LENGTH_SAMPLES];
 
         uint16_t m_bitPtr;
         uint16_t m_dataPtr;
@@ -64,6 +64,7 @@ namespace p25
 
         uint16_t m_startPtr;
         uint16_t m_endPtr;
+        uint16_t m_pduEndPtr;
         uint16_t m_syncPtr;
 
         q31_t m_maxCorr;

@@ -33,6 +33,7 @@ namespace dmr
 
     /**
      * @brief DMR DMO Receiver State
+     * @ingroup dmr_mfw
      */
     enum DMORX_STATE {
         DMORXS_NONE,        //! None

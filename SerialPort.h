@@ -370,7 +370,7 @@ private:
      * @brief Writes data to the modem flash partition.
      * @param[in] data Buffer containing data to write to flash partition.
      * @param length Length of buffer.
-     * @returns uint8_t 
+     * @returns uint8_t Reason code.
      */
     uint8_t flashWrite(const uint8_t* data, uint8_t length);
 

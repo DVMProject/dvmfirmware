@@ -27,6 +27,7 @@ namespace dmr
 
     /**
      * @brief DMR Slot Receiver State
+     * @ingroup dmr_mfw
      */
     enum DMRRX_STATE {
         DMRRXS_NONE,        //! None

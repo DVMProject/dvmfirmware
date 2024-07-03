@@ -30,6 +30,7 @@ namespace dmr
 
     /**
      * @brief DMR Duplex Transmitter State
+     * @ingroup dmr_mfw
      */
     enum DMRTXSTATE {
         DMRTXSTATE_IDLE,        //! Idle

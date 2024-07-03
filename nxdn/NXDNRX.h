@@ -27,6 +27,7 @@ namespace nxdn
 
     /**
      * @brief NXDN Receiver State
+     * @ingroup nxdn_mfw
      */
     enum NXDNRX_STATE {
         NXDNRXS_NONE,       //! None

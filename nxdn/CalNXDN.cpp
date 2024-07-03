@@ -98,7 +98,7 @@ void CalNXDN::process()
     }
 }
 
-/* Write P25 calibration data to the local buffer. */
+/* Write NXDN calibration data to the local buffer. */
 
 uint8_t CalNXDN::write(const uint8_t* data, uint16_t length)
 {

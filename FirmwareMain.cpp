@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017,2018 Jonathan Naylor, G4KLX
-*   Copyright (C) 2016 Mathis Schmieder, DB9MAT
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2018 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017,2018 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2016 Mathis Schmieder, DB9MAT
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2018 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 
 // ---------------------------------------------------------------------------
@@ -34,33 +30,33 @@ bool m_duplex = true;
 bool m_tx = false;
 bool m_dcd = false;
 
-/** DMR BS */
+/* DMR BS */
 dmr::DMRIdleRX dmrIdleRX;
 dmr::DMRRX dmrRX;
 dmr::DMRTX dmrTX;
 
-/** DMR MS-DMO */
+/* DMR MS-DMO */
 dmr::DMRDMORX dmrDMORX;
 dmr::DMRDMOTX dmrDMOTX;
 
-/** P25 */
+/* P25 */
 p25::P25RX p25RX;
 p25::P25TX p25TX;
 
-/** NXDN */
+/* NXDN */
 nxdn::NXDNRX nxdnRX;
 nxdn::NXDNTX nxdnTX;
 
-/** Calibration */
+/* Calibration */
 dmr::CalDMR calDMR;
 p25::CalP25 calP25;
 nxdn::CalNXDN calNXDN;
 CalRSSI calRSSI;
 
-/** CW */
+/* CW */
 CWIdTX cwIdTX;
 
-/** RS232 and Air Interface I/O */
+/* RS232 and Air Interface I/O */
 SerialPort serial;
 IO io;
 

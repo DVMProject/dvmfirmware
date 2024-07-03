@@ -28,6 +28,7 @@ namespace p25
 
     /**
      * @brief P25 Receiver State
+     * @ingroup p25_mfw
      */
     enum P25RX_STATE {
         P25RXS_NONE,        //! None

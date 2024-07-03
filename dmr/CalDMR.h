@@ -29,6 +29,7 @@ namespace dmr
 
     /**
      * @brief Calibration States
+     * @ingroup dmr_mfw
      */
     enum DMR1KCAL {
         DMRCAL1K_IDLE,      //! Idle
@@ -40,9 +41,12 @@ namespace dmr
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements logic for DMR calibration mode.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements logic for DMR calibration mode.
+     * @ingroup dmr_mfw
+     */
     class DSP_FW_API CalDMR {
     public:
         /**

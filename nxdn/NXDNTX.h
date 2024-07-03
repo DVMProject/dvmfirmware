@@ -30,6 +30,7 @@ namespace nxdn
 
     /**
      * @brief NXDN Transmitter States
+     * @ingroup nxdn_mfw
      */
     enum NXDNTXSTATE {
         NXDNTXSTATE_NORMAL,     //! Normal

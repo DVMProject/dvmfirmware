@@ -27,6 +27,7 @@ namespace p25
 
     /**
      * @brief Calibration States
+     * @ingroup p25_mfw
      */
     enum P25CAL1K {
         P25CAL1K_IDLE,      //! Idle

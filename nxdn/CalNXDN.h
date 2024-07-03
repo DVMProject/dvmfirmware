@@ -28,6 +28,7 @@ namespace nxdn
 
     /**
      * @brief Calibration States
+     * @ingroup nxdn_mfw
      */
     enum NXDNCAL1K {
         NXDNCAL1K_IDLE,     //! Idle

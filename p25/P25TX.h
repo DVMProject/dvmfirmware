@@ -31,6 +31,7 @@ namespace p25
 
     /**
      * @brief P25 Transmitter State
+     * @ingroup p25_mfw
      */
     enum P25TXSTATE {
         P25TXSTATE_NORMAL,  //! Normal

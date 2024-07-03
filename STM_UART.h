@@ -49,6 +49,7 @@ public:
 
     /**
      * @brief 
+     * @returns uint8_t 
      */
     uint8_t get()
     {
@@ -57,6 +58,7 @@ public:
 
     /**
      * @brief 
+     * @param data 
      */
     void put(uint8_t data)
     {
@@ -74,6 +76,7 @@ public:
 
     /**
      * @brief 
+     * @returns bool 
      */
     bool isEmpty()
     {
@@ -82,6 +85,7 @@ public:
 
     /**
      * @brief 
+     * @returns bool 
      */
     bool isFull()
     {

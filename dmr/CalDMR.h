@@ -12,7 +12,7 @@
 /**
  * @file CalDMR.h
  * @ingroup dmr_mfw
- * @file CalDMR.h
+ * @file CalDMR.cpp
  * @ingroup dmr_mfw
  */
 #if !defined(__CAL_DMR_H__)

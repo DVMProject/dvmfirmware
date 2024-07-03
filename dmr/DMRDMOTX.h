@@ -12,7 +12,7 @@
 /**
  * @file DMRDMOTX.h
  * @ingroup dmr_mfw
- * @file DMRDMOTX.h
+ * @file DMRDMOTX.cpp
  * @ingroup dmr_mfw
  */
 #if !defined(__DMR_DMO_TX_H__)

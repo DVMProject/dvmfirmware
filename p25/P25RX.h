@@ -11,7 +11,7 @@
 /**
  * @file P25RX.h
  * @ingroup p25_mfw
- * @file P25RX.h
+ * @file P25RX.cpp
  * @ingroup p25_mfw
  */
 #if !defined(__P25_RX_H__)

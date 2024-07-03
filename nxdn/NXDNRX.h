@@ -10,7 +10,7 @@
 /**
  * @file NXDNRX.h
  * @ingroup nxdn_mfw
- * @file NXDNRX.h
+ * @file NXDNRX.cpp
  * @ingroup nxdn_mfw
  */
 #if !defined(__NXDN_RX_H__)

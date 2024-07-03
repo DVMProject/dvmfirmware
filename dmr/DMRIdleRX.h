@@ -14,7 +14,7 @@
 /**
  * @file DMRIdleRX.h
  * @ingroup dmr_mfw
- * @file DMRIdleRX.h
+ * @file DMRIdleRX.cpp
  * @ingroup dmr_mfw
  */
 #if !defined(__DMR_IDLE_RX_H__)

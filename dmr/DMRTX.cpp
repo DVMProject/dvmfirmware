@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2017 Andy Uribe, CA6JAU
-*   Copyright (C) 2022 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2017 Andy Uribe, CA6JAU
+ *  Copyright (C) 2022 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "dmr/DMRSlotType.h"
 
@@ -61,9 +57,8 @@ const uint32_t ABORT_COUNT = 6U;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the DMRTX class.
-/// </summary>
+/* Initializes a new instance of the DMRTX class. */
+
 DMRTX::DMRTX() :
     m_fifo(),
     m_modFilter(),
@@ -104,9 +99,8 @@ DMRTX::DMRTX() :
     m_abortCount[1U] = 0U;
 }
 
-/// <summary>
-/// Process local buffer and transmit on the air interface.
-/// </summary>
+/* Process local buffer and transmit on the air interface. */
+
 void DMRTX::process()
 {
     if (m_state == DMRTXSTATE_IDLE)
@@ -165,12 +159,8 @@ void DMRTX::process()
     }
 }
 
-/// <summary>
-/// Write slot 1 data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write slot 1 data to the local buffer. */
+
 uint8_t DMRTX::writeData1(const uint8_t* data, uint8_t length)
 {
     if (length != (DMR_FRAME_LENGTH_BYTES + 1U))
@@ -198,12 +188,8 @@ uint8_t DMRTX::writeData1(const uint8_t* data, uint8_t length)
     return RSN_OK;
 }
 
-/// <summary>
-/// Write slot 2 data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write slot 2 data to the local buffer. */
+
 uint8_t DMRTX::writeData2(const uint8_t* data, uint8_t length)
 {
     if (length != (DMR_FRAME_LENGTH_BYTES + 1U))
@@ -231,12 +217,8 @@ uint8_t DMRTX::writeData2(const uint8_t* data, uint8_t length)
     return RSN_OK;
 }
 
-/// <summary>
-/// Write short LC data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write short LC data to the local buffer. */
+
 uint8_t DMRTX::writeShortLC(const uint8_t* data, uint8_t length)
 {
     if (length != 9U)
@@ -253,12 +235,8 @@ uint8_t DMRTX::writeShortLC(const uint8_t* data, uint8_t length)
     return RSN_OK;
 }
 
-/// <summary>
-/// Write abort data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write abort data to the local buffer. */
+
 uint8_t DMRTX::writeAbort(const uint8_t* data, uint8_t length)
 {
     if (length != 1U)
@@ -280,10 +258,8 @@ uint8_t DMRTX::writeAbort(const uint8_t* data, uint8_t length)
     }
 }
 
-/// <summary>
-/// Helper to set the start state for Tx.
-/// </summary>
-/// <param name="start"></param>
+/* Helper to set the start state for Tx. */
+
 void DMRTX::setStart(bool start)
 {
     m_state = start ? DMRTXSTATE_SLOT1 : DMRTXSTATE_IDLE;
@@ -296,37 +272,29 @@ void DMRTX::setStart(bool start)
     m_abort[1U] = false;
 }
 
-/// <summary>
-/// Helper to set the calibration state for Tx.
-/// </summary>
-/// <param name="start"></param>
+/* Helper to set the calibration state for Tx. */
+
 void DMRTX::setCal(bool start)
 {
     m_state = start ? DMRTXSTATE_CAL : DMRTXSTATE_IDLE;
 }
 
-/// <summary>
-/// Helper to get how much space the slot 1 ring buffer has for samples.
-/// </summary>
-/// <returns></returns>
+/* Helper to get how much space the slot 1 ring buffer has for samples. */
+
 uint8_t DMRTX::getSpace1() const
 {
     return m_fifo[0U].getSpace() / (DMR_FRAME_LENGTH_BYTES + 2U);
 }
 
-/// <summary>
-/// Helper to get how much space the slot 2 ring buffer has for samples.
-/// </summary>
-/// <returns></returns>
+/* Helper to get how much space the slot 2 ring buffer has for samples. */
+
 uint8_t DMRTX::getSpace2() const
 {
     return m_fifo[1U].getSpace() / (DMR_FRAME_LENGTH_BYTES + 2U);
 }
 
-/// <summary>
-/// Sets the ignore flags for setting the CACH Access Type bit.
-/// </summary>
-/// <param name="slot"></param>
+/* Sets the ignore flags for setting the CACH Access Type bit. */
+
 void DMRTX::setIgnoreCACH_AT(uint8_t slot)
 {
     m_cachATControl = slot;
@@ -335,10 +303,8 @@ void DMRTX::setIgnoreCACH_AT(uint8_t slot)
     }
 }
 
-/// <summary>
-/// Sets the DMR color code.
-/// </summary>
-/// <param name="colorCode">Color code.</param>
+/* Sets the DMR color code. */
+
 void DMRTX::setColorCode(uint8_t colorCode)
 {
     ::memcpy(m_idle, IDLE_DATA, DMR_FRAME_LENGTH_BYTES);
@@ -347,11 +313,8 @@ void DMRTX::setColorCode(uint8_t colorCode)
     slotType.encode(colorCode, DT_IDLE, m_idle);
 }
 
-/// <summary>
-/// Sets the fine adjust 4FSK symbol levels.
-/// </summary>
-/// <param name="level3Adj">+3/-3 symbol adjust.</param>
-/// <param name="level1Adj">+1/-1 symbol adjust.</param>
+/* Sets the fine adjust 4FSK symbol levels. */
+
 void DMRTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 {
     m_symLevel3Adj = level3Adj;
@@ -370,26 +333,22 @@ void DMRTX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
         m_symLevel1Adj = 0;
 }
 
-/// <summary>
-/// Helper to reset data values to defaults for slot 1 FIFO.
-/// </summary>
+/* Helper to reset data values to defaults for slot 1 FIFO. */
+
 void DMRTX::resetFifo1()
 {
     m_fifo[0U].reset();
 }
 
-/// <summary>
-/// Helper to reset data values to defaults for slot 2 FIFO.
-/// </summary>
+/* Helper to reset data values to defaults for slot 2 FIFO. */
+
 void DMRTX::resetFifo2()
 {
     m_fifo[1U].reset();
 }
 
-/// <summary>
-/// Helper to resize the FIFO buffer.
-/// </summary>
-/// <param name="size"></param>
+/* Helper to resize the FIFO buffer. */
+
 void DMRTX::resizeBuffer(uint16_t size)
 {
     m_fifo[0U].reset();
@@ -398,10 +357,8 @@ void DMRTX::resizeBuffer(uint16_t size)
     m_fifo[1U].reinitialize(size);
 }
 
-/// <summary>
-///
-/// </summary>
-/// <returns></returns>
+/* */
+
 uint32_t DMRTX::getFrameCount()
 {
     return m_frameCount;
@@ -411,10 +368,8 @@ uint32_t DMRTX::getFrameCount()
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-///
-/// </summary>
-/// <param name="slotIndex"></param>
+/* Helper to generate data. */
+
 void DMRTX::createData(uint8_t slotIndex)
 {
     if (m_fifo[slotIndex].getData() >= DMR_FRAME_LENGTH_BYTES && m_frameCount >= STARTUP_COUNT && m_abortCount[slotIndex] >= ABORT_COUNT) {
@@ -436,47 +391,8 @@ void DMRTX::createData(uint8_t slotIndex)
     m_poPtr = 0U;
 }
 
-/// <summary>
-///
-/// </summary>
-void DMRTX::createCal()
-{
-    // 1.2 kHz sine wave generation
-    if (m_modemState == STATE_DMR_CAL) {
-        for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++) {
-            m_poBuffer[i] = DMR_START_SYNC;
-            m_markBuffer[i] = MARK_NONE;
-        }
+/* Helper to generate the common access channel. */
 
-        m_poLen = DMR_FRAME_LENGTH_BYTES;
-    }
-
-    // 80 Hz square wave generation
-    if (m_modemState == STATE_DMR_LF_CAL) {
-        for (unsigned int i = 0U; i < 7U; i++) {
-            m_poBuffer[i] = 0x55U; // +3, +3, ... pattern
-            m_markBuffer[i] = MARK_NONE;
-        }
-
-        m_poBuffer[7U] = 0x5FU; // +3, +3, -3, -3 pattern
-
-        for (unsigned int i = 8U; i < 15U; i++) {
-            m_poBuffer[i] = 0xFFU; // -3, -3, ... pattern
-            m_markBuffer[i] = MARK_NONE;
-        }
-
-        m_poLen = 15U;
-    }
-
-    m_poLen = DMR_FRAME_LENGTH_BYTES;
-    m_poPtr = 0U;
-}
-
-/// <summary>
-///
-/// </summary>
-/// <param name="txSlotIndex"></param>
-/// <param name="rxSlotIndex"></param>
 void DMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
 {
     m_frameCount++;
@@ -536,11 +452,43 @@ void DMRTX::createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex)
     m_cachPtr += 3U;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="c"></param>
-/// <param name="control"></param>
+/* Helper to generate calibration data. */
+
+void DMRTX::createCal()
+{
+    // 1.2 kHz sine wave generation
+    if (m_modemState == STATE_DMR_CAL) {
+        for (unsigned int i = 0U; i < DMR_FRAME_LENGTH_BYTES; i++) {
+            m_poBuffer[i] = DMR_START_SYNC;
+            m_markBuffer[i] = MARK_NONE;
+        }
+
+        m_poLen = DMR_FRAME_LENGTH_BYTES;
+    }
+
+    // 80 Hz square wave generation
+    if (m_modemState == STATE_DMR_LF_CAL) {
+        for (unsigned int i = 0U; i < 7U; i++) {
+            m_poBuffer[i] = 0x55U; // +3, +3, ... pattern
+            m_markBuffer[i] = MARK_NONE;
+        }
+
+        m_poBuffer[7U] = 0x5FU; // +3, +3, -3, -3 pattern
+
+        for (unsigned int i = 8U; i < 15U; i++) {
+            m_poBuffer[i] = 0xFFU; // -3, -3, ... pattern
+            m_markBuffer[i] = MARK_NONE;
+        }
+
+        m_poLen = 15U;
+    }
+
+    m_poLen = DMR_FRAME_LENGTH_BYTES;
+    m_poPtr = 0U;
+}
+
+/* Helper to write a raw byte to the DAC. */
+
 void DMRTX::writeByte(uint8_t c, uint8_t control)
 {
     q15_t inBuffer[4U];

@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*
-*/
+ * @file CalP25.h
+ * @ingroup p25_mfw
+ * @file CalP25.h
+ * @ingroup p25_mfw
+ */
 #if !defined(__CAL_P25_H__)
 #define __CAL_P25_H__
 
@@ -23,26 +25,41 @@ namespace p25
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Calibration States
+     */
     enum P25CAL1K {
-        P25CAL1K_IDLE,
-        P25CAL1K_LDU1,
-        P25CAL1K_LDU2
+        P25CAL1K_IDLE,      //! Idle
+        P25CAL1K_LDU1,      //! LDU1
+        P25CAL1K_LDU2       //! LDU2
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements logic for P25 calibration mode.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements logic for P25 calibration mode.
+     * @ingroup p25_mfw
+     */
     class DSP_FW_API CalP25 {
     public:
-        /// <summary>Initializes a new instance of the CalP25 class.</summary>
+        /**
+         * @brief Initializes a new instance of the CalP25 class.
+         */
         CalP25();
 
-        /// <summary>Process local state and transmit on the air interface.</summary>
+        /**
+         * @brief Process local state and transmit on the air interface.
+         */
         void process();
 
-        /// <summary>Write P25 calibration state.</summary>
+        /**
+         * @brief Write P25 calibration state.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t write(const uint8_t* data, uint8_t length);
 
     private:

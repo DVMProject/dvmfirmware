@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * 
+ *  Copyright (C) 2016 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016 Jonathan Naylor, G4KLX
-*
-*/
+ * @file CalRSSI.h
+ * @ingroup modem_fw
+ * @file CalRSSI.cpp
+ * @ingroup modem_fw
+ */
 #if !defined(__CAL_RSSI_H__)
 #define __CAL_RSSI_H__
 
@@ -18,15 +20,24 @@
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
-//      Implements logic for RSSI calibration mode.
 // ---------------------------------------------------------------------------
 
+/**
+ * @brief Implements logic for RSSI calibration mode.
+ * @ingroup modem_fw
+ */
 class DSP_FW_API CalRSSI {
 public:
-    /// <summary>Initializes a new instance of the CalRSSI class.</summary>
+    /**
+     * @brief Initializes a new instance of the CalRSSI class.
+     */
     CalRSSI();
 
-    /// <summary>Sample RSSI values from the air interface.</summary>
+    /**
+     * @brief Sample RSSI values from the air interface.
+     * @param rssi 
+     * @param length 
+     */
     void samples(const uint16_t* rssi, uint8_t length);
 
 private:

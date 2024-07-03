@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
-*
-*/
+ * @file P25RX.h
+ * @ingroup p25_mfw
+ * @file P25RX.h
+ * @ingroup p25_mfw
+ */
 #if !defined(__P25_RX_H__)
 #define __P25_RX_H__
 
@@ -24,32 +26,53 @@ namespace p25
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief P25 Receiver State
+     */
     enum P25RX_STATE {
-        P25RXS_NONE,
-        P25RXS_SYNC,
-        P25RXS_VOICE,
-        P25RXS_DATA
+        P25RXS_NONE,        //! None
+        P25RXS_SYNC,        //! Found Sync
+        P25RXS_VOICE,       //! Voice Data
+        P25RXS_DATA         //! PDU Data
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements receiver logic for P25 mode operation.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements receiver logic for P25 mode operation.
+     * @ingroup p25_mfw
+     */
     class DSP_FW_API P25RX {
     public:
-        /// <summary>Initializes a new instance of the P25RX class.</summary>
+        /**
+         * @brief Initializes a new instance of the P25RX class.
+         */
         P25RX();
 
-        /// <summary>Helper to reset data values to defaults.</summary>
+        /**
+         * @brief Helper to reset data values to defaults.
+         */
         void reset();
 
-        /// <summary>Sample P25 values from the air interface.</summary>
+        /**
+         * @brief Sample P25 values from the air interface.
+         * @param[in] samples 
+         * @param rssi
+         * @param length 
+         */
         void samples(const q15_t* samples, uint16_t* rssi, uint8_t length);
 
-        /// <summary>Sets the P25 NAC.</summary>
+        /**
+         * @brief Sets the P25 NAC.
+         * @param nac Network Access Code.
+         */
         void setNAC(uint16_t nac);
-        /// <summary>Sets the P25 sync correlation countdown.</summary>
+        /**
+         * @brief Sets the P25 sync correlation countdown.
+         * @param count Sync Correlation Countdown.
+         */
         void setCorrCount(uint8_t count);
 
     private:
@@ -88,22 +111,50 @@ namespace p25
         uint32_t m_rssiAccum;
         uint16_t m_rssiCount;
 
-        /// <summary>Helper to process P25 samples.</summary>
+        /**
+         * @brief Helper to process P25 samples.
+         * @param sample 
+         */
         void processSample(q15_t sample);
-        /// <summary>Helper to process LDU P25 samples.</summary>
+        /**
+         * @brief Helper to process LDU P25 samples.
+         * @param sample 
+         */
         void processVoice(q15_t sample);
-        /// <summary>Helper to process PDU P25 samples.</summary>
+        /**
+         * @brief Helper to process PDU P25 samples.
+         * @param sample 
+         */
         void processData(q15_t sample);
 
-        /// <summary>Frame synchronization correlator.</summary>
+        /**
+         * @brief Frame synchronization correlator.
+         * @returns bool 
+         */
         bool correlateSync();
 
-        /// <summary>Helper to decode the P25 NID.</summary>
+        /**
+         * @brief Helper to decode the P25 NID.
+         * @param start 
+         * @returns bool True, if P25 NID was decoded, otherwise false.
+         */
         bool decodeNid(uint16_t start);
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count 
+         */
         void calculateLevels(uint16_t start, uint16_t count);
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count
+         * @param buffer
+         * @param offset
+         * @param centre
+         * @param threshold 
+         */
         void samplesToBits(uint16_t start, uint16_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold);
     };
 } // namespace p25

@@ -1,16 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * @package DVM / Modem Firmware
+ * @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
+ * @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*
-*/
+ * @file DMRDMORX.h
+ * @ingroup dmr_mfw
+ * @file DMRDMORX.h
+ * @ingroup dmr_mfw
+ */
 #if !defined(__DMR_DMO_RX_H__)
 #define __DMR_DMO_RX_H__
 
@@ -25,29 +31,47 @@ namespace dmr
 
     const uint16_t DMO_BUFFER_LENGTH_SAMPLES = 1440U;   // 60ms at 24 kHz
 
+    /**
+     * @brief DMR DMO Receiver State
+     */
     enum DMORX_STATE {
-        DMORXS_NONE,
-        DMORXS_VOICE,
-        DMORXS_DATA
+        DMORXS_NONE,        //! None
+        DMORXS_VOICE,       //! Voice Data
+        DMORXS_DATA         //! PDU Data
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements receiver logic for DMR DMO mode operation.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements receiver logic for DMR DMO mode operation.
+     * @ingroup dmr_mfw
+     */
     class DSP_FW_API DMRDMORX {
     public:
-        /// <summary>Initializes a new instance of the DMRDMORX class.</summary>
+        /**
+         * @brief Initializes a new instance of the DMRDMORX class.
+         */
         DMRDMORX();
 
-        /// <summary>Helper to reset data values to defaults.</summary>
+        /**
+         * @brief Helper to reset data values to defaults.
+         */
         void reset();
 
-        /// <summary>Sample DMR values from the air interface.</summary>
+        /**
+         * @brief Sample DMR values from the air interface.
+         * @param[in] samples 
+         * @param[in] rssi
+         * @param length 
+         */
         void samples(const q15_t* samples, const uint16_t* rssi, uint8_t length);
 
-        /// <summary>Sets the DMR color code.</summary>
+        /**
+         * @brief Sets the DMR color code.
+         * @param colorCode 
+         */
         void setColorCode(uint8_t colorCode);
 
     private:
@@ -78,15 +102,33 @@ namespace dmr
 
         uint16_t m_rssi[DMO_BUFFER_LENGTH_SAMPLES];
 
-        /// <summary>Helper to perform sample processing.</summary>
+        /**
+         * @brief Helper to perform sample processing.
+         * @param sample 
+         * @param rssi 
+         */
         bool processSample(q15_t sample, uint16_t rssi);
 
-        /// <summary>Frame synchronization correlator.</summary>
+        /**
+         * @brief Frame synchronization correlator.
+         * @param first 
+         */
         void correlateSync(bool first);
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count
+         * @param buffer
+         * @param offset
+         * @param centre
+         * @param threshold 
+         */
         void samplesToBits(uint16_t start, uint8_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold);
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param frame 
+         */
         void writeRSSIData(uint8_t* frame);
     };
 } // namespace dmr

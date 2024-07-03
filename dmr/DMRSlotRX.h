@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*
-*/
+ * @file DMRSlotRX.h
+ * @ingroup dmr_mfw
+ * @file DMRSlotRX.h
+ * @ingroup dmr_mfw
+ */
 #if !defined(__DMR_SLOT_RX_H__)
 #define __DMR_SLOT_RX_H__
 
@@ -23,33 +25,56 @@ namespace dmr
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief DMR Slot Receiver State
+     */
     enum DMRRX_STATE {
-        DMRRXS_NONE,
-        DMRRXS_VOICE,
-        DMRRXS_DATA
+        DMRRXS_NONE,        //! None
+        DMRRXS_VOICE,       //! Voice Data
+        DMRRXS_DATA         //! PDU Data
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements receiver logic for DMR slots.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements receiver logic for DMR slots.
+     * @ingroup dmr_mfw
+     */
     class DSP_FW_API DMRSlotRX {
     public:
-        /// <summary>Initializes a new instance of the DMRSlotRX class.</summary>
+        /**
+         * @brief Initializes a new instance of the DMRSlotRX class.
+         * @param slot 
+         */
         DMRSlotRX(bool slot);
 
-        /// <summary>Helper to set data values for start of Rx.</summary>
+        /**
+         * @brief Helper to set data values for start of Rx.
+         */
         void start();
-        /// <summary>Helper to reset data values to defaults.</summary>
+        /**
+         * @brief Helper to reset data values to defaults.
+         */
         void reset();
 
-        /// <summary>Perform DMR slot sample processing.</summary>
+        /**
+         * @brief Perform DMR slot sample processing.
+         * @param sample 
+         * @param rssi 
+         */
         bool processSample(q15_t sample, uint16_t rssi);
 
-        /// <summary>Sets the DMR color code.</summary>
+        /**
+         * @brief Sets the DMR color code.
+         * @param colorCode 
+         */
         void setColorCode(uint8_t colorCode);
-        /// <summary>Sets the number of samples to delay before processing.</summary>
+        /**
+         * @brief Sets the number of samples to delay before processing.
+         * @param delay 
+         */
         void setRxDelay(uint8_t delay);
 
     private:
@@ -85,12 +110,26 @@ namespace dmr
 
         uint16_t m_rssi[900U];
 
-        /// <summary>Frame synchronization correlator.</summary>
+        /**
+         * @brief Frame synchronization correlator.
+         * @param first 
+         */
         void correlateSync(bool first);
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count
+         * @param buffer
+         * @param offset
+         * @param centre
+         * @param threshold 
+         */
         void samplesToBits(uint16_t start, uint8_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold);
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param frame 
+         */
         void writeRSSIData(uint8_t* frame);
     };
 } // namespace dmr

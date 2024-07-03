@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
+ *
+ */
 #include "Globals.h"
 #include "dmr/DMRDMORX.h"
 #include "dmr/DMRSlotType.h"
@@ -39,9 +35,8 @@ const uint8_t CONTROL_DATA = 0x40U;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the DMRDMORX class.
-/// </summary>
+/* Initializes a new instance of the DMRDMORX class. */
+
 DMRDMORX::DMRDMORX() :
     m_bitBuffer(),
     m_buffer(),
@@ -65,9 +60,8 @@ DMRDMORX::DMRDMORX() :
     /* stub */
 }
 
-/// <summary>
-/// Helper to reset data values to defaults.
-/// </summary>
+/* Helper to reset data values to defaults. */
+
 void DMRDMORX::reset()
 {
     m_syncPtr = 0U;
@@ -79,12 +73,8 @@ void DMRDMORX::reset()
     m_endPtr = NOENDPTR;
 }
 
-/// <summary>
-/// Sample DMR values from the air interface.
-/// </summary>
-/// <param name="samples"></param>
-/// <param name="rssi"></param>
-/// <param name="length"></param>
+/* Sample DMR values from the air interface. */
+
 void DMRDMORX::samples(const q15_t* samples, const uint16_t* rssi, uint8_t length)
 {
     bool dcd = false;
@@ -95,10 +85,8 @@ void DMRDMORX::samples(const q15_t* samples, const uint16_t* rssi, uint8_t lengt
     io.setDecode(dcd);
 }
 
-/// <summary>
-/// Sets the DMR color code.
-/// </summary>
-/// <param name="colorCode">Color code.</param>
+/* Sets the DMR color code. */
+
 void DMRDMORX::setColorCode(uint8_t colorCode)
 {
     m_colorCode = colorCode;
@@ -108,12 +96,8 @@ void DMRDMORX::setColorCode(uint8_t colorCode)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Helper to perform sample processing.
-/// </summary>
-/// <param name="sample"></param>
-/// <param name="rssi"></param>
-/// <returns></returns>
+/* Helper to perform sample processing. */
+
 bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
 {
     m_buffer[m_dataPtr] = sample;
@@ -268,10 +252,8 @@ bool DMRDMORX::processSample(q15_t sample, uint16_t rssi)
     return m_state != DMORXS_NONE;
 }
 
-/// <summary>
-/// Frame synchronization correlator.
-/// </summary>
-/// <param name="first"></param>
+/* Frame synchronization correlator. */
+
 void DMRDMORX::correlateSync(bool first)
 {
     uint8_t errs = countBits32((m_bitBuffer[m_bitPtr] & DMR_SYNC_SYMBOLS_MASK) ^ DMR_MS_DATA_SYNC_SYMBOLS);
@@ -422,15 +404,8 @@ void DMRDMORX::correlateSync(bool first)
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="start"></param>
-/// <param name="count"></param>
-/// <param name="buffer"></param>
-/// <param name="offset"></param>
-/// <param name="centre"></param>
-/// <param name="threshold"></param>
+/* */
+
 void DMRDMORX::samplesToBits(uint16_t start, uint8_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold)
 {
     for (uint8_t i = 0U; i < count; i++) {
@@ -467,10 +442,8 @@ void DMRDMORX::samplesToBits(uint16_t start, uint8_t count, uint8_t* buffer, uin
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="frame"></param>
+/* */
+
 void DMRDMORX::writeRSSIData(uint8_t* frame)
 {
 #if defined(SEND_RSSI_DATA)

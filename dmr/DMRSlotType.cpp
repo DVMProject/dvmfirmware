@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015 Jonathan Naylor, G4KLX
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015 Jonathan Naylor, G4KLX
+ *
+ */
 #include "Globals.h"
 #include "dmr/DMRSlotType.h"
 
@@ -213,20 +209,15 @@ const uint32_t DECODING_TABLE_1987[] = {
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the DMRSlotType class.
-/// </summary>
+/* Initializes a new instance of the DMRSlotType class. */
+
 DMRSlotType::DMRSlotType()
 {
     /* stub */
 }
 
-/// <summary>
-/// Decodes DMR slot type.
-/// </summary>
-/// <param name="frame"></param>
-/// <param name="colorCode"></param>
-/// <param name="dataType"></param>
+/* Decodes DMR slot type. */
+
 void DMRSlotType::decode(const uint8_t* frame, uint8_t& colorCode, uint8_t& dataType) const
 {
     uint8_t slotType[3U];
@@ -245,12 +236,8 @@ void DMRSlotType::decode(const uint8_t* frame, uint8_t& colorCode, uint8_t& data
     dataType = (code >> 0) & 0x0FU;
 }
 
-/// <summary>
-/// Encodes DMR slot type.
-/// </summary>
-/// <param name="colorCode"></param>
-/// <param name="dataType"></param>
-/// <param name="frame"></param>
+/* Encodes DMR slot type. */
+
 void DMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) const
 {
     uint8_t slotType[3U];
@@ -272,11 +259,8 @@ void DMRSlotType::encode(uint8_t colorCode, uint8_t dataType, uint8_t* frame) co
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-///
-/// </summary>
-/// <param name="data"></param>
-/// <returns></returns>
+/* */
+
 uint8_t DMRSlotType::decode2087(const uint8_t* data) const
 {
     uint32_t code = (data[0U] << 11) + (data[1U] << 3) + (data[2U] >> 5);
@@ -289,20 +273,8 @@ uint8_t DMRSlotType::decode2087(const uint8_t* data) const
     return code >> 11;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <remarks>
-/// Compute the syndrome corresponding to the given pattern, i.e., the
-/// remainder after dividing the pattern (when considering it as the vector
-/// representation of a polynomial) by the generator polynomial, GENPOL.
-/// In the program this pattern has several meanings: (1) pattern = infomation
-/// bits, when constructing the encoding table; (2) pattern = error pattern,
-/// when constructing the decoding table; and (3) pattern = received vector, to
-/// obtain its syndrome in decoding.
-/// </remarks>
-/// <param name="pattern"></param>
-/// <returns></returns>
+/* */
+
 uint32_t DMRSlotType::getSyndrome1987(uint32_t pattern) const
 {
     unsigned int aux = X18;

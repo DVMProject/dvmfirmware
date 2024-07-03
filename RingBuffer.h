@@ -1,24 +1,24 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2017 Wojciech Krutnik, N0CALL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2017 Wojciech Krutnik, N0CALL
-*
-*/
+ * @file RingBuffer.h
+ * @ingroup modem_fw
+ */
 #if !defined(__RING_BUFFER_H__)
 #define __RING_BUFFER_H__
 
 /*
-*   FIFO ring buffer source:
-*   http://stackoverflow.com/questions/6822548/correct-way-of-implementing-a-uart-receive-buffer-in-a-small-arm-microcontroller (modified)
-*
-*/
+ * FIFO ring buffer source:
+ * http://stackoverflow.com/questions/6822548/correct-way-of-implementing-a-uart-receive-buffer-in-a-small-arm-microcontroller (modified)
+ *
+ */
 
 #include "Defines.h"
 

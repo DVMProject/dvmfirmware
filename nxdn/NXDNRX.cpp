@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2018,2020 Jonathan Naylor, G4KLX
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2018,2020 Jonathan Naylor, G4KLX
+ *
+ */
 #include "Globals.h"
 #include "nxdn/NXDNRX.h"
 #include "Utils.h"
@@ -39,9 +35,8 @@ const uint16_t NOENDPTR = 9999U;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the NXDNRX class.
-/// </summary>
+/* Initializes a new instance of the NXDNRX class. */
+
 NXDNRX::NXDNRX() :
     m_bitBuffer(),
     m_buffer(),
@@ -68,9 +63,8 @@ NXDNRX::NXDNRX() :
     /* stub */
 }
 
-/// <summary>
-/// Helper to reset data values to defaults.
-/// </summary>
+/* Helper to reset data values to defaults. */
+
 void NXDNRX::reset()
 {
     m_bitPtr = 0U;
@@ -97,12 +91,8 @@ void NXDNRX::reset()
     m_rssiCount = 0U;
 }
 
-/// <summary>
-/// Sample P25 values from the air interface.
-/// </summary>
-/// <param name="samples"></param>
-/// <param name="rssi"></param>
-/// <param name="length"></param>
+/* Sample P25 values from the air interface. */
+
 void NXDNRX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
 {
     for (uint8_t i = 0U; i < length; i++) {
@@ -136,10 +126,8 @@ void NXDNRX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
     }
 }
 
-/// <summary>
-/// Sets the NXDN sync correlation countdown.
-/// </summary>
-/// <param name="count">Correlation Countdown Count.</param>
+/* Sets the NXDN sync correlation countdown. */
+
 void NXDNRX::setCorrCount(uint8_t count)
 {
     m_corrCountdown = count;
@@ -149,10 +137,8 @@ void NXDNRX::setCorrCount(uint8_t count)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Helper to process NXDN samples.
-/// </summary>
-/// <param name="sample"></param>
+/* Helper to process NXDN samples. */
+
 void NXDNRX::processSample(q15_t sample)
 {
     bool ret = correlateSync();
@@ -188,10 +174,8 @@ void NXDNRX::processSample(q15_t sample)
     }
 }
 
-/// <summary>
-/// Helper to process NXDN data samples.
-/// </summary>
-/// <param name="sample"></param>
+/* Helper to process NXDN data samples. */
+
 void NXDNRX::processData(q15_t sample)
 {
     if (m_minFSWPtr < m_maxFSWPtr) {
@@ -262,10 +246,8 @@ void NXDNRX::processData(q15_t sample)
     }
 }
 
-/// <summary>
-/// Frame synchronization correlator.
-/// </summary>
-/// <returns></returns>
+/* Frame synchronization correlator. */
+
 bool NXDNRX::correlateSync()
 {
     if (countBits32((m_bitBuffer[m_bitPtr] & NXDN_FSW_SYMBOLS_MASK) ^ NXDN_FSW_SYMBOLS) <= MAX_FSW_SYMBOLS_ERRS) {
@@ -355,11 +337,8 @@ bool NXDNRX::correlateSync()
     return false;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="start"></param>
-/// <param name="count"></param>
+/* */
+
 void NXDNRX::calculateLevels(uint16_t start, uint16_t count)
 {
     q15_t maxPos = -16000;
@@ -424,15 +403,8 @@ void NXDNRX::calculateLevels(uint16_t start, uint16_t count)
     m_thresholdVal >>= 4;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="start"></param>
-/// <param name="count"></param>
-/// <param name="buffer"></param>
-/// <param name="offset"></param>
-/// <param name="centre"></param>
-/// <param name="threshold"></param>
+/* */
+
 void NXDNRX::samplesToBits(uint16_t start, uint16_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold)
 {
     for (uint16_t i = 0U; i < count; i++) {

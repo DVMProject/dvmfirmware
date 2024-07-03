@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *
+ */
 #include "Globals.h"
 #include "p25/CalP25.h"
 
@@ -54,9 +50,8 @@ unsigned char LDU2_1K[] = { 0x00,
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the CalP25 class.
-/// </summary>
+/* Initializes a new instance of the CalP25 class. */
+
 CalP25::CalP25() :
     m_transmit(false),
     m_state(P25CAL1K_IDLE)
@@ -64,9 +59,8 @@ CalP25::CalP25() :
     /* stub */
 }
 
-/// <summary>
-/// Process local state and transmit on the air interface.
-/// </summary>
+/* Process local state and transmit on the air interface. */
+
 void CalP25::process()
 {
     if (m_modemState == STATE_P25_CAL) {
@@ -107,12 +101,8 @@ void CalP25::process()
     }
 }
 
-/// <summary>
-/// Write P25 calibration data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write P25 calibration data to the local buffer. */
+
 uint8_t CalP25::write(const uint8_t* data, uint8_t length)
 {
     if (length != 1U)

@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (c) 2020 Jonathan Naylor, G4KLX
-*   Copyright (c) 2020 Geoffrey Merck, F4FXL - KC3FRA
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (c) 2020 Jonathan Naylor, G4KLX
+ *  Copyright (c) 2020 Geoffrey Merck, F4FXL - KC3FRA
+ *
+ */
 #if defined(STM32F4XX)
 
 #include "STM_UART.h"
@@ -20,25 +16,30 @@
  //  Public Class Members
  // ---------------------------------------------------------------------------
  
- /// <summary>
- /// Initializes a new instance of the STM_UART class.
- /// </summary>
+/* Initializes a new instance of the STM_UART class. */
+
 STM_UART::STM_UART() :
     m_usart(NULL)
 {
     /* stub */
 }
 
-/// <summary></summary>
-/// <param name="usart"></param>
+/* Initializes the UART. */
+
 void STM_UART::init(USART_TypeDef* usart)
 {
     m_usart = usart;
 }
 
-/// <summary></summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
+/*  */
+
+uint8_t STM_UART::read()
+{
+    return m_rxFifo.get();
+}
+
+/*  */
+
 void STM_UART::write(const uint8_t* data, uint16_t length)
 {
     if (length == 0U || m_usart == NULL)
@@ -46,23 +47,17 @@ void STM_UART::write(const uint8_t* data, uint16_t length)
 
 
     m_txFifo.put(data[0]);
-    USART_ITConfig(m_usart, USART_IT_TXE, ENABLE);//switch TX IRQ is on
+    USART_ITConfig(m_usart, USART_IT_TXE, ENABLE); // switch TX IRQ is on
 
     for (uint16_t i = 1U; i < length; i++) {
         m_txFifo.put(data[i]);
     }
 
-    USART_ITConfig(m_usart, USART_IT_TXE, ENABLE);//make sure TX IRQ is on
+    USART_ITConfig(m_usart, USART_IT_TXE, ENABLE); // make sure TX IRQ is on
 }
 
-/// <summary></summary>
-/// <returns></returns>
-uint8_t STM_UART::read()
-{
-    return m_rxFifo.get();
-}
+/*  */
 
-/// <summary></summary>
 void STM_UART::handleIRQ()
 {
     if (m_usart == NULL)
@@ -85,12 +80,8 @@ void STM_UART::handleIRQ()
     }
 }
 
-/// <summary>
-/// Flushes the transmit shift register.
-/// </summary>
-/// <remarks>
-/// This call is blocking!
-/// </remarks>
+/* Flushes the transmit shift register. */
+
 void STM_UART::flush()
 {
     if (m_usart == NULL)
@@ -101,15 +92,15 @@ void STM_UART::flush()
         ;
 }
 
-/// <summary></summary>
-/// <returns></returns>
+/*  */
+
 uint16_t STM_UART::available()
 {
     return m_rxFifo.isEmpty() ? 0U : 1U;
 }
 
-/// <summary></summary>
-/// <returns></returns>
+/*  */
+
 uint16_t STM_UART::availableForWrite()
 {
     return m_txFifo.isFull() ? 0U : 1U;

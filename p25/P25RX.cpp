@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "p25/P25RX.h"
 #include "Utils.h"
@@ -39,9 +35,8 @@ const uint8_t NOAVEPTR = 99U;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the P25RX class.
-/// </summary>
+/* Initializes a new instance of the P25RX class. */
+
 P25RX::P25RX() :
     m_bitBuffer(),
     m_buffer(),
@@ -71,9 +66,8 @@ P25RX::P25RX() :
     /* stub */
 }
 
-/// <summary>
-/// Helper to reset data values to defaults.
-/// </summary>
+/* Helper to reset data values to defaults. */
+
 void P25RX::reset()
 {
     m_minSyncPtr = 0U;
@@ -100,12 +94,8 @@ void P25RX::reset()
     m_rssiCount = 0U;
 }
 
-/// <summary>
-/// Sample P25 values from the air interface.
-/// </summary>
-/// <param name="samples"></param>
-/// <param name="rssi"></param>
-/// <param name="length"></param>
+/* Sample P25 values from the air interface. */
+
 void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
 {
     for (uint8_t i = 0U; i < length; i++) {
@@ -186,19 +176,15 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
     }
 }
 
-/// <summary>
-/// Sets the P25 NAC.
-/// </summary>
-/// <param name="nac">NAC.</param>
+/* Sets the P25 NAC. */
+
 void P25RX::setNAC(uint16_t nac)
 {
     m_nac = nac;
 }
 
-/// <summary>
-/// Sets the P25 sync correlation countdown.
-/// </summary>
-/// <param name="count">Correlation Countdown Count.</param>
+/* Sets the P25 sync correlation countdown. */
+
 void P25RX::setCorrCount(uint8_t count)
 {
     m_corrCountdown = count;
@@ -208,10 +194,8 @@ void P25RX::setCorrCount(uint8_t count)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Helper to process P25 samples.
-/// </summary>
-/// <param name="sample"></param>
+/* Helper to process P25 samples. */
+
 void P25RX::processSample(q15_t sample)
 {
     if (m_minSyncPtr < m_maxSyncPtr) {
@@ -339,10 +323,8 @@ void P25RX::processSample(q15_t sample)
     }
 }
 
-/// <summary>
-/// Helper to process LDU P25 samples.
-/// </summary>
-/// <param name="sample"></param>
+/* Helper to process LDU P25 samples. */
+
 void P25RX::processVoice(q15_t sample)
 {
     if (m_minSyncPtr < m_maxSyncPtr) {
@@ -439,10 +421,8 @@ void P25RX::processVoice(q15_t sample)
     }
 }
 
-/// <summary>
-/// Helper to process PDU P25 samples.
-/// </summary>
-/// <param name="sample"></param>
+/* Helper to process PDU P25 samples. */
+
 void P25RX::processData(q15_t sample)
 {
     if (m_minSyncPtr < m_maxSyncPtr) {
@@ -510,10 +490,8 @@ void P25RX::processData(q15_t sample)
     }
 }
 
-/// <summary>
-/// Frame synchronization correlator.
-/// </summary>
-/// <returns></returns>
+/* Frame synchronization correlator. */
+
 bool P25RX::correlateSync()
 {
     uint8_t errs = countBits32((m_bitBuffer[m_bitPtr] & P25_SYNC_SYMBOLS_MASK) ^ P25_SYNC_SYMBOLS);
@@ -609,10 +587,8 @@ bool P25RX::correlateSync()
     return false;
 }
 
-/// <summary>
-/// Helper to decode the P25 NID.
-/// </summary>
-/// <param name="start"></param>
+/* Helper to decode the P25 NID. */
+
 bool P25RX::decodeNid(uint16_t start)
 {
     uint16_t nidStartPtr = start + P25_SYNC_LENGTH_SAMPLES;
@@ -641,11 +617,8 @@ bool P25RX::decodeNid(uint16_t start)
     return false;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="start"></param>
-/// <param name="count"></param>
+/* */
+
 void P25RX::calculateLevels(uint16_t start, uint16_t count)
 {
     q15_t maxPos = -16000;
@@ -712,15 +685,8 @@ void P25RX::calculateLevels(uint16_t start, uint16_t count)
     m_thresholdVal >>= 4;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="start"></param>
-/// <param name="count"></param>
-/// <param name="buffer"></param>
-/// <param name="offset"></param>
-/// <param name="centre"></param>
-/// <param name="threshold"></param>
+/* */
+
 void P25RX::samplesToBits(uint16_t start, uint16_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold)
 {
     for (uint16_t i = 0U; i < count; i++) {

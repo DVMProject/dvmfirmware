@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016 Jonathan Naylor, G4KLX
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2016 Jonathan Naylor, G4KLX
+ *
+ */
 #include "Globals.h"
 #include "CalRSSI.h"
 #include "Utils.h"
@@ -19,9 +15,8 @@
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the CalRSSI class.
-/// </summary>
+/* Initializes a new instance of the CalRSSI class. */
+
 CalRSSI::CalRSSI() :
     m_count(0U),
     m_accum(0U),
@@ -31,11 +26,8 @@ CalRSSI::CalRSSI() :
     /* stub */
 }
 
-/// <summary>
-/// Sample RSSI values from the air interface.
-/// </summary>
-/// <param name="rssi"></param>
-/// <param name="length"></param>
+/* Sample RSSI values from the air interface. */
+
 void CalRSSI::samples(const uint16_t* rssi, uint8_t length)
 {
     for (uint16_t i = 0U; i < length; i++) {

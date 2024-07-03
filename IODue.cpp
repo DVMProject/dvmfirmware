@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2015 Jim Mclaughlin, KI6ZUM
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2017-2018 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2015 Jim Mclaughlin, KI6ZUM
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2017-2018 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "IO.h"
 
@@ -62,19 +58,15 @@ const uint16_t DC_OFFSET = 2048U;
 // ---------------------------------------------------------------------------
 
 extern "C" {
-    void ADC_Handler()
-    {
-        io.interrupt();
-    }
+    void ADC_Handler() { io.interrupt(); }
 }
 
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Hardware interrupt handler.
-/// </summary>
+/* Hardware interrupt handler. */
+
 void IO::interrupt()
 {
     if ((ADC->ADC_ISR & ADC_ISR_EOC_Chan) == ADC_ISR_EOC_Chan) {    // Ensure there was an End-of-Conversion and we read the ISR reg
@@ -95,22 +87,17 @@ void IO::interrupt()
     }
 }
 
-/// <summary>
-/// Gets the CPU type the firmware is running on.
-/// </summary>
-/// <returns></returns>
+/* Gets the CPU type the firmware is running on. */
+
 uint8_t IO::getCPU() const
 {
     return CPU_TYPE_ARDUINO_DUE;
 }
 
-/// <summary>
-/// Gets the unique identifier for the air interface.
-/// </summary>
-/// <remarks>
-/// Code taken from https://github.com/emagii/at91sam3s/blob/master/examples/eefc_uniqueid/main.c
-/// </remarks>
-/// <returns></returns>
+/* Gets the unique identifier for the air interface. 
+ * Code taken from https://github.com/emagii/at91sam3s/blob/master/examples/eefc_uniqueid/main.c
+ */
+
 void IO::getUDID(uint8_t* buffer)
 {
     uint32_t status;
@@ -137,9 +124,8 @@ void IO::getUDID(uint8_t* buffer)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes hardware interrupts.
-/// </summary>
+/* Initializes hardware interrupts. */
+
 void IO::initInt()
 {
     // Set up the TX, COS and LED pins
@@ -153,9 +139,8 @@ void IO::initInt()
     pinMode(PIN_P25, OUTPUT);
 }
 
-/// <summary>
-/// Starts hardware interrupts.
-/// </summary>
+/* Starts hardware interrupts. */
+
 void IO::startInt()
 {
     if (ADC->ADC_ISR & ADC_ISR_EOC_Chan)         // Ensure there was an End-of-Conversion and we read the ISR reg
@@ -222,79 +207,78 @@ void IO::startInt()
     digitalWrite(PIN_LED, HIGH);
 }
 
-/// <summary></summary>
-/// <returns></returns>
+/*  */
+
 bool IO::getCOSInt()
 {
     return digitalRead(PIN_COS) == HIGH;
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setLEDInt(bool on)
 {
     digitalWrite(PIN_LED, on ? HIGH : LOW);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setPTTInt(bool on)
 {
     digitalWrite(PIN_PTT, on ? HIGH : LOW);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setCOSInt(bool on)
 {
     digitalWrite(PIN_COSLED, on ? HIGH : LOW);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setDMRInt(bool on)
 {
     digitalWrite(PIN_DMR, on ? HIGH : LOW);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setP25Int(bool on)
 {
     digitalWrite(PIN_P25, on ? HIGH : LOW);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setNXDNInt(bool on)
 {
     /* stub */
 }
 
-/// <summary></summary>
-/// <param name="dly"></param>
+/*  */
+
 void IO::delayInt(unsigned int dly)
 {
     delay(dly);
 }
 
-/// <summary></summary>
-/// <param name="arg"></param>
-/// <returns></returns>
+/*  */
+
 void* IO::txThreadHelper(void* arg)
 {
     return NULL;
 }
 
-/// <summary></summary>
+/*  */
+
 void IO::interruptRx()
 {
     /* stub */
 }
 
-/// <summary></summary>
-/// <param name="arg"></param>
-/// <returns></returns>
+/*  */
+
 void* IO::rxThreadHelper(void* arg)
 {
     return NULL;

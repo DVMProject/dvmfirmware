@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2015 Jim Mclaughlin, KI6ZUM
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2017-2022 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2015 Jim Mclaughlin, KI6ZUM
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2017-2022 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "IO.h"
 
@@ -69,9 +65,8 @@ const uint16_t DC_OFFSET = 2048U;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the IO class.
-/// </summary>
+/* Initializes a new instance of the IO class. */
+
 IO::IO() :
     m_started(false),
     m_rxBuffer(RX_RINGBUFFER_SIZE),
@@ -140,9 +135,8 @@ IO::IO() :
     selfTest();
 }
 
-/// <summary>
-/// Starts air interface sampler.
-/// </summary>
+/* Starts air interface sampler. */
+
 void IO::start()
 {
     if (m_started)
@@ -155,9 +149,8 @@ void IO::start()
     setMode();
 }
 
-/// <summary>
-/// Process samples from air interface.
-/// </summary>
+/* Process samples from air interface. */
+
 void IO::process()
 {
     m_ledCount++;
@@ -356,13 +349,8 @@ void IO::process()
     }
 }
 
-/// <summary>
-/// Write samples to air interface.
-/// </summary>
-/// <param name="mode"></param>
-/// <param name="samples"></param>
-/// <param name="length"></param>
-/// <param name="control"></param>
+/* Write samples to air interface. */
+
 void IO::write(DVM_STATE mode, q15_t* samples, uint16_t length, const uint8_t* control)
 {
     if (!m_started)
@@ -409,19 +397,15 @@ void IO::write(DVM_STATE mode, q15_t* samples, uint16_t length, const uint8_t* c
     }
 }
 
-/// <summary>
-/// Helper to get how much space the transmit ring buffer has for samples.
-/// </summary>
-/// <returns></returns>
+/* Helper to get how much space the transmit ring buffer has for samples. */
+
 uint16_t IO::getSpace() const
 {
     return m_txBuffer.getSpace();
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="dcd"></param>
+/* */
+
 void IO::setDecode(bool dcd)
 {
     if (dcd != m_dcd)
@@ -430,18 +414,15 @@ void IO::setDecode(bool dcd)
     m_dcd = dcd;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="detect"></param>
+/* */
+
 void IO::setADCDetection(bool detect)
 {
     m_detect = detect;
 }
 
-/// <summary>
-/// Helper to set the modem air interface state.
-/// </summary>
+/* Helper to set the modem air interface state. */
+
 void IO::setMode()
 {
     DVM_STATE relativeState = m_modemState;
@@ -458,9 +439,8 @@ void IO::setMode()
     setNXDNInt(relativeState == STATE_NXDN);
 }
 
-/// <summary>
-/// Helper to assert or deassert radio PTT.
-/// </summary>
+/* Helper to assert or deassert radio PTT. */
+
 void IO::setTransmit()
 {
     // Switch the transmitter on if needed
@@ -474,19 +454,8 @@ void IO::setTransmit()
     }
 }
 
-/// <summary>
-/// Sets various air interface parameters.
-/// </summary>
-/// <param name="rxInvert">Flag indicating the Rx polarity should be inverted.</param>
-/// <param name="txInvert">Flag indicating the Tx polarity should be inverted.</param>
-/// <param name="pttInvert">Flag indicating the PTT polarity should be inverted.</param>
-/// <param name="rxLevel"></param>
-/// <param name="cwIdTXLevel"></param>
-/// <param name="dmrTXLevel"></param>
-/// <param name="p25TXLevel"></param>
-/// <param name="nxdnTXLevel"></param>
-/// <param name="txDCOffset"></param>
-/// <param name="rxDCOffset"></param>
+/* Sets various air interface parameters. */
+
 void IO::setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxLevel, uint8_t cwIdTXLevel, uint8_t dmrTXLevel,
                        uint8_t p25TXLevel, uint8_t nxdnTXLevel, uint16_t txDCOffset, uint16_t rxDCOffset)
 {
@@ -513,10 +482,8 @@ void IO::setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxL
     }
 }
 
-/// <summary>
-/// Sets the software Rx sample level.
-/// </summary>
-/// <param name="rxLevel"></param>
+/* Sets the software Rx sample level. */
+
 void IO::setRXLevel(uint8_t rxLevel)
 {
     m_rxLevel = q15_t(rxLevel * 128);
@@ -525,11 +492,8 @@ void IO::setRXLevel(uint8_t rxLevel)
         m_rxLevel = -m_rxLevel;
 }
 
-/// <summary>
-/// Helper to get the state of the ADC and DAC overflow flags.
-/// </summary>
-/// <param name="adcOverflow"></param>
-/// <param name="dacOverflow"></param>
+/* Helper to get the state of the ADC and DAC overflow flags. */
+
 void IO::getOverflow(bool& adcOverflow, bool& dacOverflow)
 {
     adcOverflow = m_adcOverflow > 0U;
@@ -539,53 +503,43 @@ void IO::getOverflow(bool& adcOverflow, bool& dacOverflow)
     m_dacOverflow = 0U;
 }
 
-/// <summary>
-/// Flag indicating the TX ring buffer has overflowed.
-/// </summary>
-/// <returns></returns>
+/* Flag indicating the TX ring buffer has overflowed. */
+
 bool IO::hasTXOverflow()
 {
     return m_txBuffer.hasOverflowed();
 }
 
-/// <summary>
-/// Flag indicating the RX ring buffer has overflowed.
-/// </summary>
-/// <returns></returns>
+/* Flag indicating the RX ring buffer has overflowed. */
+
 bool IO::hasRXOverflow()
 {
     return m_rxBuffer.hasOverflowed();
 }
 
-/// <summary>
-/// Flag indicating the air interface is locked out from transmitting.
-/// </summary>
-/// <returns></returns>
+/* Flag indicating the air interface is locked out from transmitting. */
+
 bool IO::hasLockout() const
 {
     return m_lockout;
 }
 
-/// <summary>
-///
-/// </summary>
+/* */
+
 void IO::resetWatchdog()
 {
     m_watchdog = 0U;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <returns></returns>
+/* */
+
 uint32_t IO::getWatchdog()
 {
     return m_watchdog;
 }
 
-/// <summary>
-///
-/// </summary>
+/* */
+
 void IO::selfTest()
 {
     bool ledValue = false;

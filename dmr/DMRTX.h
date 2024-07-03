@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2021-2022 Bryan Biedenkapp, N2PLL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2021-2022 Bryan Biedenkapp, N2PLL
-*
-*/
+ * @file DMRTX.h
+ * @ingroup dmr_mfw
+ * @file DMRTX.h
+ * @ingroup dmr_mfw
+ */
 #if !defined(__DMR_TX_H__)
 #define __DMR_TX_H__
 
@@ -26,64 +28,126 @@ namespace dmr
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief DMR Duplex Transmitter State
+     */
     enum DMRTXSTATE {
-        DMRTXSTATE_IDLE,
-        DMRTXSTATE_SLOT1,
-        DMRTXSTATE_CACH1,
-        DMRTXSTATE_SLOT2,
-        DMRTXSTATE_CACH2,
-        DMRTXSTATE_CAL
+        DMRTXSTATE_IDLE,        //! Idle
+        DMRTXSTATE_SLOT1,       //! Slot 1
+        DMRTXSTATE_CACH1,       //! Common Access Channel 1
+        DMRTXSTATE_SLOT2,       //! Slot 2
+        DMRTXSTATE_CACH2,       //! Common Access Channel 2
+        DMRTXSTATE_CAL          //! Calibration
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements receiver logic for duplex DMR mode operation.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements transmitter logic for duplex DMR mode operation.
+     * @ingroup dmr_mfw
+     */
     class DSP_FW_API DMRTX {
     public:
-        /// <summary>Initializes a new instance of the DMRTX class.</summary>
+        /**
+         * @brief Initializes a new instance of the DMRTX class.
+         */
         DMRTX();
 
-        /// <summary>Process local buffer and transmit on the air interface.</summary>
+        /**
+         * @brief Process local buffer and transmit on the air interface.
+         */
         void process();
 
-        /// <summary>Write slot 1 data to the local buffer.</summary>
+        /**
+         * @brief Write slot 1 data to the local buffer.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t writeData1(const uint8_t* data, uint8_t length);
-        /// <summary>Write slot 2 data to the local buffer.</summary>
+        /**
+         * @brief Write slot 2 data to the local buffer.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t writeData2(const uint8_t* data, uint8_t length);
 
-        /// <summary>Write short LC data to the local buffer.</summary>
+        /**
+         * @brief Write short LC data to the local buffer.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t writeShortLC(const uint8_t* data, uint8_t length);
-        /// <summary>Write abort data to the local buffer.</summary>
+        /**
+         * @brief Write abort data to the local buffer.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t writeAbort(const uint8_t* data, uint8_t length);
 
-        /// <summary>Helper to set the start state for Tx.</summary>
+        /**
+         * @brief Helper to set the start state for Tx.
+         * @param start 
+         */
         void setStart(bool start);
-        /// <summary>Helper to set the calibration state for Tx.</summary>
+        /**
+         * @brief Helper to set the calibration state for Tx.
+         * @param start 
+         */
         void setCal(bool start);
 
-        /// <summary>Helper to get how much space the slot 1 ring buffer has for samples.</summary>
+        /**
+         * @brief Helper to get how much space the slot 1 ring buffer has for samples.
+         * @returns uint8_t Amount of space in the slot 1 ring buffer.
+         */
         uint8_t getSpace1() const;
-        /// <summary>Helper to get how much space the slot 2 ring buffer has for samples.</summary>
+        /**
+         * @brief Helper to get how much space the slot 2 ring buffer has for samples.
+         * @returns uint8_t Amount of space in the slot 2 ring buffer.
+         */
         uint8_t getSpace2() const;
 
-        /// <summary>Sets the ignore flags for setting the CACH Access Type bit.</summary>
+        /**
+         * @brief Sets the ignore flags for setting the CACH Access Type bit.
+         * @param slot DMR slot number.
+         */
         void setIgnoreCACH_AT(uint8_t slot);
-        /// <summary>Sets the DMR color code.</summary>
+        /**
+         * @brief Sets the DMR color code.
+         * @param colorCode Color code.
+         */
         void setColorCode(uint8_t colorCode);
-        /// <summary>Sets the fine adjust 4FSK symbol levels.</summary>
+        /**
+         * @brief Sets the fine adjust 4FSK symbol levels.
+         * @param level3Adj +3/-3 Level Adjustment
+         * @param level1Adj +1/-1 Level Adjustment
+         */
         void setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj);
 
-        /// <summary>Helper to reset data values to defaults for slot 1 FIFO.</summary>
+        /**
+         * @brief Helper to reset data values to defaults for slot 1 FIFO.
+         */
         void resetFifo1();
-        /// <summary>Helper to reset data values to defaults for slot 2 FIFO.</summary>
+        /**
+         * @brief Helper to reset data values to defaults for slot 2 FIFO.
+         */
         void resetFifo2();
 
-        /// <summary>Helper to resize the FIFO buffer.</summary>
+        /**
+         * @brief Helper to resize the FIFO buffer.
+         * @param size 
+         */
         void resizeBuffer(uint16_t size);
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @returns uint32_t 
+         */
         uint32_t getFrameCount();
 
     private:
@@ -117,14 +181,27 @@ namespace dmr
 
         uint8_t m_cachATControl;
 
-        /// <summary></summary>
+        /**
+         * @brief Helper to generate data.
+         * @param slotIndex 
+         */
         void createData(uint8_t slotIndex);
-        /// <summary></summary>
+        /**
+         * @brief Helper to generate the common access channel.
+         * @param txSlotIndex 
+         * @param rxSlotIndex 
+         */
         void createCACH(uint8_t txSlotIndex, uint8_t rxSlotIndex);
-        /// <summary></summary>
+        /**
+         * @brief Helper to generate calibration data.
+         */
         void createCal();
 
-        /// <summary></summary>
+        /**
+         * @brief Helper to write a raw byte to the DAC.
+         * @param c Byte.
+         * @param control 
+         */
         void writeByte(uint8_t c, uint8_t control);
     };
 } // namespace dmr

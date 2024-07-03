@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017,2018,2020 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017,2018,2020 Jonathan Naylor, G4KLX
-*
-*/
+ * @file NXDNRX.h
+ * @ingroup nxdn_mfw
+ * @file NXDNRX.h
+ * @ingroup nxdn_mfw
+ */
 #if !defined(__NXDN_RX_H__)
 #define __NXDN_RX_H__
 
@@ -23,28 +25,46 @@ namespace nxdn
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief NXDN Receiver State
+     */
     enum NXDNRX_STATE {
-        NXDNRXS_NONE,
-        NXDNRXS_DATA
+        NXDNRXS_NONE,       //! None
+        NXDNRXS_DATA        //! Data
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements receiver logic for DMR slots.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements receiver logic for NXDN mode operation.
+     * @ingroup nxdn_mfw
+     */
     class DSP_FW_API NXDNRX {
     public:
-        /// <summary>Initializes a new instance of the NXDNRX class.</summary>
+        /**
+         * @brief Initializes a new instance of the NXDNRX class.
+         */
         NXDNRX();
 
-        /// <summary>Helper to reset data values to defaults.</summary>
+        /**
+         * @brief Helper to reset data values to defaults.
+         */
         void reset();
 
-        /// <summary>Sample NXDN values from the air interface.</summary>
+        /**
+         * @brief Sample NXDN values from the air interface.
+         * @param[in] samples 
+         * @param rssi
+         * @param length 
+         */
         void samples(const q15_t* samples, uint16_t* rssi, uint8_t length);
 
-        /// <summary>Sets the NXDN sync correlation countdown.</summary>
+        /**
+         * @brief Sets the NXDN sync correlation countdown.
+         * @param count Sync Correlation Countdown.
+         */
         void setCorrCount(uint8_t count);
 
     private:
@@ -78,17 +98,38 @@ namespace nxdn
         uint32_t m_rssiAccum;
         uint16_t m_rssiCount;
 
-        /// <summary>Helper to process NXDN samples.</summary>
+        /**
+         * @brief Helper to process NXDN samples.
+         * @param sample 
+         */
         void processSample(q15_t sample);
-        /// <summary>Helper to process NXDN data samples.</summary>
+        /**
+         * @brief Helper to process NXDN data samples.
+         * @param sample 
+         */
         void processData(q15_t sample);
 
-        /// <summary>Frame synchronization correlator.</summary>
+        /**
+         * @brief Frame synchronization correlator.
+         * @returns bool 
+         */
         bool correlateSync();
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count 
+         */
         void calculateLevels(uint16_t start, uint16_t count);
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param start 
+         * @param count
+         * @param buffer
+         * @param offset
+         * @param centre
+         * @param threshold 
+         */
         void samplesToBits(uint16_t start, uint16_t count, uint8_t* buffer, uint16_t offset, q15_t centre, q15_t threshold);
     };
 } // namespace nxdn

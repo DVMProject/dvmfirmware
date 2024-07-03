@@ -1,16 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+*  Copyright (C) 2009-2016 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2016 Jonathan Naylor, G4KLX
-*
-*/
+ * @defgroup dmr_mfw Digital Mobile Radio
+ * @brief Implementation for the ETSI TS-102 Digital Mobile Radio (DMR) standard.
+ * @ingroup modem_fw
+ * 
+ * @file DMRDefines.h
+ * @ingroup dmr_mfw
+ */
 #if !defined(__DMR_DEFINES_H__)
 #define __DMR_DEFINES_H__
 
@@ -21,6 +25,11 @@ namespace dmr
     // ---------------------------------------------------------------------------
     //  Constants
     // ---------------------------------------------------------------------------
+
+    /**
+     * @addtogroup dmr_mfw
+     * @{
+     */
 
     const uint32_t  DMR_RADIO_SYMBOL_LENGTH = 5U;      // At 24 kHz sample rate
 
@@ -105,6 +114,8 @@ namespace dmr
     const uint8_t   DT_RATE_34_DATA = 8U;
     const uint8_t   DT_IDLE = 9U;
     const uint8_t   DT_RATE_1_DATA = 10U;
+
+    /** @} */
 } // namespace dmr
 
 #endif // __DMR_DEFINES_H__

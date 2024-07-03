@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2021 Bryan Biedenkapp, N2PLL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2021 Bryan Biedenkapp, N2PLL
-*
-*/
+ * @defgroup modem_fw Modem Firmware
+ * @brief Digital Voice Modem - Modem Firmware
+ * @details Firmware that is used for repeater interface boards.
+ * @ingroup modem_fw
+ * 
+ * @file Globals.h
+ * @ingroup modem_fw
+ */
 #if !defined(__GLOBALS_H__)
 #define __GLOBALS_H__
 
@@ -85,30 +90,30 @@ extern bool m_dcd;
 extern SerialPort serial;
 extern IO io;
 
-/** DMR BS */
+/* DMR BS */
 extern dmr::DMRIdleRX dmrIdleRX;
 extern dmr::DMRRX dmrRX;
 extern dmr::DMRTX dmrTX;
 
-/** DMR MS-DMO */
+/* DMR MS-DMO */
 extern dmr::DMRDMORX dmrDMORX;
 extern dmr::DMRDMOTX dmrDMOTX;
 
-/** P25 BS */
+/* P25 BS */
 extern p25::P25RX p25RX;
 extern p25::P25TX p25TX;
 
-/** NXDN BS */
+/* NXDN BS */
 extern nxdn::NXDNRX nxdnRX;
 extern nxdn::NXDNTX nxdnTX;
 
-/** Calibration */
+/* Calibration */
 extern dmr::CalDMR calDMR;
 extern p25::CalP25 calP25;
 extern nxdn::CalNXDN calNXDN;
 extern CalRSSI calRSSI;
 
-/** CW */
+/* CW */
 extern CWIdTX cwIdTX;
 
 #endif // __GLOBALS_H__

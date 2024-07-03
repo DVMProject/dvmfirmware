@@ -1,17 +1,23 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2022 Bryan Biedenkapp, N2PLL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2022 Bryan Biedenkapp, N2PLL
-*
-*/
+ * @file IO.h
+ * @ingroup modem_fw
+ * @file IO.cpp
+ * @ingroup modem_fw
+ * @file IODue.cpp
+ * @ingroup modem_fw
+ * @file IOSTM.cpp
+ * @ingroup modem_fw
+ */
 #if !defined(__IO_H__)
 #define __IO_H__
 
@@ -22,88 +28,178 @@
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
-//      Implements the input/output data path with the radio air interface.
 // ---------------------------------------------------------------------------
 
+/**
+ * @brief Implements the input/output data path with the radio air interface.
+ * @ingroup modem_fw
+ */
 class DSP_FW_API IO {
 public:
-    /// <summary>Initializes a new instance of the IO class.</summary>
+    /**
+     * @brief Initializes a new instance of the IO class.
+     */
     IO();
 
-    /// <summary>Starts air interface sampler.</summary>
+    /**
+     * @brief Starts air interface sampler.
+     */
     void start();
 
-    /// <summary>Process samples from air interface.</summary>
+    /**
+     * @brief Process samples from air interface.
+     */
     void process();
 
-    /// <summary>Write samples to air interface.</summary>
+    /**
+     * @brief Write samples to air interface.
+     * @param mode 
+     * @param samples Samples to write.
+     * @param length Length of samples buffer.
+     * @param control 
+     */
     void write(DVM_STATE mode, q15_t* samples, uint16_t length, const uint8_t* control = NULL);
 
-    /// <summary>Helper to get how much space the transmit ring buffer has for samples.</summary>
+    /**
+     * @brief Helper to get how much space the transmit ring buffer has for samples.
+     * @returns uint16_t Amount of space in the transmit ring buffer for samples.
+     */
     uint16_t getSpace() const;
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param dcd 
+     */
     void setDecode(bool dcd);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param detect 
+     */
     void setADCDetection(bool detect);
-    /// <summary>Helper to set the modem air interface state.</summary>
+    /**
+     * @brief Helper to set the modem air interface state.
+     */
     void setMode();
-    /// <summary>Helper to assert or deassert radio PTT.</summary>
+    /**
+     * @brief Helper to assert or deassert radio PTT.
+     */
     void setTransmit();
 
-    /// <summary>Hardware interrupt handler.</summary>
+    /**
+     * @brief Hardware interrupt handler.
+     */
     void interrupt();
 
-    /// <summary>Sets various air interface parameters.</summary>
+    /**
+     * @brief Sets various air interface parameters.
+     * @param rxInvert Flag indicating the Rx polarity should be inverted.
+     * @param txInvert Flag indicating the Tx polarity should be inverted.
+     * @param pttInvert Flag indicating the PTT polarity should be inverted.
+     * @param rxLevel Rx Level.
+     * @param cwIdTXLevel CWID Transmit Level.
+     * @param dmrTXLevel DMR Transmit Level.
+     * @param p25TXLevel P25 Transmit Level.
+     * @param nxdnTXLevel NXDN Transmit Level.
+     * @param txDCOffset Tx DC offset parameter.
+     * @param rxDCOffset Rx DC offset parameter.
+     */
     void setParameters(bool rxInvert, bool txInvert, bool pttInvert, uint8_t rxLevel, uint8_t cwIdTXLevel, uint8_t dmrTXLevel,
                        uint8_t p25TXLevel, uint8_t nxdnTXLevel, uint16_t txDCOffset, uint16_t rxDCOffset);
-    /// <summary>Sets the software Rx sample level.</summary>
+    /**
+     * @brief Sets the software Rx sample level.
+     * @param rxLevel Rx Level.
+     */
     void setRXLevel(uint8_t rxLevel);
 
-    /// <summary>Helper to get the state of the ADC and DAC overflow flags.</summary>
+    /**
+     * @brief Helper to get the state of the ADC and DAC overflow flags.
+     * @param[out] adcOverflow 
+     * @param[out] dacOverflow 
+     */
     void getOverflow(bool& adcOverflow, bool& dacOverflow);
 
-    /// <summary>Flag indicating the TX ring buffer has overflowed.</summary>
+    /**
+     * @brief Flag indicating the TX ring buffer has overflowed.
+     * @returns bool Flag indicating the TX ring buffer has overflowed.
+     */
     bool hasTXOverflow();
-    /// <summary>Flag indicating the RX ring buffer has overflowed.</summary>
+    /**
+     * @brief Flag indicating the RX ring buffer has overflowed.
+     * @returns bool Flag indicating the RX ring buffer has overflowed.
+     */
     bool hasRXOverflow();
 
-    /// <summary>Flag indicating the air interface is locked out from transmitting.</summary>
+    /**
+     * @brief Flag indicating the air interface is locked out from transmitting.
+     * @returns bool Flag indicating the air interface is locked out from transmitting.
+     */
     bool hasLockout() const;
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     void resetWatchdog();
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint32_t 
+     */
     uint32_t getWatchdog();
 
-    /// <summary>Gets the CPU type the firmware is running on.</summary>
+    /**
+     * @brief Gets the CPU type the firmware is running on.
+     * @returns uint8_t 
+     */
     uint8_t getCPU() const;
 
-    /// <summary>Gets the unique identifier for the air interface.</summary>
+    /**
+     * @brief Gets the unique identifier for the air interface.
+     * @param buffer 
+     */
     void getUDID(uint8_t* buffer);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     void selfTest();
 
 #if SPI_ENABLED
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param bytes 
+     * @param length 
+     */
     void SPI_Write(uint8_t* bytes, uint8_t length);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint16_t 
+     */
     uint16_t SPI_Read();
 #endif
 
 #if DIGIPOT_ENABLED
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param value 
+     */
     void SetDigipot(uint8_t value);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param value 
+     */
     void SetTxDigipot(uint8_t value);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param value 
+     */
     void SetRxDigipot(uint8_t value);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param value 
+     */
     void SetRsDigipot(uint8_t value);
 #endif
 
@@ -160,36 +256,74 @@ private:
     bool m_lockout;
 
     // Hardware specific routines
-    /// <summary>Initializes hardware interrupts.</summary>
+    /**
+     * @brief Initializes hardware interrupts.
+     */
     void initInt();
-    /// <summary>Starts hardware interrupts.</summary>
+    /**
+     * @brief Starts hardware interrupts.
+     */
     void startInt();
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     bool getCOSInt();
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setLEDInt(bool on);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setPTTInt(bool on);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setCOSInt(bool on);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setDMRInt(bool on);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setP25Int(bool on);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param on 
+     */
     void setNXDNInt(bool on);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param dly 
+     */
     void delayInt(unsigned int dly);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param arg 
+     * @returns void* 
+     */
     static void* txThreadHelper(void* arg);
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param interruptRx 
+     */
     void interruptRx();
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param arg 
+     * @returns void* 
+     */
     static void* rxThreadHelper(void* arg);
 };
 

@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (c) 2020 Jonathan Naylor, G4KLX
+ *  Copyright (c) 2020 Geoffrey Merck, F4FXL - KC3FRA
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (c) 2020 Jonathan Naylor, G4KLX
-*   Copyright (c) 2020 Geoffrey Merck, F4FXL - KC3FRA
-*
-*/
+ * @file STM_UART.h
+ * @ingroup modem_fw
+ * @file STM_UART.cpp
+ * @ingroup modem_fw
+ */
 #if defined(STM32F4XX)
 #if !defined(__STM_UART_H__)
 #define __STM_UART_H__
@@ -27,12 +29,17 @@ const uint16_t BUFFER_MASK = BUFFER_SIZE - 1;
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
-//      This class represents a FIFO buffer on a STM32 UART.
 // ---------------------------------------------------------------------------
 
+/**
+ * @brief This class represents a FIFO buffer on a STM32 UART.
+ * @ingroup modem_fw
+ */
 class DSP_FW_API STM_UARTFIFO {
 public:
-    /// <summary>Initializes a new instance of the STM_UARTFIFO class.</summary>
+    /**
+     * @brief Initializes a new instance of the STM_UARTFIFO class.
+     */
     STM_UARTFIFO() :
         m_head(0U),
         m_tail(0U)
@@ -40,32 +47,42 @@ public:
         /* stub */
     }
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     uint8_t get()
     {
         return m_buffer[BUFFER_MASK & (m_tail++)];
     }
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     void put(uint8_t data)
     {
         m_buffer[BUFFER_MASK & (m_head++)] = data;
     }
 
-    /// <summary>Helper to reset data values to defaults.</summary>
+    /**
+     * @brief Helper to reset data values to defaults.
+     */
     void reset()
     {
         m_tail = 0U;
         m_head = 0U;
     }
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     bool isEmpty()
     {
         return m_tail == m_head;
     }
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     bool isFull()
     {
         return ((m_head + 1U) & BUFFER_MASK) == (m_tail & BUFFER_MASK);
@@ -79,32 +96,59 @@ private:
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
-//      This class represents an STM32 UART.
 // ---------------------------------------------------------------------------
 
+/**
+ * @brief This class represents an STM32 UART.
+ * @ingroup modem_fw
+ */
 class STM_UART {
 public:
-    /// <summary>Initializes a new instance of the STM_UART class.</summary>
+    /**
+     * @brief Initializes a new instance of the STM_UART class.
+     */
     STM_UART();
 
-    /// <summary></summary>
+    /**
+     * @brief Initializes the UART.
+     * @param usart 
+     */
     void init(USART_TypeDef* usart);
     
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint8_t 
+     */
     uint8_t read();
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param[in] data 
+     * @param length
+     */
     void write(const uint8_t* data, uint16_t length);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     */
     void handleIRQ();
 
-    /// <summary>Flushes the transmit shift register.</summary>
+    /**
+     * @brief Flushes the transmit shift register.
+     * 
+     * This call is blocking!
+     */
     void flush();
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint16_t 
+     */
     uint16_t available();
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint16_t 
+     */
     uint16_t availableForWrite();
 
 private:

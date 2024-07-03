@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016 Jonathan Naylor, G4KLX
+ *  Serial FIFO Control Copyright (C) 2015 by James McLaughlin, KI6ZUM
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016 Jonathan Naylor, G4KLX
-*   Serial FIFO Control Copyright (C) 2015 by James McLaughlin, KI6ZUM
-*
-*/
+ * @file RSSIBuffer.h
+ * @ingroup modem_fw
+ * @file RSSIBuffer.cpp
+ * @ingroup modem_fw
+ */
 #if !defined(__RSSI_RB_H__)
 #define __RSSI_RB_H__
 
@@ -19,27 +21,50 @@
 
 // ---------------------------------------------------------------------------
 //  Class Declaration
-//      Implements a circular buffer for RSSI data.
 // ---------------------------------------------------------------------------
 
+/**
+ * @brief Implements a circular buffer for RSSI data.
+ * @ingroup modem_fw
+ */
 class DSP_FW_API RSSIBuffer {
 public:
-    /// <summary>Initializes a new instance of the RSSIBuffer class.</summary>
+    /**
+     * @brief Initializes a new instance of the RSSIBuffer class.
+     * @param length Length of buffer.
+     */
     RSSIBuffer(uint16_t length);
 
-    /// <summary>Helper to get how much space the ring buffer has for samples.</summary>
+    /**
+     * @brief Helper to get how much space the ring buffer has for data.
+     * @returns uint16_t Amount of space remaining for data.
+     */
     uint16_t getSpace() const;
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @returns uint16_t 
+     */
     uint16_t getData() const;
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param rssi 
+     * @returns bool 
+     */
     bool put(uint16_t rssi);
 
-    /// <summary></summary>
+    /**
+     * @brief 
+     * @param[out] rssi
+     * @returns bool 
+     */
     bool get(uint16_t& rssi);
 
-    /// <summary>Flag indicating whether or not the ring buffer has overflowed.</summary>
+    /**
+     * @brief Flag indicating whether or not the ring buffer has overflowed.
+     * @returns bool Flag indicating whether or not the ring buffer has overflowed.
+     */
     bool hasOverflowed();
 
 private:

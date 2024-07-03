@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016 Jim McLaughlin, KI6ZUM
-*   Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
-*   Copyright (c) 2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2018,2022,2024 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2016 Jim McLaughlin, KI6ZUM
+ *  Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
+ *  Copyright (c) 2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2018,2022,2024 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "SerialPort.h"
 #include "STM_UART.h"
@@ -55,18 +51,18 @@ extern "C" {
 
 static STM_UART m_USART1;
 
-/// <summary>
-///
-/// </summary>
+/**
+ * @brief Helper to handle the USART1 IRQ.
+ */
 void USART1_IRQHandler()
 {
     m_USART1.handleIRQ();
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="speed"></param>
+/**
+ * @brief Initializes the USART1.
+ * @param speed Port speed.
+ */
 void InitUSART1(int speed)
 {
     // USART1 - TXD PA9  - RXD PA10 - pins on mmdvm pi board
@@ -119,18 +115,18 @@ void InitUSART1(int speed)
 
 static STM_UART m_USART5;
 
-/// <summary>
-///
-/// </summary>
+/**
+ * @brief Helper to handle the USART5 IRQ.
+ */
 void UART5_IRQHandler()
 {
     m_USART5.handleIRQ();
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="speed"></param>
+/**
+ * @brief Initializes the USART5.
+ * @param speed Port speed.
+ */
 void InitUART5(int speed)
 {
     // UART5 - TXD PC12 - RXD PD2
@@ -184,9 +180,8 @@ void InitUART5(int speed)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-///
-/// </summary>
+/* Reads data from the modem flash parititon. */
+
 void SerialPort::flashRead()
 {
     uint8_t reply[249U];
@@ -200,11 +195,8 @@ void SerialPort::flashRead()
     writeInt(1U, reply, 249U);
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
+/* Writes data to the modem flash partition. */
+
 uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
 {
     if (length > 249U) {
@@ -250,11 +242,8 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
     return RSN_OK;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
-/// <param name="speed"></param>
+/* */
+
 void SerialPort::beginInt(uint8_t n, int speed)
 {
     switch (n) {
@@ -271,11 +260,8 @@ void SerialPort::beginInt(uint8_t n, int speed)
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
-/// <returns></returns>
+/* */
+
 int SerialPort::availableInt(uint8_t n)
 {
     switch (n) {
@@ -290,11 +276,8 @@ int SerialPort::availableInt(uint8_t n)
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
-/// <returns></returns>
+/* */
+
 int SerialPort::availableForWriteInt(uint8_t n)
 {
     switch (n) {
@@ -309,11 +292,8 @@ int SerialPort::availableForWriteInt(uint8_t n)
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
-/// <returns></returns>
+/* */
+
 uint8_t SerialPort::readInt(uint8_t n)
 {
     switch (n) {
@@ -328,13 +308,8 @@ uint8_t SerialPort::readInt(uint8_t n)
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <param name="flush"></param>
+/* */
+
 void SerialPort::writeInt(uint8_t n, const uint8_t* data, uint16_t length, bool flush)
 {
     switch (n) {

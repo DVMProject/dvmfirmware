@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017 Andy Uribe, CA6JAU
-*   Copyright (C) 2020-2022 Bryan Biedenkapp, N2PLL
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017 Andy Uribe, CA6JAU
+ *  Copyright (C) 2020-2022 Bryan Biedenkapp, N2PLL
+ *
+ */
 #include "Globals.h"
 #include "p25/P25TX.h"
 #include "p25/P25Defines.h"
@@ -58,9 +54,8 @@ const q15_t P25_LEVELD = -1220;
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the P25TX class.
-/// </summary>
+/* Initializes a new instance of the P25TX class. */
+
 P25TX::P25TX() :
     m_fifo(P25_TX_BUFFER_LEN),
     m_state(P25TXSTATE_NORMAL),
@@ -90,9 +85,8 @@ P25TX::P25TX() :
     m_lpFilter.pCoeffs = LOWPASS_FILTER;
 }
 
-/// <summary>
-/// Process local buffer and transmit on the air interface.
-/// </summary>
+/* Process local buffer and transmit on the air interface. */
+
 void P25TX::process()
 {
     if (m_fifo.getData() == 0U && m_poLen == 0U && m_tailCnt > 0U &&
@@ -155,12 +149,8 @@ void P25TX::process()
     }
 }
 
-/// <summary>
-/// Write data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write data to the local buffer. */
+
 uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
 {
     if (length < (P25_TDU_FRAME_LENGTH_BYTES + 1U))
@@ -180,18 +170,15 @@ uint8_t P25TX::writeData(const uint8_t* data, uint8_t length)
     return RSN_OK;
 }
 
-/// <summary>
-/// Clears the local buffer.
-/// </summary>
+/* Clears the local buffer. */
+
 void P25TX::clear()
 {
     m_fifo.reset();
 }
 
-/// <summary>
-/// Sets the FDMA preamble count.
-/// </summary>
-/// <param name="preambleCnt">Count of preambles.</param>
+/* Sets the FDMA preamble count. */
+
 void P25TX::setPreambleCount(uint8_t preambleCnt)
 {
     m_preambleCnt = P25_FIXED_DELAY + preambleCnt;
@@ -201,10 +188,8 @@ void P25TX::setPreambleCount(uint8_t preambleCnt)
         m_preambleCnt = 1200U;
 }
 
-/// <summary>
-/// Sets the Tx hang time.
-/// </summary>
-/// <param name="txHang">Transmit hang time in seconds.</param>
+/* Sets the Tx hang time. */
+
 void P25TX::setTxHang(uint8_t txHang)
 {
     if (txHang > 0U)
@@ -217,11 +202,8 @@ void P25TX::setTxHang(uint8_t txHang)
         m_txHang = 13U * 1200U;
 }
 
-/// <summary>
-/// Sets the fine adjust 4FSK symbol levels.
-/// </summary>
-/// <param name="level3Adj">+3/-3 symbol adjust.</param>
-/// <param name="level1Adj">+1/-1 symbol adjust.</param>
+/* Sets the fine adjust 4FSK symbol levels. */
+
 void P25TX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
 {
     m_symLevel3Adj = level3Adj;
@@ -240,29 +222,23 @@ void P25TX::setSymbolLvlAdj(int8_t level3Adj, int8_t level1Adj)
         m_symLevel1Adj = 0;
 }
 
-/// <summary>
-/// Helper to set the calibration state for Tx.
-/// </summary>
-/// <param name="start"></param>
+/* Helper to set the calibration state for Tx. */
+
 void P25TX::setCal(bool start)
 {
     m_state = start ? P25TXSTATE_CAL : P25TXSTATE_NORMAL;
 }
 
-/// <summary>
-/// Helper to resize the FIFO buffer.
-/// </summary>
-/// <param name="size"></param>
+/* Helper to resize the FIFO buffer. */
+
 void P25TX::resizeBuffer(uint16_t size)
 {
     m_fifo.reset();
     m_fifo.reinitialize(size);
 }
 
-/// <summary>
-/// Helper to get how much space the ring buffer has for samples.
-/// </summary>
-/// <returns></returns>
+/* Helper to get how much space the ring buffer has for samples. */
+
 uint8_t P25TX::getSpace() const
 {
     return m_fifo.getSpace() / P25_LDU_FRAME_LENGTH_BYTES;
@@ -272,9 +248,8 @@ uint8_t P25TX::getSpace() const
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-///
-/// </summary>
+/* Helper to generate data. */
+
 void P25TX::createData()
 {
     if (!m_tx) {
@@ -292,9 +267,8 @@ void P25TX::createData()
     m_poPtr = 0U;
 }
 
-/// <summary>
-///
-/// </summary>
+/* Helper to generate calibration data. */
+
 void P25TX::createCal()
 {
     // 1.2 kHz sine wave generation
@@ -310,10 +284,8 @@ void P25TX::createCal()
     m_poPtr = 0U;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="c"></param>
+/* Helper to write a raw byte to the DAC. */
+
 void P25TX::writeByte(uint8_t c)
 {
     q15_t inBuffer[4U];
@@ -346,9 +318,8 @@ void P25TX::writeByte(uint8_t c)
     io.write(STATE_P25, outBuffer, P25_RADIO_SYMBOL_LENGTH * 4U);
 }
 
-/// <summary>
-///
-/// </summary>
+/* */
+
 void P25TX::writeSilence()
 {
     q15_t inBuffer[4U] = { 0x00U, 0x00U, 0x00U, 0x00U };

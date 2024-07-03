@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *  Copyright (C) 2020 Jonathan Naylor, G4KLX
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*   Copyright (C) 2020 Jonathan Naylor, G4KLX
-*
-*/
+ * @file CalNXDN.h
+ * @ingroup nxdn_mfw
+ * @file CalNXDN.h
+ * @ingroup nxdn_mfw
+ */
 #if !defined(__CAL_NXDN_H__)
 #define __CAL_NXDN_H__
 
@@ -24,25 +26,40 @@ namespace nxdn
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Calibration States
+     */
     enum NXDNCAL1K {
-        NXDNCAL1K_IDLE,
-        NXDNCAL1K_TX
+        NXDNCAL1K_IDLE,     //! Idle
+        NXDNCAL1K_TX        //! Transmit
     };
 
     // ---------------------------------------------------------------------------
     //  Class Declaration
-    //      Implements logic for NXDN calibration mode.
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Implements logic for NXDN calibration mode.
+     * @ingroup nxdn_mfw
+     */
     class DSP_FW_API CalNXDN {
     public:
-        /// <summary>Initializes a new instance of the CalNXDN class.</summary>
+        /**
+         * @brief Initializes a new instance of the CalNXDN class.
+         */
         CalNXDN();
 
-        /// <summary>Process local state and transmit on the air interface.</summary>
+        /**
+         * @brief Process local state and transmit on the air interface.
+         */
         void process();
 
-        /// <summary>Write NXDN calibration state.</summary>
+        /**
+         * @brief Write NXDN calibration state.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t write(const uint8_t* data, uint16_t length);
 
     private:

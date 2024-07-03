@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2016,2017 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016,2017 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
-*
-*/
+ * @defgroup p25_mfw Project 25
+ * @brief Implementation for the TIA-102 Project 25 standard.
+ * @ingroup modem_fw
+ * 
+ * @file P25Defines.h
+ * @ingroup p25_mfw
+ */
 #if !defined(__P25_DEFINES_H__)
 #define __P25_DEFINES_H__
 
@@ -22,6 +26,11 @@ namespace p25
     // ---------------------------------------------------------------------------
     //  Constants
     // ---------------------------------------------------------------------------
+
+    /**
+     * @addtogroup p25_mfw
+     * @{
+     */
 
     const uint32_t  P25_RADIO_SYMBOL_LENGTH = 5U;      // At 24 kHz sample rate
 
@@ -89,15 +98,17 @@ namespace p25
     const uint32_t  P25_TX_BUFFER_LEN = 522U;
 
     // Data Unit ID(s)
-    const uint8_t   P25_DUID_HDU = 0x00U;               // Header Data Unit
-    const uint8_t   P25_DUID_TDU = 0x03U;               // Simple Terminator Data Unit
-    const uint8_t   P25_DUID_LDU1 = 0x05U;              // Logical Link Data Unit 1
-    const uint8_t   P25_DUID_VSELP1 = 0x06U;            // Motorola VSELP 1
-    const uint8_t   P25_DUID_TSDU = 0x07U;              // Trunking System Data Unit
-    const uint8_t   P25_DUID_VSELP2 = 0x09U;            // Motorola VSELP 2
-    const uint8_t   P25_DUID_LDU2 = 0x0AU;              // Logical Link Data Unit 2
-    const uint8_t   P25_DUID_PDU = 0x0CU;               // Packet Data Unit 
-    const uint8_t   P25_DUID_TDULC = 0x0FU;             // Terminator Data Unit with Link Control
+    const uint8_t   P25_DUID_HDU = 0x00U;               //! Header Data Unit
+    const uint8_t   P25_DUID_TDU = 0x03U;               //! Simple Terminator Data Unit
+    const uint8_t   P25_DUID_LDU1 = 0x05U;              //! Logical Link Data Unit 1
+    const uint8_t   P25_DUID_VSELP1 = 0x06U;            //! Motorola VSELP 1
+    const uint8_t   P25_DUID_TSDU = 0x07U;              //! Trunking System Data Unit
+    const uint8_t   P25_DUID_VSELP2 = 0x09U;            //! Motorola VSELP 2
+    const uint8_t   P25_DUID_LDU2 = 0x0AU;              //! Logical Link Data Unit 2
+    const uint8_t   P25_DUID_PDU = 0x0CU;               //! Packet Data Unit 
+    const uint8_t   P25_DUID_TDULC = 0x0FU;             //! Terminator Data Unit with Link Control
+
+    /** @} */
 } // namespace p25
 
 #endif // __P25_DEFINES_H__

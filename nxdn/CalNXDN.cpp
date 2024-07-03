@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*   Copyright (C) 2020 Jonathan Naylor, G4KLX
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *  Copyright (C) 2020 Jonathan Naylor, G4KLX
+ *
+ */
 #include "Globals.h"
 #include "nxdn/CalNXDN.h"
 
@@ -56,9 +52,8 @@ const uint8_t NXDN_CAL1K[4][49] = {
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the CalNXDN class.
-/// </summary>
+/* Initializes a new instance of the CalNXDN class. */
+
 CalNXDN::CalNXDN() :
     m_transmit(false),
     m_state(NXDNCAL1K_IDLE),
@@ -67,9 +62,8 @@ CalNXDN::CalNXDN() :
     /* stub */
 }
 
-/// <summary>
-/// Process local state and transmit on the air interface.
-/// </summary>
+/* Process local state and transmit on the air interface. */
+
 void CalNXDN::process()
 {
     if (m_transmit) {
@@ -104,12 +98,8 @@ void CalNXDN::process()
     }
 }
 
-/// <summary>
-/// Write P25 calibration data to the local buffer.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write P25 calibration data to the local buffer. */
+
 uint8_t CalNXDN::write(const uint8_t* data, uint16_t length)
 {
     if (length != 1U)

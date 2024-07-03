@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0-only
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2015 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *
+ */
 /**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2015 Jonathan Naylor, G4KLX
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*
-*/
+ * @file CalDMR.h
+ * @ingroup dmr_mfw
+ * @file CalDMR.h
+ * @ingroup dmr_mfw
+ */
 #if !defined(__CAL_DMR_H__)
 #define __CAL_DMR_H__
 
@@ -25,12 +27,15 @@ namespace dmr
     //  Constants
     // ---------------------------------------------------------------------------
 
+    /**
+     * @brief Calibration States
+     */
     enum DMR1KCAL {
-        DMRCAL1K_IDLE,
-        DMRCAL1K_VH,
-        DMRCAL1K_VOICE,
-        DMRCAL1K_VT,
-        DMRCAL1K_WAIT
+        DMRCAL1K_IDLE,      //! Idle
+        DMRCAL1K_VH,        //! Voice Header
+        DMRCAL1K_VOICE,     //! Voice
+        DMRCAL1K_VT,        //! Voice Terminator
+        DMRCAL1K_WAIT       //!
     };
 
     // ---------------------------------------------------------------------------
@@ -40,23 +45,42 @@ namespace dmr
 
     class DSP_FW_API CalDMR {
     public:
-        /// <summary>Initializes a new instance of the CalDMR class.</summary>
+        /**
+         * @brief Initializes a new instance of the CalDMR class.
+         */
         CalDMR();
 
-        /// <summary>Process local state and transmit on the air interface.</summary>
+        /**
+         * @brief Process local state and transmit on the air interface.
+         */
         void process();
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param n 
+         */
         void createData1k(uint8_t n);
-        /// <summary></summary>
+        /**
+         * @brief 
+         * @param n 
+         */
         void createDataDMO1k(uint8_t n);
 
-        /// <summary></summary>
+        /**
+         * @brief 
+         */
         void dmr1kcal();
-        /// <summary></summary>
+        /**
+         * @brief 
+         */
         void dmrDMO1kcal();
 
-        /// <summary>Write DMR calibration state.</summary>
+        /**
+         * @brief Write DMR calibration state.
+         * @param[in] data Buffer.
+         * @param length Length of buffer.
+         * @returns uint8_t Reason code.
+         */
         uint8_t write(const uint8_t* data, uint8_t length);
 
     private:

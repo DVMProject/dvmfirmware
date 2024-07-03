@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2009-2015 Jonathan Naylor, G4KLX
-*   Copyright (C) 2016 Colin Durbridge, G4EML
-*   Copyright (C) 2018 Andy Uribe, CA6JAU
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2009-2015 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2016 Colin Durbridge, G4EML
+ *  Copyright (C) 2018 Andy Uribe, CA6JAU
+ *
+ */
 #include "Globals.h"
 #include "dmr/CalDMR.h"
 
@@ -79,9 +75,8 @@ const uint8_t SHORTLC_1K[] = { 0x33U, 0x3AU, 0xA0U, 0x30U, 0x00U, 0x55U, 0xA6U, 
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the CalDMR class.
-/// </summary>
+/* Initializes a new instance of the CalDMR class. */
+
 CalDMR::CalDMR() :
     m_transmit(false),
     m_state(DMRCAL1K_IDLE),
@@ -92,9 +87,8 @@ CalDMR::CalDMR() :
     ::memcpy(m_dmr1k, VOICE_1K, DMR_FRAME_LENGTH_BYTES + 1U);
 }
 
-/// <summary>
-/// Process local state and transmit on the air interface.
-/// </summary>
+/* Process local state and transmit on the air interface. */
+
 void CalDMR::process()
 {
     switch (m_modemState) {
@@ -119,10 +113,8 @@ void CalDMR::process()
     }
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
+/* */
+
 void CalDMR::createData1k(uint8_t n)
 {
     for (uint8_t i = 0; i < 5U; i++)
@@ -134,10 +126,8 @@ void CalDMR::createData1k(uint8_t n)
     m_dmr1k[20U] |= SYNCEMB_1K[n][6] & 0xF0U;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="n"></param>
+/* */
+
 void CalDMR::createDataDMO1k(uint8_t n)
 {
     for (uint8_t i = 0; i < 5U; i++)
@@ -149,9 +139,8 @@ void CalDMR::createDataDMO1k(uint8_t n)
     m_dmr1k[20U] |= SYNCEMB_DMO1K[n][6] & 0xF0U;
 }
 
-/// <summary>
-///
-/// </summary>
+/* */
+
 void CalDMR::dmr1kcal()
 {
     dmrTX.process();
@@ -198,9 +187,8 @@ void CalDMR::dmr1kcal()
     }
 }
 
-/// <summary>
-///
-/// </summary>
+/* */
+
 void CalDMR::dmrDMO1kcal()
 {
     dmrDMOTX.process();
@@ -236,12 +224,8 @@ void CalDMR::dmrDMO1kcal()
     }
 }
 
-/// <summary>
-/// Write DMR calibration state.
-/// </summary>
-/// <param name="data"></param>
-/// <param name="length"></param>
-/// <returns></returns>
+/* Write DMR calibration state. */
+
 uint8_t CalDMR::write(const uint8_t* data, uint8_t length)
 {
     if (length != 1U)

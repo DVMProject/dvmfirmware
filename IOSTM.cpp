@@ -1,20 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2016 Jim McLaughlin, KI6ZUM
-*   Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
-*   Copyright (C) 2017,2018 Jonathan Naylor, G4KLX
-*   Copyright (C) 2017-2018 Bryan Biedenkapp, N2PLL
-*   Copyright (C) 2022 Natalie Moore
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2016 Jim McLaughlin, KI6ZUM
+ *  Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
+ *  Copyright (C) 2017,2018 Jonathan Naylor, G4KLX
+ *  Copyright (C) 2017-2018 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2022 Natalie Moore
+ *
+ */
 #include "Globals.h"
 #include "IO.h"
 
@@ -369,9 +365,8 @@ extern "C" {
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Hardware interrupt handler.
-/// </summary>
+/* Hardware interrupt handler. */
+
 void IO::interrupt()
 {
     uint8_t control = MARK_NONE;
@@ -405,29 +400,23 @@ void IO::interrupt()
     m_watchdog++;
 }
 
-/// <summary>
-/// Gets the CPU type the firmware is running on.
-/// </summary>
-/// <returns></returns>
+/* Gets the CPU type the firmware is running on. */
+
 uint8_t IO::getCPU() const
 {
     return CPU_TYPE_STM32;
 }
 
-/// <summary>
-/// Gets the unique identifier for the air interface.
-/// </summary>
-/// <returns></returns>
+/* Gets the unique identifier for the air interface. */
+
 void IO::getUDID(uint8_t* buffer)
 {
     ::memcpy(buffer, (void*)STM32_UUID, 12U);
 }
 
 #if SPI_ENABLED
-/// <summary>
-/// Sends a byte over SPI
-/// </summary>
-/// <returns></returns>
+/* Sends a byte over SPI */
+
 void IO::SPI_Write(uint8_t* bytes, uint8_t length)
 {
     // Write the first byte
@@ -445,10 +434,8 @@ void IO::SPI_Write(uint8_t* bytes, uint8_t length)
     while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
 }
 
-/// <summary>
-/// Receives a byte from SPI
-/// </summary>
-/// <returns>the received byte</returns>
+/* Receives a byte from SPI */
+
 uint16_t IO::SPI_Read()
 {
     //while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
@@ -460,10 +447,8 @@ uint16_t IO::SPI_Read()
 #endif
 
 #if DIGIPOT_ENABLED
-/// <summary>
-/// Sends the digipot set value command over SPI (chip select must be set first)
-/// </summary>
-/// <returns></returns>
+/* Sends the digipot set value command over SPI (chip select must be set first) */
+
 void IO::SetDigipot(uint8_t value)
 {
     uint8_t bytes[2];
@@ -472,10 +457,8 @@ void IO::SetDigipot(uint8_t value)
     SPI_Write(bytes, 2);
 }
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="value"></param>
+/* */
+
 void IO::SetTxDigipot(uint8_t value)
 {
     // Set CS for TX pot to low
@@ -484,10 +467,8 @@ void IO::SetTxDigipot(uint8_t value)
     GPIO_WriteBit(PORT_CS_TXPOT, PIN_CS_TXPOT, Bit_SET);
 }
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="value"></param>
+/* */
+
 void IO::SetRxDigipot(uint8_t value)
 {
     // Set CS for RX pot to low
@@ -496,10 +477,8 @@ void IO::SetRxDigipot(uint8_t value)
     GPIO_WriteBit(PORT_CS_RXPOT, PIN_CS_RXPOT, Bit_SET);
 }
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="value"></param>
+/* */
+
 void IO::SetRsDigipot(uint8_t value)
 {
     // Set CS for TX pot to low
@@ -514,9 +493,8 @@ void IO::SetRsDigipot(uint8_t value)
 //  Private Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes hardware interrupts.
-/// </summary>
+/* Initializes hardware interrupts. */
+
 void IO::initInt()
 {
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -616,9 +594,8 @@ void IO::initInt()
 #endif
 }
 
-/// <summary>
-/// Starts hardware interrupts.
-/// </summary>
+/* Starts hardware interrupts. */
+
 void IO::startInt()
 {
     if ((ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) != RESET))
@@ -778,97 +755,92 @@ void IO::startInt()
     GPIO_SetBits(PORT_LED, PIN_LED);
 }
 
-/// <summary></summary>
-/// <returns></returns>
+/*  */
+
 bool IO::getCOSInt()
 {
     return GPIO_ReadInputDataBit(PORT_COS, PIN_COS) == Bit_SET;
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setLEDInt(bool on)
 {
     GPIO_WriteBit(PORT_LED, PIN_LED, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setPTTInt(bool on)
 {
     GPIO_WriteBit(PORT_PTT, PIN_PTT, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setCOSInt(bool on)
 {
     GPIO_WriteBit(PORT_COSLED, PIN_COSLED, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setDMRInt(bool on)
 {
     GPIO_WriteBit(PORT_DMR, PIN_DMR, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setP25Int(bool on)
 {
     GPIO_WriteBit(PORT_P25, PIN_P25, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <param name="on"></param>
+/*  */
+
 void IO::setNXDNInt(bool on)
 {
     GPIO_WriteBit(PORT_NXDN, PIN_NXDN, on ? Bit_SET : Bit_RESET);
 }
 
-/// <summary></summary>
-/// <remarks>
-/// Simple delay function for STM32
-/// Example from: http://thehackerworkshop.com/?p=1209
-/// </remarks>
-/// <param name="dly"></param>
+/*  */
+
 void IO::delayInt(unsigned int dly)
 {
     unsigned int loopsPerMillisecond = (SystemCoreClock / 1000) / 3;
 
     for (; dly > 0; dly--) {
-        asm volatile //this routine waits (approximately) one millisecond
+        asm volatile // this routine waits (approximately) one millisecond
             (
-                "mov r3, %[loopsPerMillisecond] \n\t" //load the initial loop counter
+                "mov r3, %[loopsPerMillisecond] \n\t" // load the initial loop counter
                 "loop: \n\t"
                 "subs r3, #1 \n\t"
                 "bne loop \n\t"
 
-                : //empty output list
-        : [loopsPerMillisecond] "r" (loopsPerMillisecond) //input to the asm routine
-            : "r3", "cc" //clobber list
+                : // empty output list
+        : [loopsPerMillisecond] "r" (loopsPerMillisecond) // input to the asm routine
+            : "r3", "cc" // clobber list
             );
     }
 }
 
-/// <summary></summary>
-/// <param name="arg"></param>
-/// <returns></returns>
+/*  */
+
 void* IO::txThreadHelper(void* arg)
 {
     return NULL;
 }
 
-/// <summary></summary>
+/*  */
+
 void IO::interruptRx()
 {
     /* stub */
 }
 
-/// <summary></summary>
-/// <param name="arg"></param>
-/// <returns></returns>
+/*  */
+
 void* IO::rxThreadHelper(void* arg)
 {
     return NULL;

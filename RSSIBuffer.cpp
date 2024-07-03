@@ -1,27 +1,21 @@
 // SPDX-License-Identifier: GPL-2.0-only
-/**
-* Digital Voice Modem - Modem Firmware
-* GPLv2 Open Source. Use is subject to license terms.
-* DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-*
-* @package DVM / Modem Firmware
-* @derivedfrom MMDVM (https://github.com/g4klx/MMDVM)
-* @license GPLv2 License (https://opensource.org/licenses/GPL-2.0)
-*
-*   Copyright (C) 2015,2016 Jonathan Naylor, G4KLX
-*   Serial FIFO Control Copyright (C) 2015 by James McLaughlin, KI6ZUM
-*
-*/
+/*
+ * Digital Voice Modem - Modem Firmware
+ * GPLv2 Open Source. Use is subject to license terms.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ *  Copyright (C) 2015,2016 Jonathan Naylor, G4KLX
+ *  Serial FIFO Control Copyright (C) 2015 by James McLaughlin, KI6ZUM
+ *
+ */
 #include "RSSIBuffer.h"
 
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
 
-/// <summary>
-/// Initializes a new instance of the RSSIBuffer class.
-/// </summary>
-/// <param name="length"></param>
+/* Initializes a new instance of the RSSIBuffer class. */
+
 RSSIBuffer::RSSIBuffer(uint16_t length) :
     m_length(length),
     m_rssi(NULL),
@@ -33,10 +27,8 @@ RSSIBuffer::RSSIBuffer(uint16_t length) :
     m_rssi = new uint16_t[length];
 }
 
-/// <summary>
-/// Helper to get how much space the ring buffer has for samples.
-/// </summary>
-/// <returns></returns>
+/* Helper to get how much space the ring buffer has for samples. */
+
 uint16_t RSSIBuffer::getSpace() const
 {
     uint16_t n = 0U;
@@ -54,10 +46,8 @@ uint16_t RSSIBuffer::getSpace() const
     return n;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <returns></returns>
+/* */
+
 uint16_t RSSIBuffer::getData() const
 {
     if (m_tail == m_head)
@@ -68,11 +58,8 @@ uint16_t RSSIBuffer::getData() const
         return m_length - m_tail + m_head;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="rssi"></param>
-/// <returns></returns>
+/* */
+
 bool RSSIBuffer::put(uint16_t rssi)
 {
     if (m_full) {
@@ -92,11 +79,8 @@ bool RSSIBuffer::put(uint16_t rssi)
     return true;
 }
 
-/// <summary>
-///
-/// </summary>
-/// <param name="rssi"></param>
-/// <returns></returns>
+/* */
+
 bool RSSIBuffer::get(uint16_t& rssi)
 {
     if (m_head == m_tail && !m_full)
@@ -113,10 +97,8 @@ bool RSSIBuffer::get(uint16_t& rssi)
     return true;
 }
 
-/// <summary>
-/// Flag indicating whether or not the ring buffer has overflowed.
-/// </summary>
-/// <returns></returns>
+/* Flag indicating whether or not the ring buffer has overflowed. */
+
 bool RSSIBuffer::hasOverflowed()
 {
     bool overflow = m_overflow;

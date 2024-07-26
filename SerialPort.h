@@ -282,7 +282,7 @@ public:
     void writeDump(const uint8_t* data, uint16_t length);
 
 private:
-    uint8_t m_buffer[256U];
+    uint8_t m_buffer[518U];
     uint8_t m_ptr;
     uint8_t m_len;
     bool m_dblFrame;

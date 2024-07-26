@@ -1,0 +1,155 @@
+# STM32 library paths
+F7_LIB_PATH=./STM32F7XX_Platform
+
+# MCU external clock frequency (Hz)
+OSC=12000000
+
+# Directory Structure
+BINDIR=.
+OBJDIR_F7=obj_f722
+OBJDIR_F767=obj_f767
+
+
+# Output files
+BINELF_F7=dvm-firmware_f722.elf
+BINBIN_F7=dvm-firmware_f722.bin
+BINELF_F767=dvm-firmware_f767.elf
+BINBIN_F767=dvm-firmware_f767.bin
+
+# Header directories
+INC_F7=. $(F7_LIB_PATH)/CMSIS/Include/ $(F7_LIB_PATH)/Device/ $(F7_LIB_PATH)/STM32F7xx_StdPeriph_Driver/inc/
+INCLUDES_F7=$(INC_F7:%=-I%)
+
+# CMSIS libraries
+INCLUDES_LIBS_F7=$(F7_LIB_PATH)/CMSIS/Lib/GCC/libarm_cortexM7lfsp_math.a
+
+# STM32F7 Standard Peripheral Libraries source path
+STD_LIB_F7=$(F7_LIB_PATH)/STM32F7xx_StdPeriph_Driver/src
+
+# STM32F7 system source path
+SYS_DIR_F7=$(F7_LIB_PATH)/Device
+STARTUP_DIR_F7=$(F7_LIB_PATH)/Device/startup
+
+# GNU ARM Embedded Toolchain
+CC=arm-none-eabi-gcc
+CXX=arm-none-eabi-g++
+LD=arm-none-eabi-ld
+AR=arm-none-eabi-ar
+AS=arm-none-eabi-as
+CP=arm-none-eabi-objcopy
+OD=arm-none-eabi-objdump
+NM=arm-none-eabi-nm
+SIZE=arm-none-eabi-size
+A2L=arm-none-eabi-addr2line
+
+# Build object lists
+CXXSRC=$(wildcard ./*.cpp) $(wildcard ./dmr/*.cpp) $(wildcard ./p25/*.cpp) $(wildcard ./nxdn/*.cpp)
+CSRC_STD_F7=$(wildcard $(STD_LIB_F7)/*.c)
+SYS_F7=$(wildcard $(SYS_DIR_F7)/*.c)
+STARTUP_F7=$(wildcard $(STARTUP_DIR_F7)/*.c)
+OBJ_F7=$(CXXSRC:./%.cpp=$(OBJDIR_F7)/%.o) $(CSRC_STD_F7:$(STD_LIB_F7)/%.c=$(OBJDIR_F7)/%.o) $(SYS_F7:$(SYS_DIR_F7)/%.c=$(OBJDIR_F7)/%.o) $(STARTUP_F7:$(STARTUP_DIR_F7)/%.c=$(OBJDIR_F7)/%.o)
+OBJ_F767=$(CXXSRC:./%.cpp=$(OBJDIR_F767)/%.o) $(CSRC_STD_F7:$(STD_LIB_F7)/%.c=$(OBJDIR_F767)/%.o) $(SYS_F7:$(SYS_DIR_F7)/%.c=$(OBJDIR_F767)/%.o) $(STARTUP_F7:$(STARTUP_DIR_F7)/%.c=$(OBJDIR_F767)/%.o)
+
+# MCU flags
+MCFLAGS_F7=-mcpu=cortex-m7 -mthumb -mlittle-endian -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb-interwork
+
+# Compile flags
+DEFS_PI=-DUSE_HAL_DRIVER -DSTM32F722xx -DSTM32F7XX -DSTM32F7_PI -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE
+DEFS_PI_767=-DUSE_HAL_DRIVER -DSTM32F767xx -DSTM32F7XX -DSTM32F7_PI -DHSE_VALUE=$(OSC) -DMADEBYMAKEFILE
+
+# Build compiler flags
+CFLAGS_F7=-c $(MCFLAGS_F7) $(INCLUDES_F7)
+CXXFLAGS_F7=-c $(MCFLAGS_F7) $(INCLUDES_F7)
+
+# Linker flags
+LDFLAGS_F7 =-T stm32f722_link.ld $(MCFLAGS_F7) --specs=nosys.specs $(INCLUDES_LIBS_F7)
+LDFLAGS_F7_D =-T stm32f722_link_debug.ld $(MCFLAGS_F7) --specs=nosys.specs $(INCLUDES_LIBS_F7)
+LDFLAGS_F7_767 =-T stm32f767_link.ld $(MCFLAGS_F7) --specs=nosys.specs $(INCLUDES_LIBS_F7)
+LDFLAGS_F7_767_D =-T stm32f767_link_debug.ld $(MCFLAGS_F7) --specs=nosys.specs $(INCLUDES_LIBS_F7)
+
+# Common flags
+CFLAGS=-Os -g -ffunction-sections -fdata-sections -fno-builtin -Wno-implicit -DCUSTOM_NEW -DNO_EXCEPTIONS
+CXXFLAGS=-Os -g -fno-exceptions -ffunction-sections -fdata-sections -fno-builtin -fno-rtti -Wall -DCUSTOM_NEW -DNO_EXCEPTIONS
+LDFLAGS=-Os -g --specs=nano.specs
+
+# Build Rules
+.PHONY: all f7 f7-debug clean
+
+all: f7
+
+f7: CFLAGS+=$(CFLAGS_F7) $(DEFS_PI)
+f7: CXXFLAGS+=$(CXXFLAGS_F7) $(DEFS_PI)
+f7: LDFLAGS+=$(LDFLAGS_F7)
+f7: $(BINDIR)
+f7: $(OBJDIR_F7)
+f7: $(BINDIR)/$(BINBIN_F7)
+
+f7-debug: CFLAGS+=$(CFLAGS_F7) $(DEFS_PI)
+f7-debug: CXXFLAGS+=$(CXXFLAGS_F7) $(DEFS_PI)
+f7-debug: LDFLAGS+=$(LDFLAGS_F7_D)
+f7-debug: $(BINDIR)
+f7-debug: $(OBJDIR_F7)
+f7-debug: $(BINDIR)/$(BINBIN_F7)
+
+f767: CFLAGS+=$(CFLAGS_F7) $(DEFS_PI_767)
+f767: CXXFLAGS+=$(CXXFLAGS_F7) $(DEFS_PI_767)
+f767: LDFLAGS+=$(LDFLAGS_F7_767)
+f767: $(BINDIR)
+f767: $(OBJDIR_F767)
+f767: $(BINDIR)/$(BINBIN_F767)
+
+f767-debug: CFLAGS+=$(CFLAGS_F7) $(DEFS_PI_767)
+f767-debug: CXXFLAGS+=$(CXXFLAGS_F7) $(DEFS_PI_767)
+f767-debug: LDFLAGS+=$(LDFLAGS_F7_767_D)
+f767-debug: $(BINDIR)
+f767-debug: $(OBJDIR_F767)
+f767-debug: $(BINDIR)/$(BINBIN_F767)
+
+$(BINDIR):
+	mkdir $@
+$(OBJDIR_F7):
+	mkdir $@
+	mkdir $@/dmr
+	mkdir $@/p25
+	mkdir $@/nxdn
+$(OBJDIR_F767):
+	mkdir $@
+	mkdir $@/dmr
+	mkdir $@/p25
+	mkdir $@/nxdn
+
+$(BINDIR)/$(BINBIN_F7): $(BINDIR)/$(BINELF_F7)
+	$(CP) -O binary $< $@
+$(BINDIR)/$(BINELF_F7): $(OBJ_F7)
+	$(CXX) $(OBJ_F7) $(LDFLAGS) -o $@
+	$(SIZE) $(BINDIR)/$(BINELF_F7)
+$(BINDIR)/$(BINBIN_F767): $(BINDIR)/$(BINELF_F767)
+	$(CP) -O binary $< $@
+$(BINDIR)/$(BINELF_F767): $(OBJ_F767)
+	$(CXX) $(OBJ_F767) $(LDFLAGS) -o $@
+	$(SIZE) $(BINDIR)/$(BINELF_F767)
+
+$(OBJDIR_F7)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+$(OBJDIR_F7)/%.o: $(STD_LIB_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F7)/%.o: $(SYS_DIR_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F7)/%.o: $(STARTUP_DIR_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F767)/%.o: ./%.cpp
+	$(CXX) $(CXXFLAGS) $< -o $@
+$(OBJDIR_F767)/%.o: $(STD_LIB_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F767)/%.o: $(SYS_DIR_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+$(OBJDIR_F767)/%.o: $(STARTUP_DIR_F7)/%.c
+	$(CC) $(CFLAGS) $< -o $@
+
+clean-objs:
+	test ! -d $(OBJDIR_F7) || rm -rf $(OBJDIR_F7)
+	test ! -d $(OBJDIR_F767) || rm -rf $(OBJDIR_F767)
+clean:
+	test ! -d $(OBJDIR_F7) || rm -rf $(OBJDIR_F7)
+	test ! -d $(OBJDIR_F767) || rm -rf $(OBJDIR_F767)
+	rm -f $(BINDIR)/*.bin $(BINDIR)/*.elf

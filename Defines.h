@@ -22,6 +22,8 @@
 #define  ARM_MATH_CM3
 #elif defined(STM32F4XX)
 #define  ARM_MATH_CM4
+#elif defined(STM32F7XX)
+#define  ARM_MATH_CM7
 #else
 #error "Unknown processor type"
 #endif

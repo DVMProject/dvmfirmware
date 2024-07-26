@@ -1,3 +1,6 @@
 [submodule "STM32F4XX_Platform"]
 	path = STM32F4XX_Platform
 	url = https://github.com/DVMProject/STM32F4XX_Platform.git
+[submodule "STM32F7XX_Platform"]
+	path = STM32F7XX_Platform
+	url = https://github.com/DVMProject/STM32F7XX_Platform.git

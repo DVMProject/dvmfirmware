@@ -14,7 +14,7 @@
  * @file STM_UART.cpp
  * @ingroup modem_fw
  */
-#if defined(STM32F4XX)
+#if defined(STM32F4XX) || defined(STM32F7XX)
 #if !defined(__STM_UART_H__)
 #define __STM_UART_H__
 
@@ -22,6 +22,9 @@
 
 #if defined(STM32F4XX)
 #include "stm32f4xx.h"
+#endif
+#if defined(STM32F7XX)
+#include "stm32f7xx.h"
 #endif
 
 const uint16_t BUFFER_SIZE = 2048U; //needs to be a power of 2 !

@@ -14,8 +14,13 @@
 #include "SerialPort.h"
 #include "STM_UART.h"
 
+#if defined(STM32F4XX) || defined(STM32F7XX)
 #if defined(STM32F4XX)
 #include <stm32f4xx_flash.h>
+#endif
+#if defined(STM32F7XX)
+#include <stm32f7xx_flash.h>
+#endif
 
 // ---------------------------------------------------------------------------
 //  Constants

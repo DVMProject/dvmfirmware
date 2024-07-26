@@ -8,7 +8,7 @@
  *  Copyright (c) 2020 Geoffrey Merck, F4FXL - KC3FRA
  *
  */
-#if defined(STM32F4XX)
+#if defined(STM32F4XX) || defined(STM32F7XX)
 
 #include "STM_UART.h"
 

@@ -20,8 +20,13 @@
 #if !defined(__GLOBALS_H__)
 #define __GLOBALS_H__
 
+#if defined(STM32F4XX) || defined(STM32F7XX)
 #if defined(STM32F4XX)
 #include "stm32f4xx.h"
+#endif
+#if defined(STM32F7XX)
+#include "stm32f7xx.h"
+#endif
 #include <cstddef>
 #else
 #include <Arduino.h>

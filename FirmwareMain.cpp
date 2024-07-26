@@ -193,7 +193,7 @@ int main(void)
 extern "C" void __cxa_pure_virtual() { while (true); }
 #endif // defined(__SAM3X8E__) && defined(ARDUINO_SAM_DUE)
 
-#if defined(STM32F4XX)
+#if defined(STM32F4XX) || defined(STM32F7XX)
 // --------------------------------------------------------------------------
 //  Firmware Entry Point
 // ---------------------------------------------------------------------------

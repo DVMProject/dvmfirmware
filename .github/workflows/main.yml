@@ -40,6 +40,8 @@ jobs:
         run: make -f Makefile.STM32F4_POG
       - name: Build STM32F4_EDA Firmware
         run: make -f Makefile.STM32F4_EDA
+      - name: Build STM32F4_DVMV1 Firmware
+        run: make -f Makefile.STM32F4_DVMV1
         
       - name: Firmware Hash
         run: |
@@ -65,6 +67,12 @@ jobs:
           md5   : $(md5sum    dvm-firmware_eda.bin)
           sha1  : $(sha1sum   dvm-firmware_eda.bin)
           sha256: $(sha256sum dvm-firmware_eda.bin)
+
+          dvm-firmware_f4-dvmv1.bin
+          size  : $(wc -c     dvm-firmware_f4-dvmv1.bin)
+          md5   : $(md5sum    dvm-firmware_f4-dvmv1.bin)
+          sha1  : $(sha1sum   dvm-firmware_f4-dvmv1.bin)
+          sha256: $(sha256sum dvm-firmware_f4-dvmv1.bin)
           EOF
           echo '```' >> release.txt
           
@@ -77,3 +85,5 @@ jobs:
             dvm-firmware_f4.bin
             dvm-firmware_f4-pog.bin
             dvm-firmware_eda.bin
+            dvm-firmware_f4-dvmv1.bin
+

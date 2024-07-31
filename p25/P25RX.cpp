@@ -591,6 +591,8 @@ bool P25RX::decodeNid(uint16_t start)
     uint8_t nid[P25_NID_LENGTH_BYTES];
     samplesToBits(nidStartPtr, P25_NID_LENGTH_SYMBOLS, nid, 0U, m_centreVal, m_thresholdVal);
 
+    DEBUG3("P25RX::decodeNid() sync [b0 - b1]", nid[0], nid[1]);
+
     if (m_nac == 0xF7EU) {
         m_duid = nid[1U] & 0x0FU;
         DEBUG2("P25RX::decodeNid() DUID for xDU", m_duid);

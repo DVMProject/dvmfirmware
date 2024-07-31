@@ -204,7 +204,7 @@ void P25RX::processSample(q15_t sample)
         DEBUG4("P25RX::processSample() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_maxSyncPtr);
         DEBUG4("P25RX::processSample() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
-        calculateLevels(m_startPtr, P25_NID_LENGTH_SYMBOLS);
+        // calculateLevels(m_startPtr, P25_NID_LENGTH_SYMBOLS);
 
         if (!decodeNid(m_startPtr)) {
             io.setDecode(false);

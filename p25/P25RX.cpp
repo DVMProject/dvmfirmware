@@ -86,6 +86,7 @@ void P25RX::reset()
     m_lostCount = 0U;
     m_countdown = 0U;
 
+    DEBUG1("P25RX::samples() m_state = P25RXS_NONE");
     m_state = P25RXS_NONE;
 
     m_duid = 0xFFU;
@@ -152,6 +153,7 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
                 DEBUG4("P25RX::samples() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
                 DEBUG4("P25RX::samples() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
+                DEBUG1("P25RX::samples() m_state = P25RXS_SYNC");
                 m_state = P25RXS_SYNC;
                 m_countdown = 0U;
             }
@@ -198,20 +200,13 @@ void P25RX::setCorrCount(uint8_t count)
 
 void P25RX::processSample(q15_t sample)
 {
-    if (m_minSyncPtr < m_maxSyncPtr) {
-        if (m_dataPtr >= m_minSyncPtr && m_dataPtr <= m_maxSyncPtr)
-            correlateSync();
-    }
-    else {
-        if (m_dataPtr >= m_minSyncPtr || m_dataPtr <= m_maxSyncPtr)
-            correlateSync();
-    }
-
     // initial sample processing does not have an end pointer -- we simply wait till we've read
     // the samples up to the maximum sync pointer
     if (m_dataPtr == m_maxSyncPtr) {
         DEBUG4("P25RX::processSample() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_maxSyncPtr);
         DEBUG4("P25RX::processSample() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+
+        // calculateLevels(m_startPtr, P25_NID_LENGTH_SYMBOLS);
 
         if (!decodeNid(m_startPtr)) {
             io.setDecode(false);
@@ -233,7 +228,7 @@ void P25RX::processSample(q15_t sample)
 
                     frame[0U] = 0x01U; // has sync
                     serial.writeP25Data(frame, P25_HDU_FRAME_LENGTH_BYTES + 1U);
-                    reset();
+                    //reset();
                 }
                 return;
             case P25_DUID_TDU:
@@ -252,6 +247,7 @@ void P25RX::processSample(q15_t sample)
                 return;
             case P25_DUID_LDU1:
             case P25_DUID_VSELP1:
+                DEBUG1("P25RX::samples() m_state = P25RXS_VOICE");
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_TSDU:
@@ -270,9 +266,11 @@ void P25RX::processSample(q15_t sample)
                 return;
             case P25_DUID_LDU2:
             case P25_DUID_VSELP2:
+                DEBUG1("P25RX::samples() m_state = P25RXS_VOICE");
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_PDU:
+                DEBUG1("P25RX::samples() m_state = P25RXS_DATA");
                 m_state = P25RXS_DATA;
                 break;
             case P25_DUID_TDULC:
@@ -597,6 +595,8 @@ bool P25RX::decodeNid(uint16_t start)
 
     uint8_t nid[P25_NID_LENGTH_BYTES];
     samplesToBits(nidStartPtr, P25_NID_LENGTH_SYMBOLS, nid, 0U, m_centreVal, m_thresholdVal);
+
+    DEBUG3("P25RX::decodeNid() sync [b0 - b1]", nid[0], nid[1]);
 
     if (m_nac == 0xF7EU) {
         m_duid = nid[1U] & 0x0FU;

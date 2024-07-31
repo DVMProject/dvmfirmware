@@ -158,16 +158,9 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
         }
 
         m_dataPtr++;
-        if (m_state != P25RXS_DATA) {
-            if (m_dataPtr >= P25_LDU_FRAME_LENGTH_SAMPLES) {
-                m_duid = 0xFFU;
-                m_dataPtr = 0U;
-            }
-        } else {
-            if (m_dataPtr >= P25_PDU_FRAME_LENGTH_SAMPLES) {
-                m_duid = 0xFFU;
-                m_dataPtr = 0U;
-            }
+        if (m_dataPtr >= P25_PDU_FRAME_LENGTH_SAMPLES) {
+            m_duid = 0xFFU;
+            m_dataPtr = 0U;
         }
 
         m_bitPtr++;
@@ -226,9 +219,19 @@ void P25RX::processSample(q15_t sample)
 
                     frame[0U] = 0x01U; // has sync
                     serial.writeP25Data(frame, P25_HDU_FRAME_LENGTH_BYTES + 1U);
-                    reset();
+
+                    if (m_minSyncPtr < m_maxSyncPtr) {
+                        if (m_dataPtr >= m_minSyncPtr && m_dataPtr <= m_maxSyncPtr)
+                            correlateSync();
+                    }
+                    else {
+                        if (m_dataPtr >= m_minSyncPtr || m_dataPtr <= m_maxSyncPtr)
+                            correlateSync();
+                    }
+
+                    m_state = P25RXS_VOICE;
                 }
-                return;
+                break;
             case P25_DUID_TDU:
                 {
                     calculateLevels(m_startPtr, P25_TDU_FRAME_LENGTH_SYMBOLS);

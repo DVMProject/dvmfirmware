@@ -1053,6 +1053,8 @@ uint8_t SerialPort::setConfig(const uint8_t* data, uint8_t length)
 
     io.setParameters(rxInvert, txInvert, pttInvert, rxLevel, cwIdTXLevel, dmrTXLevel, p25TXLevel, nxdnTXLevel, txDCOffset, rxDCOffset);
 
+    setMode(m_modemState);
+
     io.start();
 
     return RSN_OK;

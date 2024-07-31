@@ -86,6 +86,7 @@ void P25RX::reset()
     m_lostCount = 0U;
     m_countdown = 0U;
 
+    DEBUG1("P25RX::samples() m_state = P25RXS_NONE");
     m_state = P25RXS_NONE;
 
     m_duid = 0xFFU;
@@ -152,6 +153,7 @@ void P25RX::samples(const q15_t* samples, uint16_t* rssi, uint8_t length)
                 DEBUG4("P25RX::samples() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_endPtr);
                 DEBUG4("P25RX::samples() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
 
+                DEBUG1("P25RX::samples() m_state = P25RXS_SYNC");
                 m_state = P25RXS_SYNC;
                 m_countdown = 0U;
             }
@@ -226,7 +228,7 @@ void P25RX::processSample(q15_t sample)
 
                     frame[0U] = 0x01U; // has sync
                     serial.writeP25Data(frame, P25_HDU_FRAME_LENGTH_BYTES + 1U);
-                    reset();
+                    //reset();
                 }
                 return;
             case P25_DUID_TDU:
@@ -245,6 +247,7 @@ void P25RX::processSample(q15_t sample)
                 return;
             case P25_DUID_LDU1:
             case P25_DUID_VSELP1:
+                DEBUG1("P25RX::samples() m_state = P25RXS_VOICE");
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_TSDU:
@@ -263,9 +266,11 @@ void P25RX::processSample(q15_t sample)
                 return;
             case P25_DUID_LDU2:
             case P25_DUID_VSELP2:
+                DEBUG1("P25RX::samples() m_state = P25RXS_VOICE");
                 m_state = P25RXS_VOICE;
                 break;
             case P25_DUID_PDU:
+                DEBUG1("P25RX::samples() m_state = P25RXS_DATA");
                 m_state = P25RXS_DATA;
                 break;
             case P25_DUID_TDULC:

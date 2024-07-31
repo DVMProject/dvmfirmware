@@ -97,8 +97,14 @@ void SerialPort::process()
             // The full packet has been received, process it
             if (m_ptr == m_len) {
                 uint8_t err = 2U;
+                uint8_t offset = 2U;
+                if (m_dblFrame)
+                    offset = 3U;
 
-                switch (m_buffer[2U]) {
+                // DEBUG4("m_buffer [b0 - b2]", m_buffer[0], m_buffer[1], m_buffer[2]);
+                // DEBUG4("m_buffer [b3 - b5]", m_buffer[3], m_buffer[4], m_buffer[5]);
+
+                switch (m_buffer[offset]) {
                 case CMD_GET_STATUS:
                     getStatus();
                     break;

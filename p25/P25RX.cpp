@@ -198,20 +198,13 @@ void P25RX::setCorrCount(uint8_t count)
 
 void P25RX::processSample(q15_t sample)
 {
-    if (m_minSyncPtr < m_maxSyncPtr) {
-        if (m_dataPtr >= m_minSyncPtr && m_dataPtr <= m_maxSyncPtr)
-            correlateSync();
-    }
-    else {
-        if (m_dataPtr >= m_minSyncPtr || m_dataPtr <= m_maxSyncPtr)
-            correlateSync();
-    }
-
     // initial sample processing does not have an end pointer -- we simply wait till we've read
     // the samples up to the maximum sync pointer
     if (m_dataPtr == m_maxSyncPtr) {
         DEBUG4("P25RX::processSample() dataPtr/startPtr/endPtr", m_dataPtr, m_startPtr, m_maxSyncPtr);
         DEBUG4("P25RX::processSample() lostCount/maxSyncPtr/minSyncPtr", m_lostCount, m_maxSyncPtr, m_minSyncPtr);
+
+        calculateLevels(m_startPtr, P25_NID_LENGTH_SYMBOLS);
 
         if (!decodeNid(m_startPtr)) {
             io.setDecode(false);

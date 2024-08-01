@@ -7,7 +7,7 @@
  *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
  *  Copyright (C) 2015 Jim Mclaughlin, KI6ZUM
  *  Copyright (C) 2016 Colin Durbridge, G4EML
- *  Copyright (C) 2017-2022 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
  *
  */
 #include "Globals.h"

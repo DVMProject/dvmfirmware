@@ -7,7 +7,7 @@
  *  Copyright (C) 2016 Jim McLaughlin, KI6ZUM
  *  Copyright (C) 2016,2017,2018 Andy Uribe, CA6JAU
  *  Copyright (C) 2017,2018 Jonathan Naylor, G4KLX
- *  Copyright (C) 2017-2018 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2017-2018,2024 Bryan Biedenkapp, N2PLL
  *  Copyright (C) 2022 Natalie Moore
  *
  */

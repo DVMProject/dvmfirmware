@@ -6,6 +6,7 @@
  *
  *  Copyright (C) 2009-2017 Jonathan Naylor, G4KLX
  *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2024 Patrick McDonnell, W3AXL
  *
  */
 #include "Globals.h"

@@ -120,6 +120,13 @@ void IO::getUDID(uint8_t* buffer)
     } while ((status & EEFC_FSR_FRDY) != EEFC_FSR_FRDY);
 }
 
+/* */
+
+void IO::resetMCU()
+{
+    /* not supported for Due devices */
+}
+
 // ---------------------------------------------------------------------------
 //  Private Class Members
 // ---------------------------------------------------------------------------

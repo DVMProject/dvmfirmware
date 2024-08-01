@@ -44,50 +44,50 @@
 
     EXT_CLK  PA15   input
 */
-#define PIN_COS           GPIO_Pin_0
-#define PORT_COS          GPIOC
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOC
+#define PIN_COS GPIO_Pin_0
+#define PORT_COS GPIOC
+#define RCC_Per_COS RCC_AHB1Periph_GPIOC
 
-#define PIN_PTT           GPIO_Pin_13
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+#define PIN_PTT GPIO_Pin_13
+#define PORT_PTT GPIOB
+#define RCC_Per_PTT RCC_AHB1Periph_GPIOB
 
-#define PIN_COSLED        GPIO_Pin_14
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+#define PIN_COSLED GPIO_Pin_14
+#define PORT_COSLED GPIOB
+#define RCC_Per_COSLED RCC_AHB1Periph_GPIOB
 
-#define PIN_LED           GPIO_Pin_15
-#define PORT_LED          GPIOB
-#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+#define PIN_LED GPIO_Pin_15
+#define PORT_LED GPIOB
+#define RCC_Per_LED RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_9
-#define PORT_P25          GPIOC
-#define RCC_Per_P25       RCC_AHB1Periph_GPIOC
+#define PIN_P25 GPIO_Pin_9
+#define PORT_P25 GPIOC
+#define RCC_Per_P25 RCC_AHB1Periph_GPIOC
 
-#define PIN_DMR           GPIO_Pin_8
-#define PORT_DMR          GPIOC
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOC
+#define PIN_DMR GPIO_Pin_8
+#define PORT_DMR GPIOC
+#define RCC_Per_DMR RCC_AHB1Periph_GPIOC
 
-#define PIN_NXDN          GPIO_Pin_9
-#define PORT_NXDN         GPIOB
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+#define PIN_NXDN GPIO_Pin_9
+#define PORT_NXDN GPIOB
+#define RCC_Per_NXDN RCC_AHB1Periph_GPIOB
 
-#define PIN_EXT_CLK       GPIO_Pin_15
-#define SRC_EXT_CLK       GPIO_PinSource15
-#define PORT_EXT_CLK      GPIOA
+#define PIN_EXT_CLK GPIO_Pin_15
+#define SRC_EXT_CLK GPIO_PinSource15
+#define PORT_EXT_CLK GPIOA
 
-#define PIN_RX            GPIO_Pin_0
-#define PIN_RX_CH         ADC_Channel_0
-#define PORT_RX           GPIOA
-#define RCC_Per_RX        RCC_AHB1Periph_GPIOA
+#define PIN_RX GPIO_Pin_0
+#define PIN_RX_CH ADC_Channel_0
+#define PORT_RX GPIOA
+#define RCC_Per_RX RCC_AHB1Periph_GPIOA
 
-#define PIN_RSSI          GPIO_Pin_7
-#define PIN_RSSI_CH       ADC_Channel_7
-#define PORT_RSSI         GPIOA
-#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOA
+#define PIN_RSSI GPIO_Pin_7
+#define PIN_RSSI_CH ADC_Channel_7
+#define PORT_RSSI GPIOA
+#define RCC_Per_RSSI RCC_AHB1Periph_GPIOA
 
-#define PIN_TX            GPIO_Pin_4
-#define PIN_TX_CH         DAC_Channel_1
+#define PIN_TX GPIO_Pin_4
+#define PIN_TX_CH DAC_Channel_1
 
 #elif defined(STM32F7_PI)
 
@@ -113,62 +113,62 @@ TX       PA4    analog output
 EXT_CLK  PA15   input
 */
 
-#define PIN_COS           GPIO_Pin_0
-#define PORT_COS          GPIOC
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOC
+#define PIN_COS GPIO_Pin_0
+#define PORT_COS GPIOC
+#define RCC_Per_COS RCC_AHB1Periph_GPIOC
 
-#define PIN_PTT           GPIO_Pin_13
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+#define PIN_PTT GPIO_Pin_13
+#define PORT_PTT GPIOB
+#define RCC_Per_PTT RCC_AHB1Periph_GPIOB
 
-#define PIN_COSLED        GPIO_Pin_14
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+#define PIN_COSLED GPIO_Pin_14
+#define PORT_COSLED GPIOB
+#define RCC_Per_COSLED RCC_AHB1Periph_GPIOB
 
-#define PIN_LED           GPIO_Pin_15
-#define PORT_LED          GPIOB
-#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+#define PIN_LED GPIO_Pin_15
+#define PORT_LED GPIOB
+#define RCC_Per_LED RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_9
-#define PORT_P25          GPIOC
-#define RCC_Per_P25       RCC_AHB1Periph_GPIOC
+#define PIN_P25 GPIO_Pin_9
+#define PORT_P25 GPIOC
+#define RCC_Per_P25 RCC_AHB1Periph_GPIOC
 
-#define PIN_NXDN          GPIO_Pin_1
-#define PORT_NXDN         GPIOB
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+#define PIN_NXDN GPIO_Pin_1
+#define PORT_NXDN GPIOB
+#define RCC_Per_NXDN RCC_AHB1Periph_GPIOB
 
-#define PIN_POCSAG        GPIO_Pin_12
-#define PORT_POCSAG       GPIOB
-#define RCC_Per_POCSAG    RCC_AHB1Periph_GPIOB
+#define PIN_POCSAG GPIO_Pin_12
+#define PORT_POCSAG GPIOB
+#define RCC_Per_POCSAG RCC_AHB1Periph_GPIOB
 
-#define PIN_DSTAR         GPIO_Pin_7
-#define PORT_DSTAR        GPIOC
-#define RCC_Per_DSTAR     RCC_AHB1Periph_GPIOC
+#define PIN_DSTAR GPIO_Pin_7
+#define PORT_DSTAR GPIOC
+#define RCC_Per_DSTAR RCC_AHB1Periph_GPIOC
 
-#define PIN_DMR           GPIO_Pin_8
-#define PORT_DMR          GPIOC
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOC
+#define PIN_DMR GPIO_Pin_8
+#define PORT_DMR GPIOC
+#define RCC_Per_DMR RCC_AHB1Periph_GPIOC
 
-#define PIN_YSF           GPIO_Pin_8
-#define PORT_YSF          GPIOA
-#define RCC_Per_YSF       RCC_AHB1Periph_GPIOA
+#define PIN_YSF GPIO_Pin_8
+#define PORT_YSF GPIOA
+#define RCC_Per_YSF RCC_AHB1Periph_GPIOA
 
-#define PIN_EXT_CLK       GPIO_Pin_15
-#define SRC_EXT_CLK       GPIO_PinSource15
-#define PORT_EXT_CLK      GPIOA
+#define PIN_EXT_CLK GPIO_Pin_15
+#define SRC_EXT_CLK GPIO_PinSource15
+#define PORT_EXT_CLK GPIOA
 
-#define PIN_RX            GPIO_Pin_0
-#define PIN_RX_CH         ADC_Channel_0
-#define PORT_RX           GPIOA
-#define RCC_Per_RX        RCC_AHB1Periph_GPIOA
+#define PIN_RX GPIO_Pin_0
+#define PIN_RX_CH ADC_Channel_0
+#define PORT_RX GPIOA
+#define RCC_Per_RX RCC_AHB1Periph_GPIOA
 
-#define PIN_RSSI          GPIO_Pin_7
-#define PIN_RSSI_CH       ADC_Channel_7
-#define PORT_RSSI         GPIOA
-#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOA
+#define PIN_RSSI GPIO_Pin_7
+#define PIN_RSSI_CH ADC_Channel_7
+#define PORT_RSSI GPIOA
+#define RCC_Per_RSSI RCC_AHB1Periph_GPIOA
 
-#define PIN_TX            GPIO_Pin_4
-#define PIN_TX_CH         DAC_Channel_1
+#define PIN_TX GPIO_Pin_4
+#define PIN_TX_CH DAC_Channel_1
 
 #elif defined(STM32F4_POG)
 /*
@@ -188,50 +188,50 @@ EXT_CLK  PA15   input
 
     EXT_CLK  PA15   input
 */
-#define PIN_COS           GPIO_Pin_13
-#define PORT_COS          GPIOB
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
+#define PIN_COS GPIO_Pin_13
+#define PORT_COS GPIOB
+#define RCC_Per_COS RCC_AHB1Periph_GPIOB
 
-#define PIN_PTT           GPIO_Pin_12
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+#define PIN_PTT GPIO_Pin_12
+#define PORT_PTT GPIOB
+#define RCC_Per_PTT RCC_AHB1Periph_GPIOB
 
-#define PIN_COSLED        GPIO_Pin_4
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+#define PIN_COSLED GPIO_Pin_4
+#define PORT_COSLED GPIOB
+#define RCC_Per_COSLED RCC_AHB1Periph_GPIOB
 
-#define PIN_LED           GPIO_Pin_3
-#define PORT_LED          GPIOB
-#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+#define PIN_LED GPIO_Pin_3
+#define PORT_LED GPIOB
+#define RCC_Per_LED RCC_AHB1Periph_GPIOB
 
-#define PIN_NXDN          GPIO_Pin_9
-#define PORT_NXDN         GPIOB
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+#define PIN_NXDN GPIO_Pin_9
+#define PORT_NXDN GPIOB
+#define RCC_Per_NXDN RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_8
-#define PORT_P25          GPIOB
-#define RCC_Per_P25       RCC_AHB1Periph_GPIOB
+#define PIN_P25 GPIO_Pin_8
+#define PORT_P25 GPIOB
+#define RCC_Per_P25 RCC_AHB1Periph_GPIOB
 
-#define PIN_DMR           GPIO_Pin_5
-#define PORT_DMR          GPIOB
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+#define PIN_DMR GPIO_Pin_5
+#define PORT_DMR GPIOB
+#define RCC_Per_DMR RCC_AHB1Periph_GPIOB
 
-#define PIN_EXT_CLK       GPIO_Pin_15
-#define SRC_EXT_CLK       GPIO_PinSource15
-#define PORT_EXT_CLK      GPIOA
+#define PIN_EXT_CLK GPIO_Pin_15
+#define SRC_EXT_CLK GPIO_PinSource15
+#define PORT_EXT_CLK GPIOA
 
-#define PIN_RX            GPIO_Pin_0
-#define PIN_RX_CH         ADC_Channel_8
-#define PORT_RX           GPIOB
-#define RCC_Per_RX        RCC_AHB1Periph_GPIOB
+#define PIN_RX GPIO_Pin_0
+#define PIN_RX_CH ADC_Channel_8
+#define PORT_RX GPIOB
+#define RCC_Per_RX RCC_AHB1Periph_GPIOB
 
-#define PIN_RSSI          GPIO_Pin_1
-#define PIN_RSSI_CH       ADC_Channel_9
-#define PORT_RSSI         GPIOB
-#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOB
+#define PIN_RSSI GPIO_Pin_1
+#define PIN_RSSI_CH ADC_Channel_9
+#define PORT_RSSI GPIOB
+#define RCC_Per_RSSI RCC_AHB1Periph_GPIOB
 
-#define PIN_TX            GPIO_Pin_4
-#define PIN_TX_CH         DAC_Channel_1
+#define PIN_TX GPIO_Pin_4
+#define PIN_TX_CH DAC_Channel_1
 
 #elif defined(STM32F4_EDA_405) || defined(STM32F4_EDA_446)
 /*
@@ -252,50 +252,50 @@ EXT_CLK  PA15   input
     EXT_CLK  PA15   input
 */
 
-#define PIN_COS           GPIO_Pin_13
-#define PORT_COS          GPIOB
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
+#define PIN_COS GPIO_Pin_13
+#define PORT_COS GPIOB
+#define RCC_Per_COS RCC_AHB1Periph_GPIOB
 
-#define PIN_PTT           GPIO_Pin_12
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+#define PIN_PTT GPIO_Pin_12
+#define PORT_PTT GPIOB
+#define RCC_Per_PTT RCC_AHB1Periph_GPIOB
 
-#define PIN_COSLED        GPIO_Pin_4
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+#define PIN_COSLED GPIO_Pin_4
+#define PORT_COSLED GPIOB
+#define RCC_Per_COSLED RCC_AHB1Periph_GPIOB
 
-#define PIN_LED           GPIO_Pin_3
-#define PORT_LED          GPIOB
-#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+#define PIN_LED GPIO_Pin_3
+#define PORT_LED GPIOB
+#define RCC_Per_LED RCC_AHB1Periph_GPIOB
 
-#define PIN_NXDN          GPIO_Pin_9
-#define PORT_NXDN         GPIOB
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+#define PIN_NXDN GPIO_Pin_9
+#define PORT_NXDN GPIOB
+#define RCC_Per_NXDN RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_8
-#define PORT_P25          GPIOB
-#define RCC_Per_P25       RCC_AHB1Periph_GPIOB
+#define PIN_P25 GPIO_Pin_8
+#define PORT_P25 GPIOB
+#define RCC_Per_P25 RCC_AHB1Periph_GPIOB
 
-#define PIN_DMR           GPIO_Pin_5
-#define PORT_DMR          GPIOB
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+#define PIN_DMR GPIO_Pin_5
+#define PORT_DMR GPIOB
+#define RCC_Per_DMR RCC_AHB1Periph_GPIOB
 
-#define PIN_EXT_CLK       GPIO_Pin_15
-#define SRC_EXT_CLK       GPIO_PinSource15
-#define PORT_EXT_CLK      GPIOA
+#define PIN_EXT_CLK GPIO_Pin_15
+#define SRC_EXT_CLK GPIO_PinSource15
+#define PORT_EXT_CLK GPIOA
 
-#define PIN_RX            GPIO_Pin_0
-#define PIN_RX_CH         ADC_Channel_8
-#define PORT_RX           GPIOB
-#define RCC_Per_RX        RCC_AHB1Periph_GPIOB
+#define PIN_RX GPIO_Pin_0
+#define PIN_RX_CH ADC_Channel_8
+#define PORT_RX GPIOB
+#define RCC_Per_RX RCC_AHB1Periph_GPIOB
 
-#define PIN_RSSI          GPIO_Pin_1
-#define PIN_RSSI_CH       ADC_Channel_9
-#define PORT_RSSI         GPIOB
-#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOB
+#define PIN_RSSI GPIO_Pin_1
+#define PIN_RSSI_CH ADC_Channel_9
+#define PORT_RSSI GPIOB
+#define RCC_Per_RSSI RCC_AHB1Periph_GPIOB
 
-#define PIN_TX            GPIO_Pin_4
-#define PIN_TX_CH         DAC_Channel_1
+#define PIN_TX GPIO_Pin_4
+#define PIN_TX_CH DAC_Channel_1
 
 #elif defined(STM32F4_DVMV1)
 /*
@@ -325,99 +325,99 @@ EXT_CLK  PA15   input
 // LEDs
 
 // PIN_LED is also known as the HB LED
-#define PIN_LED           GPIO_Pin_3
-#define PORT_LED          GPIOB
-#define RCC_Per_LED       RCC_AHB1Periph_GPIOB
+#define PIN_LED GPIO_Pin_3
+#define PORT_LED GPIOB
+#define RCC_Per_LED RCC_AHB1Periph_GPIOB
 
-#define PIN_COSLED        GPIO_Pin_4
-#define PORT_COSLED       GPIOB
-#define RCC_Per_COSLED    RCC_AHB1Periph_GPIOB
+#define PIN_COSLED GPIO_Pin_4
+#define PORT_COSLED GPIOB
+#define RCC_Per_COSLED RCC_AHB1Periph_GPIOB
 
-#define PIN_DMR           GPIO_Pin_5
-#define PORT_DMR          GPIOB
-#define RCC_Per_DMR       RCC_AHB1Periph_GPIOB
+#define PIN_DMR GPIO_Pin_5
+#define PORT_DMR GPIOB
+#define RCC_Per_DMR RCC_AHB1Periph_GPIOB
 
-#define PIN_P25           GPIO_Pin_8
-#define PORT_P25          GPIOB
-#define RCC_Per_P25       RCC_AHB1Periph_GPIOB
+#define PIN_P25 GPIO_Pin_8
+#define PORT_P25 GPIOB
+#define RCC_Per_P25 RCC_AHB1Periph_GPIOB
 
-#define PIN_NXDN          GPIO_Pin_9
-#define PORT_NXDN         GPIOB
-#define RCC_Per_NXDN      RCC_AHB1Periph_GPIOB
+#define PIN_NXDN GPIO_Pin_9
+#define PORT_NXDN GPIOB
+#define RCC_Per_NXDN RCC_AHB1Periph_GPIOB
 
-#define PIN_FM            GPIO_Pin_12
-#define PORT_FM           GPIOC
-#define RCC_Per_FM        RCC_AHB1Periph_GPIOC
+#define PIN_FM GPIO_Pin_12
+#define PORT_FM GPIOC
+#define RCC_Per_FM RCC_AHB1Periph_GPIOC
 
-#define PIN_PTTLED        GPIO_Pin_13
-#define PORT_PTTLED       GPIOC
-#define RCC_Per_PTTLED    RCC_AHB1Periph_GPIOC
+#define PIN_PTTLED GPIO_Pin_13
+#define PORT_PTTLED GPIOC
+#define RCC_Per_PTTLED RCC_AHB1Periph_GPIOC
 
 // GPIO
 
-#define PIN_PTT           GPIO_Pin_12
-#define PORT_PTT          GPIOB
-#define RCC_Per_PTT       RCC_AHB1Periph_GPIOB
+#define PIN_PTT GPIO_Pin_12
+#define PORT_PTT GPIOB
+#define RCC_Per_PTT RCC_AHB1Periph_GPIOB
 
-#define PIN_COS           GPIO_Pin_13
-#define PORT_COS          GPIOB
-#define RCC_Per_COS       RCC_AHB1Periph_GPIOB
+#define PIN_COS GPIO_Pin_13
+#define PORT_COS GPIOB
+#define RCC_Per_COS RCC_AHB1Periph_GPIOB
 
-#define PIN_EXT_CLK       GPIO_Pin_15
-#define SRC_EXT_CLK       GPIO_PinSource15
-#define PORT_EXT_CLK      GPIOA
+#define PIN_EXT_CLK GPIO_Pin_15
+#define SRC_EXT_CLK GPIO_PinSource15
+#define PORT_EXT_CLK GPIOA
 
 // Analog
 
-#define PIN_RX            GPIO_Pin_0
-#define PIN_RX_CH         ADC_Channel_8
-#define PORT_RX           GPIOB
-#define RCC_Per_RX        RCC_AHB1Periph_GPIOB
+#define PIN_RX GPIO_Pin_0
+#define PIN_RX_CH ADC_Channel_8
+#define PORT_RX GPIOB
+#define RCC_Per_RX RCC_AHB1Periph_GPIOB
 
-#define PIN_RSSI          GPIO_Pin_1
-#define PIN_RSSI_CH       ADC_Channel_9
-#define PORT_RSSI         GPIOB
-#define RCC_Per_RSSI      RCC_AHB1Periph_GPIOB
+#define PIN_RSSI GPIO_Pin_1
+#define PIN_RSSI_CH ADC_Channel_9
+#define PORT_RSSI GPIOB
+#define RCC_Per_RSSI RCC_AHB1Periph_GPIOB
 
-#define PIN_TX            GPIO_Pin_4
-#define PIN_TX_CH         DAC_Channel_1
+#define PIN_TX GPIO_Pin_4
+#define PIN_TX_CH DAC_Channel_1
 
 // SPI
 
-#define SPI_APB_CLK_INIT  RCC_APB2PeriphClockCmd
-#define SPI_APB_CLK       RCC_APB2Periph_SPI1
+#define SPI_APB_CLK_INIT RCC_APB2PeriphClockCmd
+#define SPI_APB_CLK RCC_APB2Periph_SPI1
 
-#define SPI_GPIO_AF       GPIO_AF_SPI1
+#define SPI_GPIO_AF GPIO_AF_SPI1
 
-#define SPI_PERIPH        SPI1
+#define SPI_PERIPH SPI1
 
-#define PIN_SPI_SCK       GPIO_Pin_5
-#define PORT_SPI_SCK      GPIOA
-#define RCC_Per_SCK       RCC_AHB1Periph_GPIOA
-#define SRC_SPI_SCK       GPIO_PinSource5
+#define PIN_SPI_SCK GPIO_Pin_5
+#define PORT_SPI_SCK GPIOA
+#define RCC_Per_SCK RCC_AHB1Periph_GPIOA
+#define SRC_SPI_SCK GPIO_PinSource5
 
-#define PIN_SPI_MISO      GPIO_Pin_6
-#define PORT_SPI_MISO     GPIOA
-#define RCC_Per_MISO      RCC_AHB1Periph_GPIOA
-#define SRC_SPI_MISO      GPIO_PinSource6
+#define PIN_SPI_MISO GPIO_Pin_6
+#define PORT_SPI_MISO GPIOA
+#define RCC_Per_MISO RCC_AHB1Periph_GPIOA
+#define SRC_SPI_MISO GPIO_PinSource6
 
-#define PIN_SPI_MOSI      GPIO_Pin_7
-#define PORT_SPI_MOSI     GPIOA
-#define RCC_Per_MOSI      RCC_AHB1Periph_GPIOA
-#define SRC_SPI_MOSI      GPIO_PinSource7
+#define PIN_SPI_MOSI GPIO_Pin_7
+#define PORT_SPI_MOSI GPIOA
+#define RCC_Per_MOSI RCC_AHB1Periph_GPIOA
+#define SRC_SPI_MOSI GPIO_PinSource7
 
 // Digipot Chip Selects
-#define PIN_CS_TXPOT      GPIO_Pin_0
-#define PORT_CS_TXPOT     GPIOA
-#define RCC_Per_TXPOT     RCC_AHB1Periph_GPIOA
+#define PIN_CS_TXPOT GPIO_Pin_0
+#define PORT_CS_TXPOT GPIOA
+#define RCC_Per_TXPOT RCC_AHB1Periph_GPIOA
 
-#define PIN_CS_RXPOT      GPIO_Pin_1
-#define PORT_CS_RXPOT     GPIOA
-#define RCC_Per_RXPOT     RCC_AHB1Periph_GPIOA
+#define PIN_CS_RXPOT GPIO_Pin_1
+#define PORT_CS_RXPOT GPIOA
+#define RCC_Per_RXPOT RCC_AHB1Periph_GPIOA
 
-#define PIN_CS_RSPOT      GPIO_Pin_2
-#define PORT_CS_RSPOT     GPIOA
-#define RCC_Per_RSPOT     RCC_AHB1Periph_GPIOA
+#define PIN_CS_RSPOT GPIO_Pin_2
+#define PORT_CS_RSPOT GPIOA
+#define RCC_Per_RSPOT RCC_AHB1Periph_GPIOA
 
 #else
 #error "Only STM32F4_PI, STM32F4_POG, STM32F4_EDA_405, STM32F4_EDA_446, or STM32F4_DVMV1 is supported, others need to be defined!"
@@ -426,16 +426,18 @@ EXT_CLK  PA15   input
 const uint16_t DC_OFFSET = 2048U;
 
 // Sampling frequency
-#define SAMP_FREQ   24000
+#define SAMP_FREQ 24000
 
 // ---------------------------------------------------------------------------
 //  Global Functions
 // ---------------------------------------------------------------------------
 
-extern "C" {
+extern "C"
+{
     void TIM2_IRQHandler()
     {
-        if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+        if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+        {
             TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
             io.interrupt();
         }
@@ -460,11 +462,13 @@ void IO::interrupt()
     DAC_SetChannel1Data(DAC_Align_12b_R, sample);
 
     // Read value from ADC1 and ADC2
-    if ((ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET)) {
+    if ((ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET))
+    {
         // shouldn't be still in reset at this point so null the sample value?
         sample = 0U;
     }
-    else {
+    else
+    {
         sample = ADC_GetConversionValue(ADC1);
 #if defined(SEND_RSSI_DATA)
         rawRSSI = ADC_GetConversionValue(ADC2);
@@ -490,36 +494,60 @@ uint8_t IO::getCPU() const
 
 /* Gets the unique identifier for the air interface. */
 
-void IO::getUDID(uint8_t* buffer)
+void IO::getUDID(uint8_t *buffer)
 {
-    ::memcpy(buffer, (void*)STM32_UUID, 12U);
+    ::memcpy(buffer, (void *)STM32_UUID, 12U);
+}
+
+/* */
+
+void IO::resetMCU()
+{
+    DEBUG1("reset - bye-bye");
+
+    delayInt(250);
+
+    setLEDInt(false);
+    setCOSInt(false);
+    setDMRInt(false);
+    setP25Int(false);
+    setNXDNInt(false);
+
+    delayInt(250);
+
+    NVIC_SystemReset();
 }
 
 #if SPI_ENABLED
 /* Sends a byte over SPI */
 
-void IO::SPI_Write(uint8_t* bytes, uint8_t length)
+void IO::SPI_Write(uint8_t *bytes, uint8_t length)
 {
     // Write the first byte
     SPI_I2S_SendData(SPI_PERIPH, bytes[0]);
-    //DEBUG2("IO::SPI_Write() ", bytes[0]);
-    if (length <= 1) { return; }
-    // Write the remaining bytes once the TX buffer is ready
-    for (int i=1; i<length; i++)
+    // DEBUG2("IO::SPI_Write() ", bytes[0]);
+    if (length <= 1)
     {
-        while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
+        return;
+    }
+    // Write the remaining bytes once the TX buffer is ready
+    for (int i = 1; i < length; i++)
+    {
+        while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET)
+            ;
         SPI_I2S_SendData(SPI_PERIPH, bytes[i]);
-        //DEBUG2("IO::SPI_Write() ", bytes[i]);
+        // DEBUG2("IO::SPI_Write() ", bytes[i]);
     }
     // Wait for the final byte to finish
-    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET);
+    while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_BSY) == SET)
+        ;
 }
 
 /* Receives a byte from SPI */
 
 uint16_t IO::SPI_Read()
 {
-    //while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
+    // while (SPI_I2S_GetFlagStatus(SPI_PERIPH, SPI_I2S_FLAG_RXNE) == RESET);
     uint8_t byte = SPI_I2S_ReceiveData(SPI_PERIPH);
     DEBUG2("IO::SPI_Read() ", byte);
     return byte;
@@ -533,7 +561,7 @@ uint16_t IO::SPI_Read()
 void IO::SetDigipot(uint8_t value)
 {
     uint8_t bytes[2];
-    bytes[0] = 0b00010001;  // write command to pot 0
+    bytes[0] = 0b00010001; // write command to pot 0
     bytes[1] = value;
     SPI_Write(bytes, 2);
 }
@@ -683,9 +711,9 @@ void IO::startInt()
         io.interrupt();
 
     // Init the ADC
-    GPIO_InitTypeDef        GPIO_InitStruct;
-    ADC_InitTypeDef         ADC_InitStructure;
-    ADC_CommonInitTypeDef   ADC_CommonInitStructure;
+    GPIO_InitTypeDef GPIO_InitStruct;
+    ADC_InitTypeDef ADC_InitStructure;
+    ADC_CommonInitTypeDef ADC_CommonInitStructure;
 
     GPIO_StructInit(&GPIO_InitStruct);
     ADC_CommonStructInit(&ADC_CommonInitStructure);
@@ -891,7 +919,8 @@ void IO::delayInt(unsigned int dly)
 {
     unsigned int loopsPerMillisecond = (SystemCoreClock / 1000) / 3;
 
-    for (; dly > 0; dly--) {
+    for (; dly > 0; dly--)
+    {
         asm volatile // this routine waits (approximately) one millisecond
             (
                 "mov r3, %[loopsPerMillisecond] \n\t" // load the initial loop counter
@@ -899,16 +928,16 @@ void IO::delayInt(unsigned int dly)
                 "subs r3, #1 \n\t"
                 "bne loop \n\t"
 
-                : // empty output list
-        : [loopsPerMillisecond] "r" (loopsPerMillisecond) // input to the asm routine
-            : "r3", "cc" // clobber list
+                :                                                // empty output list
+                : [loopsPerMillisecond] "r"(loopsPerMillisecond) // input to the asm routine
+                : "r3", "cc"                                     // clobber list
             );
     }
 }
 
 /*  */
 
-void* IO::txThreadHelper(void* arg)
+void *IO::txThreadHelper(void *arg)
 {
     return NULL;
 }
@@ -922,7 +951,7 @@ void IO::interruptRx()
 
 /*  */
 
-void* IO::rxThreadHelper(void* arg)
+void *IO::rxThreadHelper(void *arg)
 {
     return NULL;
 }

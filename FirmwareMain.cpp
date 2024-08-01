@@ -66,6 +66,8 @@ IO io;
 
 void setup()
 {
+    io.init();
+
     serial.start();
 }
 
@@ -194,12 +196,82 @@ extern "C" void __cxa_pure_virtual() { while (true); }
 #endif // defined(__SAM3X8E__) && defined(ARDUINO_SAM_DUE)
 
 #if defined(STM32F4XX) || defined(STM32F7XX)
+#if defined(STM32F4XX)
+#include <stm32f4xx_flash.h>
+#endif
+#if defined(STM32F7XX)
+#include <stm32f7xx_flash.h>
+#endif
+
+#define STM32_CNF_PAGE_ADDR (uint32_t)0x08010000
+#define STM32_CNF_PAGE      ((uint32_t *)0x08010000)
+#define STM32_CNF_SECTOR    FLASH_Sector_4
+#define STM32_CNF_PAGE_24   24U
+
 // --------------------------------------------------------------------------
 //  Firmware Entry Point
-// ---------------------------------------------------------------------------
+// --------------------------------------------------------------------------
+
+void jumpToBootLoader()
+{
+    // Disable RCC, set it to default (after reset) settings Internal clock, no PLL, etc.
+    RCC_DeInit();
+    ADC_DeInit();
+    DAC_DeInit();
+    TIM_DeInit(TIM2);
+    USART_DeInit(USART1);
+    USART_DeInit(UART5);
+
+    // Disable Systick timer
+    SysTick->CTRL = 0;
+    SysTick->LOAD = 0;
+    SysTick->VAL = 0;
+
+    // Clear Interrupt Enable Register & Interrupt Pending Register
+    for (uint8_t i = 0; i < sizeof(NVIC->ICER) / sizeof(NVIC->ICER[0]); i++) {
+        NVIC->ICER[i] = 0xFFFFFFFF;
+        NVIC->ICPR[i] = 0xFFFFFFFF;
+    }
+
+    SYSCFG->MEMRMP = 0x01;
+
+#if defined(STM32F4XX)
+    volatile uint32_t addr = 0x1FFF0000;
+#elif defined(STM32F7XX)
+    volatile uint32_t addr = 0x1FF00000;
+#endif
+
+    void (*SysMemBootJump)(void);
+    SysMemBootJump = (void (*)(void))(*((uint32_t *)(addr + 4)));
+    __set_MSP(*(uint32_t *)addr);
+    SysMemBootJump();
+}
 
 int main()
 {
+    // does the configuration page contain the request bootloader flag?
+    if ((STM32_CNF_PAGE[STM32_CNF_PAGE_24] != 0xFFFFFFFFU) && (STM32_CNF_PAGE[STM32_CNF_PAGE_24] != 0x00U)) {
+        uint8_t bootloadMode = (STM32_CNF_PAGE[STM32_CNF_PAGE_24] >> 8) & 0xFFU;
+        if ((bootloadMode & 0x20U) == 0x20U) {
+            // we unfortunately need to discard the configuration area entirely for bootloader mode...
+            FLASH_Unlock();
+            FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_WRPERR);
+
+#if defined(STM32F4XX) || defined(STM32F7XX)
+            if (FLASH_EraseSector(STM32_CNF_SECTOR, VoltageRange_3) != FLASH_COMPLETE) {
+                FLASH_Lock();
+                return RSN_FAILED_ERASE_FLASH;
+            }
+#elif defined(STM32F10X_MD)
+            if (FLASH_ErasePage(STM32_CNF_PAGE_ADDR) != FLASH_COMPLETE) {
+                FLASH_Lock();
+                return RSN_FAILED_ERASE_FLASH;
+            }
+#endif
+            jumpToBootLoader();
+        }
+    }
+
     setup();
 
     for (;;)

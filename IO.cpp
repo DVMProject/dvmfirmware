@@ -130,7 +130,12 @@ IO::IO() :
     m_dcFilter.pState = m_dcState;
     m_dcFilter.pCoeffs = DC_FILTER;
     m_dcFilter.postShift = 0;
+}
 
+/* Initializes the air interface sampler. */
+
+void IO::init()
+{
     initInt();
     selfTest();
 }

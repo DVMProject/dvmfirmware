@@ -211,7 +211,7 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
     FLASH_Unlock();
     FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_WRPERR);
 
-#if defined(STM32F4XX)
+#if defined(STM32F4XX) || defined(STM32F7XX)
     if (FLASH_EraseSector(STM32_CNF_SECTOR, VoltageRange_3) != FLASH_COMPLETE) {
         FLASH_Lock();
         return RSN_FAILED_ERASE_FLASH;

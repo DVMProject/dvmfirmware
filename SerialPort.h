@@ -108,6 +108,8 @@ enum DVM_COMMANDS {
     CMD_FLSH_READ = 0xE0U,              //! Read Flash Partition
     CMD_FLSH_WRITE = 0xE1U,             //! Write Flash Partition
 
+    CMD_RESET_MCU = 0xEAU,              //! Soft Reboot MCU
+
     CMD_DEBUG1 = 0xF1U,                 //!
     CMD_DEBUG2 = 0xF2U,                 //!
     CMD_DEBUG3 = 0xF3U,                 //!

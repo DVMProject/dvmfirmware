@@ -152,6 +152,7 @@ enum CMD_REASON_CODE {
 const uint8_t DVM_SHORT_FRAME_START = 0xFEU;
 const uint8_t DVM_LONG_FRAME_START = 0xFDU;
 
+#define SERIAL_FB_LEN 518U
 #define SERIAL_SPEED 115200
 /** @} */
 
@@ -284,9 +285,9 @@ public:
     void writeDump(const uint8_t* data, uint16_t length);
 
 private:
-    uint8_t m_buffer[518U];
-    uint8_t m_ptr;
-    uint8_t m_len;
+    uint8_t m_buffer[SERIAL_FB_LEN];
+    uint16_t m_ptr;
+    uint16_t m_len;
     bool m_dblFrame;
 
     bool m_debug;

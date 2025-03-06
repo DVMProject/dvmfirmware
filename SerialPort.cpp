@@ -78,8 +78,10 @@ void SerialPort::process()
             if (m_dblFrame) {
                 m_buffer[m_ptr] = c;
                 m_len = ((c & 0xFFU) << 8);
+                // DEBUG3("long frame, len msb", m_len, c);
             } else {
                 m_len = m_buffer[m_ptr] = c;
+                // DEBUG2("short frame, len", m_len);
             }
             m_ptr = 2U;
         }
@@ -87,6 +89,9 @@ void SerialPort::process()
             // Handle the frame length
             m_buffer[m_ptr] = c;
             m_len = (m_len + (c & 0xFFU));
+            if (m_len > SERIAL_FB_LEN)
+                m_len = SERIAL_FB_LEN; // don't allow length to be longer then the buffer
+            // DEBUG3("long frame, len lsb", m_len, c);
             m_ptr = 3U;
         }
         else {
@@ -318,8 +323,12 @@ void SerialPort::process()
                 /** Project 25 */
                 case CMD_P25_DATA:
                     if (m_p25Enable) {
-                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
-                            err = p25TX.writeData(m_buffer + 3U, m_len - 3U);
+                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25) {
+                            if (m_dblFrame)
+                                err = p25TX.writeData(m_buffer + 4U, m_len - 4U);
+                            else
+                                err = p25TX.writeData(m_buffer + 3U, m_len - 3U);
+                        }
                     }
                     if (err == RSN_OK) {
                         if (m_modemState == STATE_IDLE)

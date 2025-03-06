@@ -64,7 +64,7 @@ namespace p25
          * @param length Length of buffer.
          * @returns uint8_t Reason code.
          */
-        uint8_t writeData(const uint8_t* data, uint8_t length);
+        uint8_t writeData(const uint8_t* data, uint16_t length);
 
         /**
          * @brief Clears the local buffer.

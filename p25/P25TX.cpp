@@ -163,7 +163,15 @@ uint8_t P25TX::writeData(const uint8_t* data, uint16_t length)
         return RSN_RINGBUFF_FULL;
     }
 
-    m_fifo.put(length - 1U);
+    if (length <= 255U) {
+        m_fifo.put(DVM_SHORT_FRAME_START);
+        m_fifo.put(length - 1U);
+    } else {
+        m_fifo.put(DVM_LONG_FRAME_START);
+        m_fifo.put(((length - 1U) >> 8U) & 0xFFU);
+        m_fifo.put((length - 1U) & 0xFFU);
+    }
+
     for (uint16_t i = 0U; i < (length - 1U); i++)
         m_fifo.put(data[i + 1U]);
 
@@ -257,7 +265,17 @@ void P25TX::createData()
             m_poBuffer[m_poLen++] = P25_START_SYNC;
     }
     else {
-        uint16_t length = m_fifo.get();
+        uint8_t frameType = m_fifo.get();
+        uint16_t length = 0U;
+        switch (frameType) {
+        case DVM_SHORT_FRAME_START:
+            length = m_fifo.get();
+            break;
+        case DVM_LONG_FRAME_START:
+            length = ((m_fifo.get() & 0xFFU) << 8) + (m_fifo.get());
+            break;
+        }
+
         DEBUG3("P25TX::createData() dataLength/fifoSpace", length, m_fifo.getSpace());
         for (uint16_t i = 0U; i < length; i++) {
             m_poBuffer[m_poLen++] = m_fifo.get();

@@ -5,7 +5,7 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
- *  Copyright (C) 2017-2024 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2017-2025 Bryan Biedenkapp, N2PLL
  *
  */
 /**
@@ -106,6 +106,7 @@ namespace p25
         uint8_t m_corrCountdown;
 
         P25RX_STATE m_state;
+        bool m_lduSyncPos;
 
         uint8_t m_duid;
 
@@ -127,6 +128,11 @@ namespace p25
          * @param sample 
          */
         void processData(q15_t sample);
+
+        /**
+         * @brief Helper to write a LDU data frame.
+         */
+        void writeLDUFrame();
 
         /**
          * @brief Frame synchronization correlator.

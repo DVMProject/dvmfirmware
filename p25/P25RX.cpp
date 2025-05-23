@@ -302,6 +302,8 @@ void P25RX::processSample(q15_t sample)
             case P25_DUID_PDU:
                 DEBUG1("P25RX::samples() m_state = P25RXS_DATA");
                 m_state = P25RXS_DATA;
+                m_maxCorr = 0;
+                m_lostCount = MAX_SYNC_FRAMES;
                 break;
             case P25_DUID_TDULC:
                 {

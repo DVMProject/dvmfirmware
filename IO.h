@@ -224,7 +224,7 @@ private:
     arm_fir_instance_q15 m_rrc_0_2_Filter;
     q15_t m_rrc_0_2_State[70U];      // NoTaps + BlockSize - 1, 42 + 20 - 1 plus some spare
 
-#if P25_BOXCAR_FILTER
+#if defined(P25_BOXCAR_FILTER)
     arm_fir_instance_q15 m_boxcar_5_Filter;
     q15_t m_boxcar_5_State[30U];     // NoTaps + BlockSize - 1, 6 + 20 - 1 plus some spare
 #else
@@ -232,7 +232,7 @@ private:
     q15_t m_rc_0_2_State[70U];       // NoTaps + BlockSize - 1, 40 + 20 - 1 plus some spare
 #endif
 
-#if NXDN_BOXCAR_FILTER
+#if defined(NXDN_BOXCAR_FILTER)
     arm_fir_instance_q15 m_boxcar_10_Filter;
 
     q15_t m_boxcar_10_State[40U];   // NoTaps + BlockSize - 1, 10 + 20 - 1 plus some spare

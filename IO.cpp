@@ -110,7 +110,7 @@ IO::IO() :
     m_rrc_0_2_Filter.pState = m_rrc_0_2_State;
     m_rrc_0_2_Filter.pCoeffs = RRC_0_2_FILTER;
 
-#if P25_BOXCAR_FILTER
+#if defined(P25_BOXCAR_FILTER)
     ::memset(m_boxcar_5_State, 0x00U, 30U * sizeof(q15_t));
 
     m_boxcar_5_Filter.numTaps = BOXCAR_5_FILTER_LEN;
@@ -124,7 +124,7 @@ IO::IO() :
     m_rc_0_2_Filter.pCoeffs = RC_0_2_FILTER;
 #endif
 
-#if NXDN_BOXCAR_FILTER
+#if defined(NXDN_BOXCAR_FILTER)
     ::memset(m_boxcar_10_State, 0x00U, 40U * sizeof(q15_t));
     
     m_boxcar_10_Filter.numTaps = BOXCAR10_FILTER_LEN;
@@ -261,7 +261,7 @@ void IO::process()
             /** Project 25 */
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-#if P25_BOXCAR_FILTER
+#if defined(P25_BOXCAR_FILTER)
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
@@ -296,7 +296,7 @@ void IO::process()
             /** Next Generation Digital Narrowband */
             if (m_nxdnEnable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-#if NXDN_BOXCAR_FILTER
+#if defined(NXDN_BOXCAR_FILTER)
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_10_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
@@ -339,7 +339,7 @@ void IO::process()
             /** Project 25 */
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-#if P25_BOXCAR_FILTER
+#if defined(P25_BOXCAR_FILTER)
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
@@ -362,7 +362,7 @@ void IO::process()
             /** Next Generation Digital Narrowband */
             if (m_nxdnEnable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
-#if NXDN_BOXCAR_FILTER
+#if defined(NXDN_BOXCAR_FILTER)
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_10_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }

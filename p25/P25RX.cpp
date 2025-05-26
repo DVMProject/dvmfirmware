@@ -328,6 +328,11 @@ void P25RX::processSample(q15_t sample)
             }
         }
 
+        if (m_state == P25RXS_DATA) {
+            processData(sample);
+            return;
+        }
+
         // late entry?
         if (!m_lduSyncPos) {
             m_minSyncPtr = m_syncPtr + P25_LDU_FRAME_LENGTH_SAMPLES - 1U;
@@ -348,10 +353,6 @@ void P25RX::processSample(q15_t sample)
 
         if (m_state == P25RXS_VOICE) {
             processVoice(sample);
-        }
-
-        if (m_state == P25RXS_DATA) {
-            processData(sample);
         }
     }
 }
@@ -512,7 +513,7 @@ void P25RX::processData(q15_t sample)
                 reset();
             }
             else {
-                // calculateLevels(m_lduStartPtr, P25_PDU_FRAME_LENGTH_SYMBOLS);
+                // calculateLevels(m_startPtr, P25_PDU_FRAME_LENGTH_SYMBOLS);
 
                 DEBUG4("P25RX::processData() sync found in PDU pos/centre/threshold", m_syncPtr, m_centreVal, m_thresholdVal);
 

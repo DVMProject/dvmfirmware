@@ -96,13 +96,16 @@ typedef unsigned long long  ulong64_t;
 
 #define DSP_FW_API 
 
+// Use Boxcar Filter for P25
+//#define P25_BOXCAR_FILTER
+
 // Normal Boxcar Filter for P25
 //#define P25_RX_NORMAL_BOXCAR
 
 // Narrow Boxcar Filter for P25
 #define P25_RX_NARROW_BOXCAR
 
-// Boxcar Filter for NXDN
+// Use Boxcar Filter for NXDN
 //#define NXDN_BOXCAR_FILTER
 
 // Alternate P25 Symbol Levels

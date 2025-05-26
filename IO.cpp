@@ -24,6 +24,7 @@ static q15_t RRC_0_2_FILTER[] = {
     -553, -847, -731, -340, 104, 401, 0 };
 const uint16_t RRC_0_2_FILTER_LEN = 42U;
 
+#if defined(P25_BOXCAR_FILTER)
 // One symbol boxcar filter
 #if defined(P25_RX_NORMAL_BOXCAR)
 static q15_t BOXCAR_5_FILTER[] = { 12000, 12000, 12000, 12000, 12000, 0 };
@@ -32,6 +33,15 @@ static q15_t BOXCAR_5_FILTER[] = { 12000, 12000, 12000, 12000, 12000, 0 };
 static q15_t BOXCAR_5_FILTER[] = { 8000, 8000, 8000, 8000, 8000, 0 };
 #endif
 const uint16_t BOXCAR_5_FILTER_LEN = 6U;
+#else
+// Generated using rcosdesign(0.2, 8, 5, 'normal') in MATLAB
+static q15_t RC_0_2_FILTER[] = {
+    -897, -1636, -1840, -1278, 0, 1613, 2936, 3310, 2315, 0, -3011, -5627, -6580, -4839,
+    0, 7482, 16311, 24651, 30607, 32767, 30607, 24651, 16311, 7482, 0, -4839, -6580, -5627,
+    -3011, 0, 2315, 3310, 2936, 1613, 0, -1278, -1840, -1636, -897, 0
+}; // numTaps = 40, L = 5
+const uint16_t RC_0_2_FILTER_LEN = 40U;
+#endif
 
 #if defined(NXDN_BOXCAR_FILTER)
 // One symbol boxcar filter
@@ -72,11 +82,9 @@ IO::IO() :
     m_rxBuffer(RX_RINGBUFFER_SIZE),
     m_txBuffer(TX_RINGBUFFER_SIZE),
     m_rssiBuffer(RX_RINGBUFFER_SIZE),
-    m_rrc_0_2_Filter(),
-    m_boxcar_5_Filter(),
     m_dcFilter(),
+    m_rrc_0_2_Filter(),
     m_rrc_0_2_State(),
-    m_boxcar_5_State(),
     m_dcState(),
     m_pttInvert(false),
     m_rxLevel(128 * 128),
@@ -94,18 +102,27 @@ IO::IO() :
     m_watchdog(0U),
     m_lockout(false)
 {
-    ::memset(m_rrc_0_2_State, 0x00U, 70U * sizeof(q15_t));
-    ::memset(m_boxcar_5_State, 0x00U, 30U * sizeof(q15_t));
-
     ::memset(m_dcState, 0x00U, 4U * sizeof(q31_t));
+
+    ::memset(m_rrc_0_2_State, 0x00U, 70U * sizeof(q15_t));
 
     m_rrc_0_2_Filter.numTaps = RRC_0_2_FILTER_LEN;
     m_rrc_0_2_Filter.pState = m_rrc_0_2_State;
     m_rrc_0_2_Filter.pCoeffs = RRC_0_2_FILTER;
 
+#if P25_BOXCAR_FILTER
+    ::memset(m_boxcar_5_State, 0x00U, 30U * sizeof(q15_t));
+
     m_boxcar_5_Filter.numTaps = BOXCAR_5_FILTER_LEN;
     m_boxcar_5_Filter.pState = m_boxcar_5_State;
     m_boxcar_5_Filter.pCoeffs = BOXCAR_5_FILTER;
+#else
+    ::memset(m_rc_0_2_State, 0x00U, 70U * sizeof(q15_t));
+
+    m_rc_0_2_Filter.numTaps = RC_0_2_FILTER_LEN;
+    m_rc_0_2_Filter.pState = m_rc_0_2_State;
+    m_rc_0_2_Filter.pCoeffs = RC_0_2_FILTER;
+#endif
 
 #if NXDN_BOXCAR_FILTER
     ::memset(m_boxcar_10_State, 0x00U, 40U * sizeof(q15_t));
@@ -244,12 +261,21 @@ void IO::process()
             /** Project 25 */
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
+#if P25_BOXCAR_FILTER
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
+#else
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_rc_0_2_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_rc_0_2_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+#endif
 
                 p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
             }
@@ -313,12 +339,21 @@ void IO::process()
             /** Project 25 */
             if (m_p25Enable) {
                 q15_t c4fmSamples[RX_BLOCK_SIZE];
+#if P25_BOXCAR_FILTER
                 if (m_dcBlockerEnable) {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
                 }
                 else {
                     ::arm_fir_fast_q15(&m_boxcar_5_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
                 }
+#else
+                if (m_dcBlockerEnable) {
+                    ::arm_fir_fast_q15(&m_rc_0_2_Filter, dcSamples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+                else {
+                    ::arm_fir_fast_q15(&m_rc_0_2_Filter, samples, c4fmSamples, RX_BLOCK_SIZE);
+                }
+#endif
 
                 p25RX.samples(c4fmSamples, rssi, RX_BLOCK_SIZE);
             }

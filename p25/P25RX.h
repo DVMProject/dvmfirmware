@@ -124,15 +124,15 @@ namespace p25
          */
         void processVoice(q15_t sample);
         /**
+         * @brief Helper to write a LDU data frame.
+         */
+        void writeLDUFrame();
+
+        /**
          * @brief Helper to process PDU P25 samples.
          * @param sample 
          */
         void processData(q15_t sample);
-
-        /**
-         * @brief Helper to write a LDU data frame.
-         */
-        void writeLDUFrame();
 
         /**
          * @brief Frame synchronization correlator.

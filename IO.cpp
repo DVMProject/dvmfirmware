@@ -29,7 +29,7 @@ const uint16_t RRC_0_2_FILTER_LEN = 42U;
 static q15_t BOXCAR_5_FILTER[] = { 12000, 12000, 12000, 12000, 12000, 0 };
 #endif
 #if defined(P25_RX_NARROW_BOXCAR)
-static q15_t BOXCAR_5_FILTER[] = { 9600, 9600, 9600, 9600, 9600, 0 };
+static q15_t BOXCAR_5_FILTER[] = { 8000, 8000, 8000, 8000, 8000, 0 };
 #endif
 const uint16_t BOXCAR_5_FILTER_LEN = 6U;
 

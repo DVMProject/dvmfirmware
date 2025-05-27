@@ -57,12 +57,10 @@ void IO::interrupt()
     uint8_t control = MARK_NONE;
 
     ::pthread_mutex_lock(&m_txLock);
-    while(m_txBuffer.get(sample, control))
-    {
+    while (m_txBuffer.get(sample, control)) {
         sample *= 5; // amplify by 12dB
 
-        if (m_audioBufTx.size() >= 720)
-        {
+        if (m_audioBufTx.size() >= 720) {
             zmq::message_t reply = zmq::message_t(720 * sizeof(short));
             ::memcpy(reply.data(), (unsigned char*)m_audioBufTx.data(), 720 * sizeof(short));
 

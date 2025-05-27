@@ -546,10 +546,10 @@ int main(int argc, char** argv)
             ::LogInfo("Copyright (c) 2017-2025 Bryan Biedenkapp, N2PLL and DVMProject (https://github.com/dvmproject) Authors.");
             ::LogInfo("Portions Copyright (c) 2015-2021 by Jonathan Naylor, G4KLX and others");
 
-            ::LogInfoEx(LOG_DSP, "DSP is performing initialization and warmup");
+            ::LogInfoEx("DSP is performing initialization and warmup");
             setup();
 
-            ::LogInfoEx(LOG_DSP, "DSP is up and running");
+            ::LogInfoEx("DSP is up and running");
             while (!g_killed) {
                 loop();
                 ::usleep(1);
@@ -557,16 +557,16 @@ int main(int argc, char** argv)
         }
 
         if (g_signal == 2)
-            ::LogInfoEx(LOG_DSP, "Exited on receipt of SIGINT");
+            ::LogInfoEx("Exited on receipt of SIGINT");
 
         if (g_signal == 15)
-            ::LogInfoEx(LOG_DSP, "Exited on receipt of SIGTERM");
+            ::LogInfoEx("Exited on receipt of SIGTERM");
 
         if (g_signal == 1)
-            ::LogInfoEx(LOG_DSP, "Restarting on receipt of SIGHUP");
+            ::LogInfoEx("Restarting on receipt of SIGHUP");
     } while (g_signal == 1);
 
-    ::LogInfoEx(LOG_DSP, "DSP is shutting down");
+    ::LogInfoEx("DSP is shutting down");
 
     if (m_serialPort != nullptr) {
         m_serialPort->close();

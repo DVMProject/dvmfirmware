@@ -48,7 +48,7 @@ uint8_t SerialPort::flashWrite(const uint8_t* data, uint8_t length)
 
 void SerialPort::beginInt(uint8_t n, int speed)
 {
-    ::LogMessage(LOG_DSP, "Starting PTY serial...");
+    ::LogMessage("Starting PTY serial...");
 
     switch (n) {
     case 1U:

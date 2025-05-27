@@ -5,7 +5,7 @@
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  *  Copyright (C) 2015,2016,2017 Jonathan Naylor, G4KLX
- *  Copyright (C) 2018 Bryan Biedenkapp, N2PLL
+ *  Copyright (C) 2018,2025 Bryan Biedenkapp, N2PLL
  *
  */
 /**
@@ -16,6 +16,8 @@
 #define __DEFINES_H__
 
 #include <stdint.h>
+
+
 
 #if !defined(NATIVE_SDR)
 #if defined(__SAM3X8E__) && !defined(STM32F4XX)
@@ -31,7 +33,11 @@
 #include <cstring>
 #endif
 
+#if !defined(NATIVE_SDR)
 #include <arm_math.h>
+#else
+#include "sdr/arm_math.h"
+#endif
 
 // ---------------------------------------------------------------------------
 //  Types
@@ -150,6 +156,7 @@ const uint8_t BIT_MASK_TABLE[] = { 0x80U, 0x40U, 0x20U, 0x10U, 0x08U, 0x04U, 0x0
 #define CPU_TYPE_ARDUINO_DUE 0x00U
 #define CPU_TYPE_NXP 0x01U
 #define CPU_TYPE_STM32 0x02U
+#define CPU_TYPE_NATIVE_SDR 0xF0U
 
 // ---------------------------------------------------------------------------
 //  Macros

@@ -10,5 +10,6 @@ clean:
 	$(MAKE) -f Makefile.STM32F4_EDA clean
 	$(MAKE) -f Makefile.STM32F4_DVMV1 clean
 	$(MAKE) -f Makefile.STM32F7 clean
+	$(MAKE) -f Makefile.NATIVE_SDR clean
 
 .FORCE:

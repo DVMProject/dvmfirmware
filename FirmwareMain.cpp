@@ -81,7 +81,11 @@ CalRSSI calRSSI;
 CWIdTX cwIdTX;
 
 /* RS232 and Air Interface I/O */
+#if defined(NATIVE_SDR)
+SerialPortSDR serial;
+#else
 SerialPort serial;
+#endif
 IO io;
 
 #if defined(NATIVE_SDR)

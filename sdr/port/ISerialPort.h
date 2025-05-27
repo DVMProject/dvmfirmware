@@ -7,6 +7,16 @@
  *  Copyright (C) 2016,2021 Jonathan Naylor, G4KLX
  *
  */
+/**
+ * @defgroup port Modem Ports
+ * @brief Implementation for various modem ports.
+ * @ingroup modem_fw
+ * 
+ * @file ISerialPort.h
+ * @ingroup port
+ * @file ISerialPort.cpp
+ * @ingroup port
+ */
 #if !defined(__I_SERIAL_PORT_H__)
 #define __I_SERIAL_PORT_H__
 

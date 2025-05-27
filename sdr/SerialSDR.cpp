@@ -7,6 +7,10 @@
  *  Copyright (C) 2025 Bryan Biedenkapp N2PLL
  *
  */
+/**
+ * @file SerialSDR.cpp
+ * @ingroup modem_fw
+ */
 #include "Globals.h"
 #include "SerialPort.h"
 

@@ -50,6 +50,7 @@
 #include "nxdn/CalNXDN.h"
 #if defined(NATIVE_SDR)
 #include "sdr/Log.h"
+#include "sdr/SerialPortSDR.h"
 #endif
 #include "CalRSSI.h"
 #include "CWIdTX.h"
@@ -101,7 +102,11 @@ extern bool m_duplex;
 extern bool m_tx;
 extern bool m_dcd;
 
+#if defined(NATIVE_SDR)
+extern SerialPortSDR serial;
+#else
 extern SerialPort serial;
+#endif
 extern IO io;
 
 /* DMR BS */

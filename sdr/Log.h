@@ -8,6 +8,16 @@
  *  Copyright (C) 2018-2025 Bryan Biedenkapp, N2PLL
  *
  */
+/**
+ * @defgroup logging Logging Routines
+ * @brief Defines and implements logging routines.
+ * @ingroup modem_fw
+ * 
+ * @file Log.h
+ * @ingroup logging
+ * @file Log.cpp
+ * @ingroup logging
+ */
 #if !defined(__LOG_H__)
 #define __LOG_H__
 

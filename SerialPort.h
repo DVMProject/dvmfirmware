@@ -246,20 +246,20 @@ public:
      * @brief 
      * @param[in] text
      */
-    void writeDebug(const char* text);
+    virtual void writeDebug(const char* text);
     /**
      * @brief 
      * @param[in] text
      * @param n1 
      */
-    void writeDebug(const char* text, int16_t n1);
+    virtual void writeDebug(const char* text, int16_t n1);
     /**
      * @brief 
      * @param[in] text
      * @param n1 
      * @param n2 
      */
-    void writeDebug(const char* text, int16_t n1, int16_t n2);
+    virtual void writeDebug(const char* text, int16_t n1, int16_t n2);
     /**
      * @brief 
      * @param[in] text
@@ -267,7 +267,7 @@ public:
      * @param n2 
      * @param n3
      */
-    void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3);
+    virtual void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3);
     /**
      * @brief 
      * @param[in] text
@@ -276,13 +276,13 @@ public:
      * @param n3
      * @param n4 
      */
-    void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3, int16_t n4);
+    virtual void writeDebug(const char* text, int16_t n1, int16_t n2, int16_t n3, int16_t n4);
     /**
      * @brief 
      * @param[in] data 
      * @param length
      */
-    void writeDump(const uint8_t* data, uint16_t length);
+    virtual void writeDump(const uint8_t* data, uint16_t length);
 
 private:
     uint8_t m_buffer[SERIAL_FB_LEN];

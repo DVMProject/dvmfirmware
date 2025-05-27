@@ -34,6 +34,7 @@ static pthread_t m_threadTx;
 static pthread_mutex_t m_txLock;
 static pthread_t m_threadRx;
 static pthread_mutex_t m_rxLock;
+static pthread_t m_threadStatus;
 
 zmq::context_t m_zmqContextTx;
 zmq::socket_t m_zmqSocketTx;
@@ -43,11 +44,89 @@ zmq::context_t m_zmqContextRx;
 zmq::socket_t m_zmqSocketRx;
 static std::vector<short> m_audioBufRx = std::vector<short>();
 
+static bool m_abort = false;
+
+static bool m_cosPrev = false;
 static bool m_cosInt = false;
+
+static bool m_pttPrev = false;
+static bool m_ptt = false;
+
+static bool m_dmrModeToggle = false;
+static bool m_dmrMode = false;
+static bool m_p25ModeToggle = false;
+static bool m_p25Mode = false;
+static bool m_nxdnModeToggle = false;
+static bool m_nxdnMode = false;
+
+/*  */
+
+static void* modemStatusHelper(void* arg)
+{
+    IO* io = (IO*)arg;
+    if (io != nullptr) {
+        while (!m_abort) {
+            // log flag statuses
+            if (m_cosPrev != m_cosInt) {
+                ::LogMessage("COS %s", m_cosInt ? "DETECT" : "NO CARRIER");
+                m_cosPrev = m_cosInt;
+            }
+
+            if (m_pttPrev != m_ptt) {
+                ::LogMessage("PTT %s", m_ptt ? "TRANSMIT" : "IDLE");
+                m_pttPrev = m_ptt;
+            }
+
+            if (m_dmrModeToggle) {
+                ::LogMessage("DMR Mode %s", m_dmrMode ? "ENABLED" : "DISABLED");
+                m_dmrModeToggle = false;
+            }
+
+            if (m_p25ModeToggle) {
+                ::LogMessage("P25 Mode %s", m_p25Mode ? "ENABLED" : "DISABLED");
+                m_p25ModeToggle = false;
+            }
+
+            if (m_nxdnModeToggle) {
+                ::LogMessage("NXDN Mode %s", m_nxdnMode ? "ENABLED" : "DISABLED");
+                m_nxdnModeToggle = false;
+            }
+
+            ::usleep(1000U);
+        }
+    }
+
+    return NULL;
+}
 
 // ---------------------------------------------------------------------------
 //  Public Class Members
 // ---------------------------------------------------------------------------
+
+/* Finalizes a instance of the IO class. */
+
+IO::~IO()
+{
+    m_abort = true;
+
+    if (m_threadTx) {
+        ::pthread_join(m_threadTx, NULL);
+    }
+
+    if (m_threadRx) {
+        ::pthread_join(m_threadRx, NULL);
+    }
+
+    if (m_threadStatus) {
+        ::pthread_join(m_threadStatus, NULL);
+    }
+
+    ::pthread_mutex_destroy(&m_txLock);
+    ::pthread_mutex_destroy(&m_rxLock);
+
+    m_zmqSocketTx.close();
+    m_zmqSocketRx.close();
+}
 
 /* Hardware interrupt handler. */
 
@@ -70,7 +149,7 @@ void IO::interrupt()
             }
             catch(const zmq::error_t& zmqE) { /* stub */ }
 
-            usleep(9600 * 3);
+            ::usleep(9600 * 3);
             
             m_audioBufTx.erase(m_audioBufTx.begin(), m_audioBufTx.begin() + 720);
             m_audioBufTx.push_back((short)sample);
@@ -140,21 +219,21 @@ void IO::startInt()
         ::LogMessage("Binding Tx socket to %s", m_zmqTx.c_str());
         m_zmqSocketTx.bind(m_zmqTx);
     }
-    catch(const zmq::error_t& zmqE) { ::LogError("IO::startInt(), Tx Socket: %s", zmqE.what()); }
-    catch(const std::exception& e) { ::LogError("IO::startInt(), Tx Socket: %s", e.what()); }
+    catch(const zmq::error_t& zmqE) { ::LogError("ZMQ Tx Socket: %s", zmqE.what()); }
+    catch(const std::exception& e) { ::LogError("ZMQ Tx Socket: %s", e.what()); }
 
     try
     {
         ::LogMessage("Connecting Rx socket to %s", m_zmqRx.c_str());
         m_zmqSocketRx.connect(m_zmqRx);
         if (m_zmqSocketRx.connected()) {
-            ::LogMessage("IO::startInt(), connected to remote ZMQ listener", m_zmqRx.c_str());
+            ::LogMessage("ZMQ connected to remote ZMQ listener", m_zmqRx.c_str());
         } else {
-            ::LogWarning("IO::startInt(), failed to remote ZMQ listener, will continue to retry to connect", m_zmqRx.c_str());
+            ::LogWarning("ZMQ failed to remote ZMQ listener, will continue to retry to connect", m_zmqRx.c_str());
         }
     }
-    catch(const zmq::error_t& zmqE) { ::LogError("IO::startInt(), Rx Socket: %s", zmqE.what()); }
-    catch(const std::exception& e) { ::LogError("IO::startInt(), Rx Socket: %s", e.what()); }
+    catch(const zmq::error_t& zmqE) { ::LogError("ZMQ Rx Socket: %s", zmqE.what()); }
+    catch(const std::exception& e) { ::LogError("ZMQ Rx Socket: %s", e.what()); }
 
     m_audioBufTx = std::vector<short>();
     m_audioBufRx = std::vector<short>();
@@ -173,6 +252,7 @@ void IO::startInt()
 
     ::pthread_create(&m_threadTx, NULL, txThreadHelper, this);
     ::pthread_create(&m_threadRx, NULL, rxThreadHelper, this);
+    ::pthread_create(&m_threadStatus, NULL, modemStatusHelper, this);
 }
 
 /*  */
@@ -193,7 +273,7 @@ void IO::setLEDInt(bool on)
 
 void IO::setPTTInt(bool on)
 {
-    /* stub */
+    m_ptt = on;
 }
 
 /*  */
@@ -207,28 +287,37 @@ void IO::setCOSInt(bool on)
 
 void IO::setDMRInt(bool on)
 {
-    /* stub */
+    if (on != m_dmrMode)
+        m_dmrModeToggle = true;
+
+    m_dmrMode = on;
 }
 
 /*  */
 
 void IO::setP25Int(bool on)
 {
-    /* stub */
+    if (on != m_p25Mode)
+        m_p25ModeToggle = true;
+
+    m_p25Mode = on;
 }
 
 /*  */
 
 void IO::setNXDNInt(bool on)
 {
-    /* stub */
+    if (on != m_nxdnMode)
+        m_nxdnModeToggle = true;
+
+    m_nxdnMode = on;
 }
 
 /*  */
 
 void IO::delayInt(unsigned int dly)
 {
-    usleep(dly * 1000);
+    ::usleep(dly * 1000U);
 }
 
 /*  */
@@ -237,7 +326,7 @@ void* IO::txThreadHelper(void* arg)
 {
     IO* p = (IO*)arg;
 
-    while (true)
+    while (!m_abort)
     {
         if (p->m_txBuffer.getData() < 1)
             usleep(20);
@@ -283,14 +372,14 @@ void IO::interruptRx()
     ::pthread_mutex_lock(&m_rxLock);
     uint16_t space = m_rxBuffer.getSpace();
 
-    for (int i = 0; i < size; i += 2)
-    {
+    for (int i = 0; i < size; i += 2) {
         short sample = 0;
         ::memcpy(&sample, (unsigned char*)msg.data() + i, sizeof(short));
 
         m_rxBuffer.put((uint16_t)sample, control);
         m_rssiBuffer.put(3U);
     }
+
     ::pthread_mutex_unlock(&m_rxLock);
 }
 
@@ -300,7 +389,7 @@ void* IO::rxThreadHelper(void* arg)
 {
     IO* p = (IO*)arg;
 
-    while (true)
+    while (!m_abort)
         p->interruptRx();
 
     return NULL;

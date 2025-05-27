@@ -7,6 +7,16 @@
  *  Copyright (C) 2018 by Adrian Musceac YO8RZZ
  *
  */
+/**
+ * @defgroup math Math Routines
+ * @brief Defines and implements math routines.
+ * @ingroup modem_fw
+ * 
+ * @file arm_math.h
+ * @ingroup math
+ * @file arm_math.cpp
+ * @ingroup math
+ */
 #if !defined(__ARM_MATH_H__)
 #define __ARM_MATH_H__
 

@@ -9,6 +9,12 @@
  *  Copyright (C) 2020-2024,2025 Bryan Biedenkapp, N2PLL
  *
  */
+/**
+ * @file UARTPort.h
+ * @ingroup port
+ * @file UARTPort.cpp
+ * @ingroup port
+ */
 #if !defined(__UART_PORT_H__)
 #define __UART_PORT_H__
 

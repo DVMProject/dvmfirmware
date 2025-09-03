@@ -654,6 +654,23 @@ void IO::initInt()
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_Init(PORT_NXDN, &GPIO_InitStruct);
 
+    // DVM-V1 LEDs
+    #if defined(STM32F4_DVMV1)
+    
+    // FM pin (never actually used since we don't do FM)
+    RCC_AHB1PeriphClockCmd(RCC_Per_FM, ENABLE);
+    GPIO_InitStruct.GPIO_Pin = PIN_FM;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_Init(PORT_FM, &GPIO_InitStruct);
+
+    // PTT LED pin (separate from the actual PTT pin for ESD reasons)
+    RCC_AHB1PeriphClockCmd(RCC_Per_PTTLED, ENABLE);
+    GPIO_InitStruct.GPIO_Pin = PIN_PTTLED;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+    GPIO_Init(PORT_PTTLED, &GPIO_InitStruct);
+    
+    #endif
+
 #if SPI_ENABLED
     // Init SPI Clock
     SPI_APB_CLK_INIT(SPI_APB_CLK, ENABLE);
@@ -883,6 +900,10 @@ void IO::setLEDInt(bool on)
 void IO::setPTTInt(bool on)
 {
     GPIO_WriteBit(PORT_PTT, PIN_PTT, on ? Bit_SET : Bit_RESET);
+    #if defined(STM32F4_DVMV1)
+    // We tie the PTT LED to PTT on the V1
+    setPTTLEDInt(on);
+    #endif
 }
 
 /*  */
@@ -914,6 +935,20 @@ void IO::setNXDNInt(bool on)
 }
 
 /*  */
+
+#if defined(STM32F4_DVMV1)
+
+void IO::setFMInt(bool on)
+{
+    GPIO_WriteBit(PORT_FM, PIN_FM, on ? Bit_SET : Bit_RESET);
+}
+
+void IO::setPTTLEDInt(bool on)
+{
+    GPIO_WriteBit(PORT_PTTLED, PIN_PTTLED, on ? Bit_SET : Bit_RESET);
+}
+
+#endif
 
 void IO::delayInt(unsigned int dly)
 {

@@ -317,6 +317,14 @@ private:
      */
     void setNXDNInt(bool on);
 
+    #if defined(STM32F4_DVMV1)
+
+    void setFMInt(bool on);
+
+    void setPTTLEDInt(bool on);
+
+    #endif
+
     /**
      * @brief 
      * @param dly 

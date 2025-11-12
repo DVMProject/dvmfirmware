@@ -547,6 +547,8 @@ uint32_t IO::getWatchdog()
 
 void IO::selfTest()
 {
+    #define FLASH_DELAY 125
+
     bool ledValue = false;
 
     for (uint8_t i = 0; i < 6; i++) {
@@ -560,7 +562,12 @@ void IO::selfTest()
         setP25Int(ledValue);
         setNXDNInt(ledValue);
 
-        delayInt(250);
+        #if defined(STM32F4_DVMV1)
+        setFMInt(ledValue);
+        setPTTLEDInt(ledValue);
+        #endif
+
+        delayInt(FLASH_DELAY);
     }
 
     // blinkin lights
@@ -569,71 +576,65 @@ void IO::selfTest()
     setDMRInt(false);
     setP25Int(false);
     setNXDNInt(false);
-    delayInt(250);
+    #if defined(STM32F4_DVMV1)
+    setFMInt(false);
+    setPTTLEDInt(false);
+    #endif
+    delayInt(FLASH_DELAY);
 
     setLEDInt(true);
-    setCOSInt(false);
-    setDMRInt(false);
-    setP25Int(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
     setLEDInt(false);
     setCOSInt(true);
-    setDMRInt(false);
-    setP25Int(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
     setCOSInt(false);
     setDMRInt(true);
-    setP25Int(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
-    setCOSInt(false);
     setDMRInt(false);
     setP25Int(true);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
-    setCOSInt(false);
-    setDMRInt(false);
     setP25Int(false);
     setNXDNInt(true);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
-    setCOSInt(false);
-    setDMRInt(false);
+    #if defined(STM32F4_DVMV1)
+    setNXDNInt(false);
+    setFMInt(true);
+    delayInt(FLASH_DELAY);
+
+    setFMInt(false);
+    setPTTLEDInt(true);
+    delayInt(FLASH_DELAY);
+
+    setPTTLEDInt(false);
+    setFMInt(true);
+    delayInt(FLASH_DELAY);
+
+    setFMInt(false);
+    setNXDNInt(true);
+    delayInt(FLASH_DELAY);
+    #endif
+
+    setNXDNInt(false);
     setP25Int(true);
-    setNXDNInt(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
-    setCOSInt(false);
+    setP25Int(false);
     setDMRInt(true);
-    setP25Int(false);
-    setNXDNInt(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(false);
+    setDMRInt(false);
     setCOSInt(true);
-    setDMRInt(false);
-    setP25Int(false);
-    setNXDNInt(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 
-    setLEDInt(true);
     setCOSInt(false);
-    setDMRInt(false);
-    setP25Int(false);
-    setNXDNInt(false);
-    delayInt(250);
+    setLEDInt(true);
+    delayInt(FLASH_DELAY);
 
     setLEDInt(false);
-    setCOSInt(false);
-    setDMRInt(false);
-    setP25Int(false);
-    setNXDNInt(false);
-    delayInt(250);
+    delayInt(FLASH_DELAY);
 }

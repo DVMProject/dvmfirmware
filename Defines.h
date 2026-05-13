@@ -19,7 +19,6 @@
 
 
 
-#if !defined(NATIVE_SDR)
 #if defined(__SAM3X8E__) && !defined(STM32F4XX)
 #define  ARM_MATH_CM3
 #elif defined(STM32F4XX)
@@ -29,15 +28,8 @@
 #else
 #error "Unknown processor type"
 #endif
-#else
-#include <cstring>
-#endif
 
-#if !defined(NATIVE_SDR)
 #include <arm_math.h>
-#else
-#include "sdr/arm_math.h"
-#endif
 
 // ---------------------------------------------------------------------------
 //  Types

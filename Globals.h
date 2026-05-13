@@ -20,7 +20,6 @@
 #if !defined(__GLOBALS_H__)
 #define __GLOBALS_H__
 
-#if !defined(NATIVE_SDR)
 #if defined(STM32F4XX) || defined(STM32F7XX)
 #if defined(STM32F4XX)
 #include "stm32f4xx.h"
@@ -32,7 +31,6 @@
 #else // defined(STM32F4XX) || defined(STM32F7XX)
 #include <Arduino.h>
 #endif
-#endif // !defined(NATIVE_SDR)
 
 #include "Defines.h"
 #include "SerialPort.h"
@@ -48,17 +46,9 @@
 #include "nxdn/NXDNRX.h"
 #include "nxdn/NXDNTX.h"
 #include "nxdn/CalNXDN.h"
-#if defined(NATIVE_SDR)
-#include "sdr/Log.h"
-#include "sdr/SerialPortSDR.h"
-#endif
 #include "CalRSSI.h"
 #include "CWIdTX.h"
 #include "IO.h"
-
-#if defined(NATIVE_SDR)
-#include <cstring>
-#endif
 
 // ---------------------------------------------------------------------------
 //  Constants
@@ -102,11 +92,7 @@ extern bool m_duplex;
 extern bool m_tx;
 extern bool m_dcd;
 
-#if defined(NATIVE_SDR)
-extern SerialPortSDR serial;
-#else
 extern SerialPort serial;
-#endif
 extern IO io;
 
 /* DMR BS */
@@ -134,13 +120,5 @@ extern CalRSSI calRSSI;
 
 /* CW */
 extern CWIdTX cwIdTX;
-
-#if defined(NATIVE_SDR)
-/* Native SDR */
-extern std::string m_zmqRx;
-extern std::string m_zmqTx;
-extern std::string m_ptyPort;
-extern bool g_debug;
-#endif
 
 #endif // __GLOBALS_H__

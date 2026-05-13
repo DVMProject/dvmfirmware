@@ -40,12 +40,6 @@ public:
      * @brief Initializes a new instance of the IO class.
      */
     IO();
-#if defined(NATIVE_SDR)
-    /**
-     * @brief Finalizes a new instance of the IO class.
-     */
-    ~IO();
-#endif
 
     /**
      * @brief Initializes the air interface sampler.

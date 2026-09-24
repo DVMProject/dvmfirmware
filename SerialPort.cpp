@@ -364,7 +364,7 @@ void SerialPort::process()
                     break;
                 case CMD_NXDN_CLEAR:
                     if (m_nxdnEnable) {
-                        if (m_modemState == STATE_IDLE || m_modemState == STATE_P25)
+                        if (m_modemState == STATE_IDLE || m_modemState == STATE_NXDN)
                             nxdnTX.clear();
                     }
                     break;
